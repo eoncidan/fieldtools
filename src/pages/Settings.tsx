@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { 
   UserCircleIcon,
   DocumentTextIcon,
+  DocumentArrowDownIcon,
   TrashIcon,
   ExclamationTriangleIcon 
 } from '@heroicons/react/24/outline';

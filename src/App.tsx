@@ -9,6 +9,7 @@ import { Login } from './pages/Login';
 import { Dashboard } from './pages/Dashboard';
 import { Checklist } from './pages/Checklist';
 import { Reports } from './pages/Reports';
+import { Tools } from './pages/Tools';
 import { Settings } from './pages/Settings';
 
 const AppContent: React.FC = () => {
@@ -37,6 +38,7 @@ const AppContent: React.FC = () => {
               <Route path="/" element={<Dashboard />} />
               <Route path="/checklist" element={<Checklist />} />
               <Route path="/reports" element={<Reports />} />
+              <Route path="/tools" element={<Tools />} />
               <Route path="/settings" element={<Settings />} />
             </Routes>
           </div>

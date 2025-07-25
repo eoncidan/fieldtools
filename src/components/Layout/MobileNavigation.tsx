@@ -4,13 +4,15 @@ import {
   HomeIcon,
   ClipboardDocumentListIcon,
   ClockIcon,
-  Cog6ToothIcon 
+  Cog6ToothIcon,
+  WrenchScrewdriverIcon
 } from '@heroicons/react/24/outline';
 
 const navItems = [
   { to: '/', label: 'Dashboard', icon: HomeIcon },
   { to: '/checklist', label: 'Checklist', icon: ClipboardDocumentListIcon },
   { to: '/reports', label: 'Relatórios', icon: ClockIcon },
+  { to: '/tools', label: 'Ferramentas', icon: WrenchScrewdriverIcon },
   { to: '/settings', label: 'Config', icon: Cog6ToothIcon },
 ];
 

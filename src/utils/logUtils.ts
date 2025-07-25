@@ -24,9 +24,6 @@ export const saveVerificationLog = (
   const existingLogs = getVerificationLogs();
   const updatedLogs = [log, ...existingLogs];
   localStorage.setItem(LOG_STORAGE_KEY, JSON.stringify(updatedLogs));
-
-  // Generate Excel log
-  generateExcelLog(log);
 };
 
 export const getVerificationLogs = (): VerificationLog[] => {
@@ -53,51 +50,6 @@ const getFloorFromReport = (report: Report): number => {
   const roomIds = report.roomChecks.map(check => check.roomId);
   // This is a simplified approach - in a real app you'd have better floor detection
   return roomIds.some(id => id.includes('auditorio') || id.includes('inclusao')) ? 2 : 1;
-};
-
-const generateExcelLog = (log: VerificationLog): void => {
-  const workbook = XLSX.utils.book_new();
-  
-  // Create log entry data
-  const logData = [
-    ['Log de Verificação de Salas'],
-    [''],
-    ['Data/Hora:', format(log.timestamp, "dd/MM/yyyy 'às' HH:mm", { locale: ptBR })],
-    ['Andar:', `${log.floor}º andar`],
-    ['Verificador:', log.verifierName],
-    ['Tipo de Relatório:', log.reportType.toUpperCase()],
-    ['Salas Verificadas:', log.roomsChecked],
-    ['Problemas Encontrados:', log.problemsFound],
-    [''],
-    ['Detalhes das Salas:'],
-    ['Sala', 'Status', 'Problemas', 'Observações']
-  ];
-
-  // Add room details
-  log.reportData.roomChecks.forEach(roomCheck => {
-    const roomName = roomCheck.roomId; // You might want to get the actual room name
-    const hasProblems = roomCheck.items.some(item => item.status === 'problem');
-    const problemItems = roomCheck.items.filter(item => item.status === 'problem');
-    const problems = problemItems.map(item => item.name).join(', ');
-    const observations = problemItems
-      .filter(item => item.observation)
-      .map(item => `${item.name}: ${item.observation}`)
-      .join('; ');
-
-    logData.push([
-      roomName,
-      hasProblems ? 'Com Problemas' : 'OK',
-      problems || 'Nenhum',
-      observations || 'Nenhuma'
-    ]);
-  });
-
-  const worksheet = XLSX.utils.aoa_to_sheet(logData);
-  XLSX.utils.book_append_sheet(workbook, worksheet, 'Log de Verificação');
-
-  // Download the file
-  const fileName = `log-verificacao-${format(log.timestamp, 'yyyy-MM-dd-HHmm')}.xlsx`;
-  XLSX.writeFile(workbook, fileName);
 };
 
 export const exportAllLogs = (): void => {
