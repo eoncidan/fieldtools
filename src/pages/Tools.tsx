@@ -1,6 +1,8 @@
 import React from 'react';
 import { 
   WrenchScrewdriverIcon,
+  CalendarDaysIcon,
+  DocumentTextIcon,
   PlusIcon,
   CogIcon
 } from '@heroicons/react/24/outline';
@@ -10,11 +12,32 @@ export const Tools: React.FC = () => {
     {
       id: 'room-verification',
       name: 'Verificação de Salas',
-      description: 'Sistema atual de verificação de salas de videoconferência',
+      description: 'Sistema de checklist para verificação de salas de videoconferência com relatórios otimizados',
       status: 'active',
       path: '/checklist',
       icon: WrenchScrewdriverIcon,
-      color: 'bg-green-500'
+      color: 'bg-green-500',
+      features: ['Processo por andar completo', 'Verificação individual', 'Relatórios em múltiplos formatos', 'Mapa de localização']
+    },
+    {
+      id: 'calendar-agenda',
+      name: 'Agenda',
+      description: 'Calendário simples para marcar eventos e gerenciar tarefas pendentes',
+      status: 'active',
+      path: '/agenda',
+      icon: CalendarDaysIcon,
+      color: 'bg-blue-500',
+      features: ['Calendário compacto', 'Lista diária', 'Eventos e tarefas', 'Interface intuitiva']
+    },
+    {
+      id: 'notes-scratch',
+      name: 'Bloco de Rascunho',
+      description: 'Local para anotações salvas em tempo real, ideal para rascunhos e ideias',
+      status: 'active',
+      path: '/notes',
+      icon: DocumentTextIcon,
+      color: 'bg-purple-500',
+      features: ['Salvamento automático', 'Interface limpa', 'Organização por blocos', 'Acesso rápido']
     }
   ];
 
@@ -75,6 +98,21 @@ export const Tools: React.FC = () => {
                 {tool.description}
               </p>
               
+              {/* Features */}
+              <div className="mb-4">
+                <h4 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  Recursos:
+                </h4>
+                <ul className="text-xs text-gray-600 dark:text-gray-400 space-y-1">
+                  {tool.features.map((feature, index) => (
+                    <li key={index} className="flex items-center">
+                      <span className="w-1 h-1 bg-gray-400 rounded-full mr-2"></span>
+                      {feature}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              
               <div className="flex space-x-2">
                 <a
                   href={tool.path}
@@ -124,13 +162,13 @@ export const Tools: React.FC = () => {
             </h3>
             <p className="text-blue-800 dark:text-blue-200 text-sm mb-3">
               Este ambiente foi projetado para comportar múltiplas ferramentas de produtividade. 
-              Atualmente, o sistema de verificação de salas está ativo e funcionando.
+              Atualmente, temos 3 ferramentas ativas e funcionando.
             </p>
             <ul className="text-blue-700 dark:text-blue-300 text-sm space-y-1">
-              <li>• Cada ferramenta possui seu próprio espaço e configurações</li>
-              <li>• Ferramentas podem ser ativadas/desativadas conforme necessário</li>
+              <li>• <strong>Verificação de Salas:</strong> Sistema completo de checklist com relatórios</li>
+              <li>• <strong>Agenda:</strong> Calendário para eventos e tarefas</li>
+              <li>• <strong>Bloco de Rascunho:</strong> Anotações em tempo real</li>
               <li>• Interface unificada para fácil navegação entre ferramentas</li>
-              <li>• Suporte para futuras integrações e expansões</li>
             </ul>
           </div>
         </div>

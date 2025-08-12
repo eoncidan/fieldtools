@@ -3,6 +3,8 @@ import { NavLink } from 'react-router-dom';
 import { 
   HomeIcon,
   ClipboardDocumentListIcon,
+  CalendarDaysIcon,
+  DocumentTextIcon,
   ClockIcon,
   Cog6ToothIcon,
   WrenchScrewdriverIcon
@@ -11,6 +13,8 @@ import {
 const navItems = [
   { to: '/', label: 'Dashboard', icon: HomeIcon },
   { to: '/checklist', label: 'Checklist', icon: ClipboardDocumentListIcon },
+  { to: '/agenda', label: 'Agenda', icon: CalendarDaysIcon },
+  { to: '/notes', label: 'Anotações', icon: DocumentTextIcon },
   { to: '/reports', label: 'Relatórios', icon: ClockIcon },
   { to: '/tools', label: 'Ferramentas', icon: WrenchScrewdriverIcon },
   { to: '/settings', label: 'Configurações', icon: Cog6ToothIcon },

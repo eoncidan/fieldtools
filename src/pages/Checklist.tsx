@@ -7,6 +7,9 @@ import { UserInputStep } from '../components/Checklist/UserInputStep';
 import { ReportGenerationStep } from '../components/Checklist/ReportGenerationStep';
 import { RoomCard } from '../components/Checklist/RoomCard';
 import { IndividualRoomVerification } from '../components/Checklist/IndividualRoomVerification';
+import { RoomLocationMap } from '../components/Checklist/RoomLocationMap';
+import { FloatingActionButton } from '../components/Checklist/FloatingActionButton';
+import { RoomCarousel } from '../components/Checklist/RoomCarousel';
 import { useAuth } from '../context/AuthContext';
 import { useLocalStorage } from '../hooks/useLocalStorage';
 import { ROOMS, createInitialCheckItems } from '../data/rooms';
@@ -26,6 +29,8 @@ export const Checklist: React.FC = () => {
   const [roomChecks, setRoomChecks] = useState<Record<string, RoomCheck>>({});
   const [showIndividualVerification, setShowIndividualVerification] = useState(false);
   const [generatedReport, setGeneratedReport] = useState<Report | null>(null);
+  const [viewMode, setViewMode] = useState<'grid' | 'map' | 'carousel'>('grid');
+  const [selectedRoomInMap, setSelectedRoomInMap] = useState<string | null>(null);
 
   // Initialize room checks when floor is selected
   useEffect(() => {
@@ -163,6 +168,32 @@ export const Checklist: React.FC = () => {
     setGeneratedReport(null);
   };
 
+  const handleMarkAllOk = () => {
+    if (!selectedFloor) return;
+    
+    const updatedChecks: Record<string, RoomCheck> = {};
+    floorRooms.forEach(room => {
+      const items = createInitialCheckItems(room).map(item => ({
+        ...item,
+        status: 'ok' as const,
+        observation: ''
+      }));
+      
+      updatedChecks[room.id] = {
+        roomId: room.id,
+        items,
+        timestamp: new Date()
+      };
+    });
+    
+    setRoomChecks(prev => ({ ...prev, ...updatedChecks }));
+  };
+
+  const handleMarkAllProblem = () => {
+    // This would open a modal to select which items have problems
+    alert('Funcionalidade para marcar problemas em massa será implementada');
+  };
+
   const handleBackToVerification = () => {
     setCurrentStep('room-verification');
     setCompletedSteps(['floor-selection', 'user-input']);
@@ -268,20 +299,99 @@ export const Checklist: React.FC = () => {
           </div>
 
           {/* Room Cards */}
-          <div className="mobile-grid">
-            {floorRooms.map(room => (
-              <RoomCard
-                key={room.id}
-                roomName={room.name}
-                roomCheck={roomChecks[room.id] || {
-                  roomId: room.id,
-                  items: createInitialCheckItems(room),
-                  timestamp: new Date()
-                }}
+          <div className="space-y-4">
+            {/* View Mode Selector */}
+            <div className="flex space-x-2 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-2">
+              <button
+                onClick={() => setViewMode('grid')}
+                className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors duration-200 ${
+                  viewMode === 'grid'
+                    ? 'bg-primary-100 dark:bg-primary-900/20 text-primary-700 dark:text-primary-300'
+                    : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700'
+                }`}
+              >
+                Grade
+              </button>
+              <button
+                onClick={() => setViewMode('carousel')}
+                className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors duration-200 ${
+                  viewMode === 'carousel'
+                    ? 'bg-primary-100 dark:bg-primary-900/20 text-primary-700 dark:text-primary-300'
+                    : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700'
+                }`}
+              >
+                Carrossel
+              </button>
+              <button
+                onClick={() => setViewMode('map')}
+                className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors duration-200 ${
+                  viewMode === 'map'
+                    ? 'bg-primary-100 dark:bg-primary-900/20 text-primary-700 dark:text-primary-300'
+                    : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700'
+                }`}
+              >
+                Mapa
+              </button>
+            </div>
+
+            {/* Content based on view mode */}
+            {viewMode === 'grid' && (
+              <div className="mobile-grid">
+                {floorRooms.map(room => (
+                  <RoomCard
+                    key={room.id}
+                    roomName={room.name}
+                    roomCheck={roomChecks[room.id] || {
+                      roomId: room.id,
+                      items: createInitialCheckItems(room),
+                      timestamp: new Date()
+                    }}
+                    onUpdateCheck={updateRoomCheck}
+                  />
+                ))}
+              </div>
+            )}
+
+            {viewMode === 'carousel' && (
+              <RoomCarousel
+                rooms={floorRooms}
+                roomChecks={roomChecks}
                 onUpdateCheck={updateRoomCheck}
               />
-            ))}
+            )}
+
+            {viewMode === 'map' && (
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <RoomLocationMap
+                  floor={selectedFloor}
+                  rooms={floorRooms}
+                  roomChecks={roomChecks}
+                  onRoomSelect={setSelectedRoomInMap}
+                  selectedRoom={selectedRoomInMap}
+                />
+                {selectedRoomInMap && (
+                  <RoomCard
+                    roomName={floorRooms.find(r => r.id === selectedRoomInMap)?.name || ''}
+                    roomCheck={roomChecks[selectedRoomInMap] || {
+                      roomId: selectedRoomInMap,
+                      items: createInitialCheckItems(floorRooms.find(r => r.id === selectedRoomInMap)!),
+                      timestamp: new Date()
+                    }}
+                    onUpdateCheck={updateRoomCheck}
+                  />
+                )}
+              </div>
+            )}
           </div>
+
+          {/* Floating Action Button */}
+          <FloatingActionButton
+            onMarkAllOk={handleMarkAllOk}
+            onMarkAllProblem={handleMarkAllProblem}
+            onToggleMap={() => setViewMode(viewMode === 'map' ? 'grid' : 'map')}
+            onToggleList={() => setViewMode('grid')}
+            showMap={viewMode === 'map'}
+          />
         </div>
       )}
 
