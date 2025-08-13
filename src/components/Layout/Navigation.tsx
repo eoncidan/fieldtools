@@ -7,7 +7,7 @@ import {
   DocumentTextIcon,
   ClockIcon,
   Cog6ToothIcon,
-  WrenchScrewdriverIcon
+  DocumentIcon
 } from '@heroicons/react/24/outline';
 
 const navItems = [
@@ -15,8 +15,8 @@ const navItems = [
   { to: '/checklist', label: 'Checklist', icon: ClipboardDocumentListIcon },
   { to: '/agenda', label: 'Agenda', icon: CalendarDaysIcon },
   { to: '/notes', label: 'Anotações', icon: DocumentTextIcon },
+  { to: '/gdc', label: 'G-DC', icon: DocumentIcon },
   { to: '/reports', label: 'Relatórios', icon: ClockIcon },
-  { to: '/tools', label: 'Ferramentas', icon: WrenchScrewdriverIcon },
   { to: '/settings', label: 'Configurações', icon: Cog6ToothIcon },
 ];
 

@@ -1,9 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { 
   DocumentTextIcon,
   PlusIcon,
   TrashIcon,
-  MagnifyingGlassIcon
+  MagnifyingGlassIcon,
+  BoldIcon,
+  ItalicIcon,
+  FontSizeIcon
 } from '@heroicons/react/24/outline';
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
@@ -22,6 +25,7 @@ export const Notes: React.FC = () => {
   const [selectedNote, setSelectedNote] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [autoSaveTimeout, setAutoSaveTimeout] = useState<NodeJS.Timeout | null>(null);
+  const editorRef = useRef<HTMLDivElement>(null);
 
   const filteredNotes = notes.filter(note =>
     note.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -60,8 +64,10 @@ export const Notes: React.FC = () => {
     }
   };
 
-  const handleContentChange = (content: string) => {
-    if (!selectedNote) return;
+  const handleContentChange = () => {
+    if (!selectedNote || !editorRef.current) return;
+
+    const content = editorRef.current.innerHTML;
 
     // Clear existing timeout
     if (autoSaveTimeout) {
@@ -71,7 +77,7 @@ export const Notes: React.FC = () => {
     // Set new timeout for auto-save
     const timeout = setTimeout(() => {
       updateNote(selectedNote, { content });
-    }, 500); // Auto-save after 500ms of inactivity
+    }, 500);
 
     setAutoSaveTimeout(timeout);
 
@@ -87,6 +93,26 @@ export const Notes: React.FC = () => {
     if (!selectedNote) return;
     updateNote(selectedNote, { title });
   };
+
+  const applyFormat = (command: string, value?: string) => {
+    document.execCommand(command, false, value);
+    editorRef.current?.focus();
+    handleContentChange();
+  };
+
+  const handleFontSize = () => {
+    const size = prompt('Digite o tamanho da fonte (1-7):', '3');
+    if (size && parseInt(size) >= 1 && parseInt(size) <= 7) {
+      applyFormat('fontSize', size);
+    }
+  };
+
+  // Load content when note changes
+  useEffect(() => {
+    if (currentNote && editorRef.current) {
+      editorRef.current.innerHTML = currentNote.content;
+    }
+  }, [currentNote?.id]);
 
   // Cleanup timeout on unmount
   useEffect(() => {
@@ -154,7 +180,7 @@ export const Notes: React.FC = () => {
                         {note.title}
                       </h3>
                       <p className="text-xs text-gray-500 dark:text-gray-400 mt-1 line-clamp-2">
-                        {note.content || 'Anotação vazia'}
+                        {note.content.replace(/<[^>]*>/g, '') || 'Anotação vazia'}
                       </p>
                       <p className="text-xs text-gray-400 dark:text-gray-500 mt-2">
                         {format(new Date(note.updatedAt), "dd/MM 'às' HH:mm", { locale: ptBR })}
@@ -195,22 +221,52 @@ export const Notes: React.FC = () => {
                   className="w-full text-xl font-semibold bg-transparent text-gray-900 dark:text-white border-none outline-none focus:ring-0 p-0"
                   placeholder="Título da anotação"
                 />
-                <div className="flex items-center space-x-4 mt-2 text-xs text-gray-500 dark:text-gray-400">
-                  <span>
-                    Criado: {format(new Date(currentNote.createdAt), "dd/MM/yyyy 'às' HH:mm", { locale: ptBR })}
-                  </span>
-                  <span>
-                    Atualizado: {format(new Date(currentNote.updatedAt), "dd/MM/yyyy 'às' HH:mm", { locale: ptBR })}
-                  </span>
+                <div className="flex items-center justify-between mt-2">
+                  <div className="flex items-center space-x-4 text-xs text-gray-500 dark:text-gray-400">
+                    <span>
+                      Criado: {format(new Date(currentNote.createdAt), "dd/MM/yyyy 'às' HH:mm", { locale: ptBR })}
+                    </span>
+                    <span>
+                      Atualizado: {format(new Date(currentNote.updatedAt), "dd/MM/yyyy 'às' HH:mm", { locale: ptBR })}
+                    </span>
+                  </div>
+                  
+                  {/* Formatting Toolbar */}
+                  <div className="flex items-center space-x-2">
+                    <button
+                      onClick={() => applyFormat('bold')}
+                      className="p-2 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700 rounded transition-colors duration-200"
+                      title="Negrito"
+                    >
+                      <BoldIcon className="h-4 w-4" />
+                    </button>
+                    <button
+                      onClick={() => applyFormat('italic')}
+                      className="p-2 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700 rounded transition-colors duration-200"
+                      title="Itálico"
+                    >
+                      <ItalicIcon className="h-4 w-4" />
+                    </button>
+                    <button
+                      onClick={handleFontSize}
+                      className="p-2 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700 rounded transition-colors duration-200"
+                      title="Tamanho da fonte"
+                    >
+                      <span className="text-sm font-medium">A</span>
+                    </button>
+                  </div>
                 </div>
               </div>
               
               <div className="flex-1 p-4">
-                <textarea
-                  value={currentNote.content}
-                  onChange={(e) => handleContentChange(e.target.value)}
+                <div
+                  ref={editorRef}
+                  contentEditable
+                  onInput={handleContentChange}
+                  className="w-full h-full outline-none bg-transparent text-gray-900 dark:text-white text-base leading-relaxed"
+                  style={{ minHeight: '300px' }}
+                  suppressContentEditableWarning={true}
                   placeholder="Comece a escrever suas anotações aqui..."
-                  className="w-full h-full resize-none bg-transparent text-gray-900 dark:text-white border-none outline-none focus:ring-0 text-base leading-relaxed"
                 />
               </div>
             </>

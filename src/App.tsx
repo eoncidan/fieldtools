@@ -11,7 +11,7 @@ import { Checklist } from './pages/Checklist';
 import { Reports } from './pages/Reports';
 import { Agenda } from './pages/Agenda';
 import { Notes } from './pages/Notes';
-import { Tools } from './pages/Tools';
+import { GDC } from './pages/GDC';
 import { Settings } from './pages/Settings';
 
 const AppContent: React.FC = () => {
@@ -42,7 +42,7 @@ const AppContent: React.FC = () => {
               <Route path="/reports" element={<Reports />} />
               <Route path="/agenda" element={<Agenda />} />
               <Route path="/notes" element={<Notes />} />
-              <Route path="/tools" element={<Tools />} />
+              <Route path="/gdc" element={<GDC />} />
               <Route path="/settings" element={<Settings />} />
             </Routes>
           </div>

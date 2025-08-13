@@ -2,7 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { XMarkIcon, MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 import { RoomCard } from './RoomCard';
 import { ROOMS, createInitialCheckItems } from '../../data/rooms';
-import { RoomCheck } from '../../types';
+import { RoomCheck, Report } from '../../types';
+import { useLocalStorage } from '../../hooks/useLocalStorage';
+import { format } from 'date-fns';
+import { ptBR } from 'date-fns/locale';
 
 interface IndividualRoomVerificationProps {
   onClose: () => void;
@@ -13,9 +16,11 @@ export const IndividualRoomVerification: React.FC<IndividualRoomVerificationProp
   onClose,
   onRoomUpdated
 }) => {
+  const [reports, setReports] = useLocalStorage<Report[]>('conferenceroom_reports', []);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedRoom, setSelectedRoom] = useState<string | null>(null);
   const [roomCheck, setRoomCheck] = useState<RoomCheck | null>(null);
+  const [verifierName, setVerifierName] = useState('');
 
   const videoConferenceRooms = ROOMS.filter(room => room.hasVideoConference);
   
@@ -41,6 +46,24 @@ export const IndividualRoomVerification: React.FC<IndividualRoomVerificationProp
 
   const handleSaveAndClose = () => {
     if (roomCheck) {
+      // Save individual room report to history
+      const room = ROOMS.find(r => r.id === roomCheck.roomId);
+      if (room && verifierName.trim()) {
+        const individualReport: Report = {
+          id: `individual-${Date.now()}`,
+          date: new Date(),
+          responsibleName: verifierName.trim(),
+          roomChecks: [roomCheck],
+          summary: {
+            totalRooms: 1,
+            okRooms: roomCheck.items.some(item => item.status === 'problem') ? 0 : 1,
+            problemRooms: roomCheck.items.some(item => item.status === 'problem') ? 1 : 0
+          }
+        };
+        
+        setReports(prev => [individualReport, ...prev]);
+      }
+      
       onRoomUpdated(roomCheck);
     }
     onClose();
@@ -64,6 +87,19 @@ export const IndividualRoomVerification: React.FC<IndividualRoomVerificationProp
         <div className="p-4 overflow-y-auto max-h-[calc(90vh-120px)]">
           {!selectedRoom ? (
             <div>
+              <div className="mb-4">
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  Nome do Verificador
+                </label>
+                <input
+                  type="text"
+                  value={verifierName}
+                  onChange={(e) => setVerifierName(e.target.value)}
+                  placeholder="Digite seu nome"
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+                />
+              </div>
+              
               <div className="mb-4">
                 <div className="relative">
                   <MagnifyingGlassIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
@@ -126,6 +162,7 @@ export const IndividualRoomVerification: React.FC<IndividualRoomVerificationProp
                 <button
                   onClick={handleSaveAndClose}
                   className="flex-1 px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-lg transition-colors duration-200"
+                  disabled={!verifierName.trim()}
                 >
                   Salvar Verificação
                 </button>
