@@ -46,25 +46,30 @@ export const IndividualRoomVerification: React.FC<IndividualRoomVerificationProp
 
   const handleSaveAndClose = () => {
     if (roomCheck) {
-      // Save individual room report to history
-      const room = ROOMS.find(r => r.id === roomCheck.roomId);
-      if (room && verifierName.trim()) {
-        const individualReport: Report = {
-          id: `individual-${Date.now()}`,
-          date: new Date(),
-          responsibleName: verifierName.trim(),
-          roomChecks: [roomCheck],
-          summary: {
-            totalRooms: 1,
-            okRooms: roomCheck.items.some(item => item.status === 'problem') ? 0 : 1,
-            problemRooms: roomCheck.items.some(item => item.status === 'problem') ? 1 : 0
-          }
-        };
-        
-        setReports(prev => [individualReport, ...prev]);
-      }
-      
       onRoomUpdated(roomCheck);
+      
+      // Save individual room report to history
+      if (verifierName.trim()) {
+        const room = ROOMS.find(r => r.id === roomCheck.roomId);
+        if (room) {
+          const hasProblems = roomCheck.items.some(item => item.status === 'problem');
+          const isComplete = !roomCheck.items.some(item => item.status === 'unchecked');
+          
+          const individualReport: Report = {
+            id: `individual-${Date.now()}`,
+            date: new Date(),
+            responsibleName: verifierName.trim(),
+            roomChecks: [roomCheck],
+            summary: {
+              totalRooms: 1,
+              okRooms: isComplete && !hasProblems ? 1 : 0,
+              problemRooms: isComplete && hasProblems ? 1 : 0
+            }
+          };
+          
+          setReports(prev => [individualReport, ...prev]);
+        }
+      }
     }
     onClose();
   };

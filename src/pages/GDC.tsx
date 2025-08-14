@@ -521,6 +521,23 @@ export const GDC: React.FC = () => {
           </div>
         </form>
       </div>
+
+      {/* Informações sobre o modelo */}
+      <div className="bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-800 p-4">
+        <h4 className="font-medium text-blue-900 dark:text-blue-100 mb-2">
+          ⚠️ Sobre o Modelo DOCX
+        </h4>
+        <p className="text-blue-800 dark:text-blue-200 text-sm">
+          Atualmente, o sistema gera PDFs baseados no layout do modelo Declaracao.docx. 
+          Para usar o modelo DOCX diretamente, seria necessário implementar uma biblioteca 
+          de manipulação de documentos Word no navegador, o que requer recursos adicionais.
+        </p>
+        <p className="text-blue-800 dark:text-blue-200 text-sm mt-2">
+          <strong>Campos do modelo que seriam preenchidos:</strong><br/>
+          • Página 1: Nome, CPF/CNPJ, Endereço, Cidade/UF, CEP, Itens<br/>
+          • Página 2: Nome, Centro de Custo, Endereço, Cidade/UF, CEP, Contato
+        </p>
+      </div>
     </div>
   );
 };

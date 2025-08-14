@@ -180,6 +180,16 @@ export const Agenda: React.FC = () => {
               </span>
             )}
           </div>
+          
+          {selectedDateEvents.length > 0 && (
+            <button
+              onClick={exportAllToOutlook}
+              className="px-3 py-1 bg-blue-600 hover:bg-blue-700 text-white text-xs rounded-lg transition-colors duration-200"
+              title="Exportar para Outlook"
+            >
+              Outlook
+            </button>
+          )}
 
           <div className="space-y-3 max-h-96 overflow-y-auto">
             {selectedDateEvents.length > 0 ? (
@@ -241,8 +251,18 @@ export const Agenda: React.FC = () => {
                     <button
                       onClick={() => deleteEvent(event.id)}
                       className="p-1 text-gray-400 hover:text-red-500 transition-colors duration-200"
+                      title="Excluir"
                     >
                       <TrashIcon className="h-4 w-4" />
+                    </button>
+                    <button
+                      onClick={() => exportToOutlook(event)}
+                      className="p-1 text-gray-400 hover:text-blue-500 transition-colors duration-200"
+                      title="Exportar para Outlook"
+                    >
+                      <svg className="h-4 w-4" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M7 14l5-5 5 5z"/>
+                      </svg>
                     </button>
                   </div>
                 </div>

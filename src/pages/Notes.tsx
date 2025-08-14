@@ -263,8 +263,8 @@ export const Notes: React.FC = () => {
                   ref={editorRef}
                   contentEditable
                   onInput={handleContentChange}
-                  className="w-full h-full outline-none bg-transparent text-gray-900 dark:text-white text-base leading-relaxed"
-                  style={{ minHeight: '300px' }}
+                  className="w-full h-full outline-none bg-transparent text-gray-900 dark:text-white text-base leading-relaxed overflow-y-auto"
+                  style={{ minHeight: '300px', maxHeight: '500px' }}
                   suppressContentEditableWarning={true}
                   placeholder="Comece a escrever suas anotações aqui..."
                 />

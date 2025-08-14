@@ -32,22 +32,19 @@ const AppContent: React.FC = () => {
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       <Header />
-      <div className="flex">
-        <Navigation className="desktop-only" />
-        <main className="flex-1 p-4 md:p-6 mobile-container md:pb-6">
-          <div className="max-w-7xl mx-auto">
-            <Routes>
-              <Route path="/" element={<Dashboard />} />
-              <Route path="/checklist" element={<Checklist />} />
-              <Route path="/reports" element={<Reports />} />
-              <Route path="/agenda" element={<Agenda />} />
-              <Route path="/notes" element={<Notes />} />
-              <Route path="/gdc" element={<GDC />} />
-              <Route path="/settings" element={<Settings />} />
-            </Routes>
-          </div>
-        </main>
-      </div>
+      <main className="p-4 md:p-6 mobile-container md:pb-6">
+        <div className="max-w-7xl mx-auto">
+          <Routes>
+            <Route path="/" element={<Dashboard />} />
+            <Route path="/checklist" element={<Checklist />} />
+            <Route path="/reports" element={<Reports />} />
+            <Route path="/agenda" element={<Agenda />} />
+            <Route path="/notes" element={<Notes />} />
+            <Route path="/gdc" element={<GDC />} />
+            <Route path="/settings" element={<Settings />} />
+          </Routes>
+        </div>
+      </main>
       <MobileNavigation className="mobile-only" />
     </div>
   );
