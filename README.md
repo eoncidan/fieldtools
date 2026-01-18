@@ -50,7 +50,7 @@ O arquivo `Start.ps1` é o inicializador inteligente do projeto:
 Este projeto foi um exercício de **aprendizado guiado** para aprofundar conhecimentos em:
 * **Programação Orientada a Objetos (PS):** Manipulação de elementos do Windows Forms.
 * **Assincronismo:** Uso de `Start-Job` e `Timer` para coleta de dados sem travar a interface.
-* **Customização:** Funções modulares (`Add-Launcher`, `Add-WingetApp`) que facilitam a expansão do painel.
+* **Customização:** Funções modulares (`Add-Launcher`, `Add-Card` e `Add-WingetApp`) que facilitam a expansão do painel.
 
 ---
 
