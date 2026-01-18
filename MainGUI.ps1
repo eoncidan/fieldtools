@@ -117,9 +117,9 @@ function Add-Launcher {
 
     $btn = New-Object System.Windows.Forms.Button
     $btn.Text = $Text
-    $btn.Size = New-Object System.Drawing.Size(140, 100)
+    $btn.Size = New-Object System.Drawing.Size(140, 80)
     $btn.Location = New-Object System.Drawing.Point($X, $Y)
-    $btn.BackColor = [System.Drawing.ColorTranslator]::FromHtml("#3E3E42")
+    $btn.BackColor = $ColorAccent
     $btn.ForeColor = [System.Drawing.Color]::White
     $btn.FlatStyle = "Flat"
     $btn.FlatAppearance.BorderSize = 0
@@ -130,9 +130,6 @@ function Add-Launcher {
         try { Start-Process $Command -ErrorAction Stop } 
         catch { [System.Windows.Forms.MessageBox]::Show("Erro: $_", "Erro") }
     }.GetNewClosure())
-
-    $btn.Add_MouseEnter({ $this.BackColor = [System.Drawing.ColorTranslator]::FromHtml("#0078D7") })
-    $btn.Add_MouseLeave({ $this.BackColor = [System.Drawing.ColorTranslator]::FromHtml("#3E3E42") })
 
     $script:ContentPanel.Controls.Add($btn)
 }
@@ -265,17 +262,17 @@ function Render-Page {
             Add-Launcher -Text "CMD`n(Admin)" -Command "cmd" -X 470 -Y 80
             Add-Launcher -Text "Problem Steps Recorder`nPSR" -Command "psr.exe" -X 620 -Y 80				
             
-            Add-Launcher -Text "Limpeza de`nDisco" -Command "cleanmgr" -X 20 -Y 190
-            Add-Launcher -Text "Serviços" -Command "services.msc" -X 170 -Y 190
-            Add-Launcher -Text "Conexões" -Command "ncpa.cpl" -X 320 -Y 190
-            Add-Launcher -Text "Windows`nUpdate" -Command "ms-settings:windowsupdate" -X 470 -Y 190
-            Add-Launcher -Text "Event Viewer" -Command "eventvwr.msc" -X 620 -Y 190				
+            Add-Launcher -Text "Limpeza de`nDisco" -Command "cleanmgr" -X 20 -Y 170
+            Add-Launcher -Text "Serviços" -Command "services.msc" -X 170 -Y 170
+            Add-Launcher -Text "Conexões" -Command "ncpa.cpl" -X 320 -Y 170
+            Add-Launcher -Text "Windows`nUpdate" -Command "ms-settings:windowsupdate" -X 470 -Y 170
+            Add-Launcher -Text "Event Viewer" -Command "eventvwr.msc" -X 620 -Y 170				
  
-			Add-Launcher -Text "Configuração do Sistema" -Command "msconfig" -X 20 -Y 300	
-            Add-Launcher -Text "Gerenciador de Dispositivos" -Command "devmgmt.msc" -X 170 -Y 300
-            Add-Launcher -Text "Monitor de Recursos" -Command "resmon" -X 320 -Y 300
-            Add-Launcher -Text "Monitor de Desempenho" -Command "perfmon" -X 470 -Y 300	
-            Add-Launcher -Text "Diagnóstico de Memória" -Command "mdsched.exe" -X 620 -Y 300				
+			Add-Launcher -Text "Configuração do Sistema" -Command "msconfig" -X 20 -Y 260	
+            Add-Launcher -Text "Gerenciador de Dispositivos" -Command "devmgmt.msc" -X 170 -Y 260
+            Add-Launcher -Text "Monitor de Recursos" -Command "resmon" -X 320 -Y 260
+            Add-Launcher -Text "Monitor de Desempenho" -Command "perfmon" -X 470 -Y 260	
+            Add-Launcher -Text "Diagnóstico de Memória" -Command "mdsched.exe" -X 620 -Y 260				
         }
 		"Apps" {
             # Painel com Scroll para a lista de apps
@@ -333,4 +330,5 @@ Add-MenuButton -Text "Scripts" -Y 285
 
 # Inicialização
 Render-Page -PageName "Diagnósticos" # Pagina que vai abrir ao iniciar o script
+
 [void]$Form.ShowDialog()
