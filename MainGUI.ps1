@@ -195,21 +195,33 @@ function Render-Page {
             
             # 2. Mostra estado "Carregando..."
             Add-Card -Title "PROCESSADOR" -Value "Carregando..." -X 20 -Y 80
-            Add-Card -Title "MEMÓRIA RAM" -Value "..." -X 340 -Y 80
-            Add-Card -Title "DISCO TOTAL (C:)" -Value "..." -X 20 -Y 200
-            Add-Card -Title "ESPAÇO LIVRE" -Value "..." -X 340 -Y 200
+            Add-Card -Title "MEMÓRIA RAM" -Value "Carregando..." -X 340 -Y 80
+            Add-Card -Title "DISCO TOTAL (C:)" -Value "Carregando..." -X 20 -Y 200
+            Add-Card -Title "ESPAÇO LIVRE" -Value "Carregando..." -X 340 -Y 200
             $script:ContentPanel.Refresh()
 
             # Inicia o Job
             $script:Job = Start-Job {
+			
                 $CPU = Get-CimInstance Win32_Processor | Select-Object -ExpandProperty Name
-                $RAM = [Math]::Ceiling((Get-CimInstance Win32_ComputerSystem | Select-Object -ExpandProperty TotalPhysicalMemory) / 1GB)
+         				
+				# Memoria RAM detalhada
+		        $RAMObj = Get-CimInstance Win32_ComputerSystem
+				$TotalGB = [Math]::Ceiling($RAMObj.TotalPhysicalMemory / 1GB)		
+                try {
+				$Pente = Get-CimInstance Win32_PhysicalMemory -ErrorAction Stop | Select-Object -First 1
+				$RamType = switch ($Pente.SMBIOSMemoryType) {
+                24 { "DDR3" } 26 { "DDR4" } 34 { "DDR5" } 0 { "DDR" } Default { "DIMM" }
+				}
+				$RamSpeed = $Pente.ConfiguredClockSpeed
+				} catch { $RamType = "RAM"; $RamSpeed = "" }
+				
                 $Disco = [Math]::Round((Get-CimInstance Win32_LogicalDisk | Where-Object DeviceID -eq 'C:' | Select-Object -ExpandProperty Size) / 1GB, 2)
                 $DiscoLivre = [Math]::Round((Get-CimInstance Win32_LogicalDisk | Where-Object DeviceID -eq 'C:' | Select-Object -ExpandProperty Freespace) / 1GB, 2)
                 
                 [PSCustomObject]@{
                     Processador = $CPU
-                    MemoriaRAM = $RAM
+                    RAM = "$TotalGB GB $RamType" + $(if($RamSpeed){" ($RamSpeed MHz)"})
                     Disco = $Disco
                     DiscoLivre = $DiscoLivre
                 }
@@ -242,7 +254,7 @@ function Render-Page {
 
                             # Informações depois do Job achar
                             Add-Card -Title "PROCESSADOR" -Value $Result.Processador -X 20 -Y 80
-                            Add-Card -Title "MEMÓRIA RAM" -Value "$($Result.MemoriaRAM) GB" -X 340 -Y 80
+                            Add-Card -Title "MEMÓRIA RAM" -Value $Result.RAM -X 340 -Y 80
                             Add-Card -Title "DISCO TOTAL (C:)" -Value "$($Result.Disco) GB" -X 20 -Y 200
                             Add-Card -Title "ESPAÇO LIVRE" -Value "$($Result.DiscoLivre) GB" -X 340 -Y 200
                         }
@@ -332,3 +344,4 @@ Add-MenuButton -Text "Scripts" -Y 285
 Render-Page -PageName "Diagnósticos" # Pagina que vai abrir ao iniciar o script
 
 [void]$Form.ShowDialog()
+
