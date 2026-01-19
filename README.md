@@ -65,5 +65,4 @@ Este projeto está sob a licença **MIT**. Isso significa que você pode usar, c
 * **Windows 10 Debloater** (Sycnex)
 * **Sophia Script** (Dmitry)
 
----
-*Desenvolvido com 💙 por [Seu Nome]*
+
