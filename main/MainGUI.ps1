@@ -1,0 +1,188 @@
+﻿# Arquivo: /Main/MainGUI.ps1
+
+# Objetivo: Interface.
+
+Add-Type -AssemblyName System.Windows.Forms
+Add-Type -AssemblyName System.Drawing
+
+# ARQUITETURA DE CAMINHOS
+$ProjectRoot = Split-Path $PSScriptRoot -Parent
+
+# CARREGAR PÁGINAS
+# O "dot sourcing" (.) carrega as funções dos outros arquivos na memória.
+. "$ProjectRoot\Pages\Sistema.ps1"
+. "$ProjectRoot\Pages\Ferramentas.ps1"
+. "$ProjectRoot\Pages\Apps.ps1"
+. "$ProjectRoot\Pages\ScriptsLib.ps1"
+
+# CONFIGURAÇÕES VISUAIS
+$ColorDark      = [System.Drawing.ColorTranslator]::FromHtml("#2D2D30")
+$ColorDarker    = [System.Drawing.ColorTranslator]::FromHtml("#1E1E1E")
+$ColorContent   = [System.Drawing.ColorTranslator]::FromHtml("#F5F5F5")
+$ColorAccent    = [System.Drawing.ColorTranslator]::FromHtml("#0078D7")
+$ColorText      = [System.Drawing.Color]::White
+$FontTitle      = New-Object System.Drawing.Font("Segoe UI", 12, [System.Drawing.FontStyle]::Bold)
+
+# JANELA PRINCIPAL
+$Form = New-Object System.Windows.Forms.Form
+$Form.Text = "Field Tools"
+$Form.Size = New-Object System.Drawing.Size(980, 600)
+$Form.StartPosition = "CenterScreen"
+$Form.FormBorderStyle = "None"
+$Form.BackColor = $ColorContent
+
+# TOPBAR (BARRA SUPERIOR SUBSTITUTA DO WINDOWS)
+$TopBar = New-Object System.Windows.Forms.Panel; $TopBar.Height = 40; $TopBar.Dock = "Top"; $TopBar.BackColor = $ColorDarker; $Form.Controls.Add($TopBar)
+
+$lblTitle = New-Object System.Windows.Forms.Label; $lblTitle.Text = "FIELD TOOLS"; $lblTitle.ForeColor = $ColorText; $lblTitle.Font = $FontTitle; $lblTitle.AutoSize = $true; $lblTitle.Location = New-Object System.Drawing.Point(10, 8); $TopBar.Controls.Add($lblTitle)
+
+$btnClose = New-Object System.Windows.Forms.Button; $btnClose.Text = "X"; $btnClose.Size = New-Object System.Drawing.Size(40, 40); $btnClose.Dock = "Right"; $btnClose.FlatStyle = "Flat"; $btnClose.FlatAppearance.BorderSize = 0; $btnClose.ForeColor = $ColorText; $btnClose.BackColor = $ColorDarker
+$btnClose.Add_Click({ $Form.Close() }); $btnClose.Add_MouseEnter({ $btnClose.BackColor = [System.Drawing.Color]::Red }); $btnClose.Add_MouseLeave({ $btnClose.BackColor = $ColorDarker }); $TopBar.Controls.Add($btnClose)
+
+# LOGICA DE ARRASTO DE JANELA (DRAG)
+$TopBar.Add_MouseDown({ $script:isDragging = $true; $script:dragStartPoint = $_.Location })
+$TopBar.Add_MouseMove({ if ($script:isDragging) { $p = [System.Windows.Forms.Cursor]::Position; $Form.Location = New-Object System.Drawing.Point(($p.X - $script:dragStartPoint.X), ($p.Y - $script:dragStartPoint.Y)) } })
+$TopBar.Add_MouseUp({ $script:isDragging = $false })
+
+# SIDEBAR (BARRA LATERAL)
+$Sidebar = New-Object System.Windows.Forms.Panel; $Sidebar.Width = 200; $Sidebar.Dock = "Left"; $Sidebar.BackColor = $ColorDark; $Form.Controls.Add($Sidebar)
+$ContentPanel = New-Object System.Windows.Forms.Panel; $ContentPanel.Dock = "Fill"; $ContentPanel.BackColor = $ColorContent; $ContentPanel.Padding = New-Object System.Windows.Forms.Padding(20); $Form.Controls.Add($ContentPanel); $ContentPanel.BringToFront()
+
+# FUNÇÕES VISUAIS
+
+# Add-Card = Card para informações.
+function Add-Card {
+    param($Title, $Value, $X, $Y)
+    
+    $Card = New-Object System.Windows.Forms.Panel
+    $Card.Size = New-Object System.Drawing.Size(365, 150)
+    $Card.Location = New-Object System.Drawing.Point($X, $Y)
+    $Card.BackColor = [System.Drawing.Color]::White 
+    
+    $lblTitle = New-Object System.Windows.Forms.Label
+    $lblTitle.Text = $Title
+    $lblTitle.ForeColor = [System.Drawing.Color]::Gray
+    $lblTitle.Font = New-Object System.Drawing.Font("Segoe UI", 9, [System.Drawing.FontStyle]::Bold)
+    $lblTitle.Location = New-Object System.Drawing.Point(15, 15)
+    $lblTitle.AutoSize = $true
+    $Card.Controls.Add($lblTitle)
+
+    $lblValue = New-Object System.Windows.Forms.Label
+    $lblValue.Text = $Value
+    $lblValue.ForeColor = [System.Drawing.ColorTranslator]::FromHtml("#0078D7")
+    $lblValue.Font = New-Object System.Drawing.Font("Segoe UI", 11, [System.Drawing.FontStyle]::Bold)
+    $lblValue.Location = New-Object System.Drawing.Point(15, 45)
+    $lblValue.AutoSize = $true
+    $lblValue.MaximumSize = New-Object System.Drawing.Size(280, 0)
+    $Card.Controls.Add($lblValue)
+
+    $script:ContentPanel.Controls.Add($Card)
+}
+
+# Add-Launcher = Botão com texto+input.
+function Add-Launcher {
+    param($Text, $Command, $X, $Y)
+
+    $btn = New-Object System.Windows.Forms.Button
+    $btn.Text = $Text
+    $btn.Size = New-Object System.Drawing.Size(140, 100)
+    $btn.Location = New-Object System.Drawing.Point($X, $Y)
+    $btn.BackColor = [System.Drawing.ColorTranslator]::FromHtml("#3E3E42")
+    $btn.ForeColor = [System.Drawing.Color]::White
+    $btn.FlatStyle = "Flat"
+    $btn.FlatAppearance.BorderSize = 0
+    $btn.Font = New-Object System.Drawing.Font("Segoe UI", 10, [System.Drawing.FontStyle]::Bold)
+    $btn.Cursor = [System.Windows.Forms.Cursors]::Hand
+    $btn.Tag = $Command
+    $btn.Add_Click({ 
+        try { 
+            Start-Process $this.Tag -ErrorAction Stop 
+        } 
+        catch { [System.Windows.Forms.MessageBox]::Show("Erro: $_", "Erro") }
+    })
+
+    $btn.Add_MouseEnter({ $this.BackColor = [System.Drawing.ColorTranslator]::FromHtml("#0078D7") })
+    $btn.Add_MouseLeave({ $this.BackColor = [System.Drawing.ColorTranslator]::FromHtml("#3E3E42") })
+
+    $script:ContentPanel.Controls.Add($btn)
+}
+
+# NAVEGAÇÃO 
+function Stop-BackgroundTasks {
+    # Mata o Timer antigo.
+    if ($script:Timer) { 
+        $script:Timer.Stop()
+        $script:Timer.Dispose()
+        $script:Timer = $null
+    }
+    # Limpa Job antigo.
+    if ($script:Job) {
+        Remove-Job -Job $script:Job -Force -ErrorAction SilentlyContinue
+        $script:Job = $null
+    }
+}
+
+function Render-Page {
+    param([string]$PageName)
+
+    # Para tudo antes de trocar de pagina.
+    Stop-BackgroundTasks
+
+    # Define e limpa a pagina.
+    $script:CurrentPage = $PageName
+    $script:ContentPanel.Controls.Clear()
+    $script:ContentPanel.Refresh()
+    
+    # Título da Página.
+    $lblPage = New-Object System.Windows.Forms.Label
+    $lblPage.Text = $PageName.ToUpper()
+    $lblPage.Font = New-Object System.Drawing.Font("Segoe UI", 16, [System.Drawing.FontStyle]::Bold)
+    $lblPage.ForeColor = $script:ColorAccent
+    $lblPage.AutoSize = $true
+    $lblPage.Location = New-Object System.Drawing.Point(20, 20)
+    $script:ContentPanel.Controls.Add($lblPage)
+
+    # Roteador (Switch).
+    switch ($PageName) {
+        "Sistema"      { Render-Sistema } 
+        "Ferramentas"  { Render-Ferramentas }
+        "Scripts"      { Render-ScriptsLib -RootPath $script:ProjectRoot }
+        "Apps"         { Render-Apps }
+        #"Desempenho"   { }
+    }
+}
+
+# MENU LATERAL
+function Add-MenuButton {
+    param([string]$Text, [int]$Y)
+    $btn = New-Object System.Windows.Forms.Button
+    $btn.Text = "  $Text"
+    $btn.TextAlign = "MiddleLeft"
+    $btn.FlatStyle = "Flat"
+    $btn.FlatAppearance.BorderSize = 0
+    $btn.ForeColor = [System.Drawing.Color]::White
+    $btn.Font = New-Object System.Drawing.Font("Segoe UI", 10, [System.Drawing.FontStyle]::Regular)
+    $btn.Size = New-Object System.Drawing.Size(200, 45)
+    $btn.Location = New-Object System.Drawing.Point(0, $Y)
+    $btn.Cursor = [System.Windows.Forms.Cursors]::Hand
+    $btn.Tag = $Text
+    $btn.Add_Click({ 
+        Render-Page -PageName $this.Tag 
+    })
+    
+    $btn.Add_MouseEnter({ $this.BackColor = [System.Drawing.ColorTranslator]::FromHtml("#0078D7") })
+    $btn.Add_MouseLeave({ $this.BackColor = [System.Drawing.ColorTranslator]::FromHtml("#2D2D30") })
+    
+    $script:Sidebar.Controls.Add($btn)
+}
+
+# Botoes do menu.
+Add-MenuButton "Sistema" 60
+Add-MenuButton "Ferramentas" 105
+Add-MenuButton "Apps" 150
+Add-MenuButton "Scripts" 195
+#Add-MenuButton "Desempenho" 240
+
+# Inicialização
+Render-Page -PageName "Sistema" # Pagina de Inicialização.
+[void]$Form.ShowDialog()
