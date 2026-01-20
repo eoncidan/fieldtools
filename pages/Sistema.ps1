@@ -8,7 +8,7 @@ function Render-Sistema {
     Add-Card -Title "PROCESSADOR" -Value "Carregando..." -X 20 -Y 70
     Add-Card -Title "MEMÓRIA RAM" -Value "Carregando..." -X 395 -Y 70
     Add-Card -Title "PARTIÇÃO DO SISTEMA (C:)" -Value "Carregando..." -X 20 -Y 230
-    Add-Card -Title "DISCOS FÍSICOS INSTALADOS" -Value "Carregando..." -X 395 -Y 230
+    Add-Card -Title "DISCOS INSTALADOS" -Value "Carregando..." -X 395 -Y 230
     Add-Card -Title "N/A" -Value "Em breve" -X 395 -Y 390	
     Add-Card -Title "N/A" -Value "Em breve" -X 20 -Y 390	
     $script:ContentPanel.Refresh()
@@ -98,7 +98,7 @@ function Render-Sistema {
                     Add-Card -Title "MEMÓRIA RAM" -Value $Result.RAM_Txt -X 395 -Y 70
                     $TextoC = "Livre: $($Result.C_Free) GB`nTotal: $($Result.C_Total) GB"
                     Add-Card -Title "PARTIÇÃO DO SISTEMA (C:)" -Value $TextoC -X 20 -Y 230
-                    Add-Card -Title "DISCOS FÍSICOS INSTALADOS" -Value $Result.Discos -X 395 -Y 230
+                    Add-Card -Title "DISCOS INSTALADOS" -Value $Result.Discos -X 395 -Y 230
 					Add-Card -Title "N/A" -Value "Em breve" -X 395 -Y 390	
 					Add-Card -Title "N/A" -Value "Em breve" -X 20 -Y 390	
                 }
@@ -106,4 +106,5 @@ function Render-Sistema {
         }
     })
     $script:Timer.Start()
+
 }
