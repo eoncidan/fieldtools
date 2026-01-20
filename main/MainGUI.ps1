@@ -96,9 +96,16 @@ function Add-Launcher {
     $btn.Tag = $Command
     $btn.Add_Click({ 
         try { 
-            Start-Process $this.Tag -ErrorAction Stop 
+            $CommandString = $this.Tag
+            
+            if ($CommandString -match "^(\S+)\s+(.*)$") {
+                Start-Process -FilePath $matches[1] -ArgumentList $matches[2] -ErrorAction Stop
+            }
+            else {
+                Start-Process $CommandString -ErrorAction Stop
+            }
         } 
-        catch { [System.Windows.Forms.MessageBox]::Show("Erro: $_", "Erro") }
+        catch { [System.Windows.Forms.MessageBox]::Show("Erro ao abrir: $_", "Erro") }
     })
 
     $btn.Add_MouseEnter({ $this.BackColor = [System.Drawing.ColorTranslator]::FromHtml("#0078D7") })
@@ -185,4 +192,5 @@ Add-MenuButton "Scripts" 195
 
 # Inicialização
 Render-Page -PageName "Sistema" # Pagina de Inicialização.
+
 [void]$Form.ShowDialog()
