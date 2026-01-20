@@ -1,68 +1,84 @@
-# 🛠️ FieldTools 
+# 🛠️ FieldTools
 
-O **FieldTools** é uma central utilitária desenvolvida em **PowerShell** com interface gráfica (GUI). O projeto foi criado para consolidar diagnósticos, atalhos do sistema e instaladores em um único painel, eliminando a navegação manual repetitiva durante o suporte técnico.
+O **FieldTools** é uma central utilitária modular desenvolvida em **PowerShell** com interface gráfica (WinForms). O projeto consolida diagnósticos de hardware, atalhos administrativos e uma biblioteca de scripts dinâmicos em um único painel, eliminando a navegação manual repetitiva durante o suporte técnico.
 
 <p align="center">
-  <img width="975" height="595" alt="image" src="https://github.com/user-attachments/assets/e38725d7-6eb0-4023-84bf-3950f796f4a3" />
-  <br>
-  <img src="https://img.shields.io/badge/PowerShell-%235391FE.svg?style=for-the-badge&logo=powershell&logoColor=white" />
+  <img width="977" height="595" alt="image" src="https://github.com/user-attachments/assets/dba120ca-6f1e-4f16-9cc7-bbf085a487b5" />
+  <img src="https://img.shields.io/badge/PowerShell-5.1+-blue.svg?style=for-the-badge&logo=powershell&logoColor=white" />
   <img src="https://img.shields.io/badge/license-MIT-green?style=for-the-badge" />
-  <img src="https://img.shields.io/badge/Windows-0078D6?style=for-the-badge&logo=windows&logoColor=white" />
+  <img src="https://img.shields.io/badge/Platform-Windows-0078D6?style=for-the-badge&logo=windows&logoColor=white" />
 </p>
 
 ---
 
-## 💡 A Ideia
-O projeto surgiu da necessidade de organizar resoluções de problemas comuns de forma estruturada. Inspirado por ferramentas consagradas da comunidade, o FieldTools centraliza o que o Windows tem de melhor (e mais escondido) em uma interface simples, rápida e customizável.
+## 💡 Projeto
+O FieldTools foi uma ideia que surgiu depois de mais um dia no suporte com diversos gaps e troubleshootings e clica aqui e clica ali e zas, fiquei pensando em como reunir as resoluções de forma organizada e boom, FieldTools.
+
+A ferramenta teve como inspiração varias ferramentas semelhantes como o WinUtils do Chris Titus, Windows 10 Debloater do Sycnex, Sophia Script do Dmitry e outras. A ideia em resumo seria de centralizar as informações do sistema, atalhos para ferramenas nativas, scripts para tweaks ou resolução de problemas frequentes. 
+
+Como o intuito principal era praticar mais e entender melhor o PowerShell a estrutura foi pensada para ser algo customizável e fácil de entender.
 
 ---
 
-## ✨ Funcionalidades Atuais
+## ✨ Funcionalidades
 
-| Módulo | Descrição |
-| :--- | :--- |
-| **🔍 Informações de sistema** | Tipo de CPU, RAM e tamanho de disco além de mostrar quanto espaço tem livre. |
-| **🔧 Ferramentas** | Atalhos para Regedit, Gerenciador de Dispositivos, Painel de Controle, Event Viewer e mais. |
-| **📦 Apps (Winget)** | Instalação silenciosa de softwares essenciais (Notepad++, 7-Zip, HWMonitor). |
-| **🎨 Interface Flat** | Painel moderno e responsivo construído inteiramente com WinForms. |
+### 1. 🖥️ Sistema (`Sistema.ps1`)
+Monitoramento assíncrono (sem travar a interface) dos principais componentes:
+* **Processador:** Modelo e nome.
+* **Memória RAM:** Quantidade total, tipo (DDR3/4/5) e velocidade.
+* **Armazenamento:** Espaço livre na partição do sistema (C:) e listagem física de discos (SSD/NVMe/HDD).
+
+### 2. 🔧 Ferramentas (`Ferramentas.ps1`)
+Acesso rápido (One-Click) às ferramentas administrativas nativas do Windows, incluindo:
+* Gerenciador de Tarefas, Regedit, CMD (Admin).
+* Painel de Controle, Serviços, Windows Update.
+* Diagnósticos: Memória, PSR (Gravador de Passos), Visualizador de Eventos.
+
+### 3. 📜 Biblioteca de Scripts (`ScriptsLib.ps1`)
+**Nova Funcionalidade:** Um motor de execução dinâmica.
+* O sistema varre a pasta `/Lib` na raiz do projeto.
+* Qualquer arquivo `.ps1` colocado lá é transformado automaticamente em um botão na interface.
+* Ideal para scripts de limpeza, correções de registro ou automações personalizadas.
+
+### 4. 📦 Apps (`Apps.ps1`)
+*Módulo destinado à centralização de instaladores de aplicações essenciais (Em desenvolvimento).*
 
 ---
 
-## 🚀 Como Executar
+## 🚀 Como Usar
 
 > [!IMPORTANT]
-> A ferramenta requer privilégios de **Administrador** para acessar componentes do sistema e realizar instalações.
+> A ferramenta requer privilégios de **Administrador** para acessar componentes WMI/CIM e executar tarefas de sistema.
 
-1. Baixe o repositório em uma pasta local.
-2. Localize o arquivo `Start.ps1`.
+### Instalação e Execução
+1. Baixe o repositório.
+2. Localize o arquivo `Start.ps1` na raiz.
 3. Clique com o botão direito e selecione **"Executar com o PowerShell"**.
 
-### O que acontece nos bastidores?
-O arquivo `Start.ps1` é o inicializador inteligente do projeto:
-* **Elevação:** Verifica e solicita permissão de Admin automaticamente.
-* **Discrição:** Oculta a janela preta do console via P/Invoke (`user32.dll`), exibindo apenas a GUI.
-* **Integração:** Carrega o módulo principal `MainGUI.ps1`.
+O `Start.ps1` irá:
+1.  Solicitar elevação de privilégios (UAC) se não estiver como Admin.
+2.  Ocultar a janela preta do terminal (Modo Stealth).
+3.  Carregar a interface gráfica (`MainGUI.ps1`).
+
+### Adicionando Scripts Personalizados
+Para adicionar suas próprias ferramentas à aba **Scripts**:
+1.  Crie ou copie seus scripts `.ps1` para a pasta `Lib` (crie a pasta na raiz do projeto se ela não existir).
+2.  Reinicie o FieldTools ou navegue para outra aba e volte.
+3.  Seu script aparecerá automaticamente listado na grade.
 
 ---
 
-## 🛠️ Detalhes Técnicos
+## 📂 Estrutura do Projeto
 
-Este projeto foi um exercício de **aprendizado guiado** para aprofundar conhecimentos em:
-* **Programação Orientada a Objetos (PS):** Manipulação de elementos do Windows Forms.
-* **Assincronismo:** Uso de `Start-Job` e `Timer` para coleta de dados sem travar a interface.
-* **Customização:** Funções modulares (`Add-Launcher`, `Add-Card` e `Add-WingetApp`) que facilitam a expansão do painel.
-
----
-
-## 📜 Licença
-
-Este projeto está sob a licença **MIT**. Isso significa que você pode usar, copiar, modificar e distribuir o código livremente. Para mais detalhes, consulte o arquivo `LICENSE` no repositório.
-
----
-
-## 🤝 Inspirações e Créditos
-* **WinUtils** (Chris Titus Tech)
-* **Windows 10 Debloater** (Sycnex)
-* **Sophia Script** (Dmitry)
-
-
+```text
+FieldTools/
+├── Lib/                 # [Pasta do Usuário] Coloque seus scripts .ps1 aqui
+├── Main/
+│   └── MainGUI.ps1      # Motor gráfico principal e roteamento
+├── Pages/               # Módulos da interface
+│   ├── Sistema.ps1      # Coleta de dados de hardware (Async)
+│   ├── Ferramentas.ps1  # Launchers nativos do Windows
+│   ├── ScriptsLib.ps1   # Leitor dinâmico da pasta Lib
+│   └── Apps.ps1         # Gerenciador de aplicações
+├── Start.ps1            # Entry Point (Bootstrapper + Admin Check)
+└── README.md
