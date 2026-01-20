@@ -26,7 +26,7 @@ function Render-ScriptsLib {
 
     foreach ($File in $Scripts) {
         # Executa o script ignorando política de segurança
-        Add-Launcher -Text $File.BaseName -Command "powershell.exe -ExecutionPolicy Bypass -File `"$RootPath\Lib\$($File.FullName)`"" -X $X -Y $Y
+        Add-Launcher -Text $File.BaseName -Command "powershell.exe -ExecutionPolicy Bypass -File `"$($File.FullName)`"" -X $X -Y $Y
         
         # Lógica de Grid (quebra de linha a cada 5 itens)
         $X += 150
@@ -36,4 +36,5 @@ function Render-ScriptsLib {
             $Y += 110 
         }
     }
+
 }
