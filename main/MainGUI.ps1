@@ -114,6 +114,46 @@ function Add-Launcher {
     $script:ContentPanel.Controls.Add($btn)
 }
 
+# Add-WingetApp = Botao instalar e descricao.
+function Add-WingetApp {
+    param($AppName, $WingetID, $Description, $ParentPanel)
+
+    $AppRow = New-Object System.Windows.Forms.Panel
+    $AppRow.Size = New-Object System.Drawing.Size(700, 50)
+    $AppRow.Margin = New-Object System.Windows.Forms.Padding(0, 0, 0, 10)
+    $AppRow.BackColor = [System.Drawing.Color]::White
+
+    # Botão Instalar
+    $btnInstall = New-Object System.Windows.Forms.Button
+    $btnInstall.Text = "Instalar"
+    $btnInstall.Size = New-Object System.Drawing.Size(100, 30)
+    $btnInstall.Location = New-Object System.Drawing.Point(10, 10)
+    $btnInstall.FlatStyle = "Flat"
+    $btnInstall.BackColor = [System.Drawing.ColorTranslator]::FromHtml("#3E3E42")
+    $btnInstall.ForeColor = [System.Drawing.Color]::White
+    $btnInstall.Cursor = [System.Windows.Forms.Cursors]::Hand
+    
+    $btnInstall.Add_Click({
+        $this.Enabled = $false
+        $this.Text = "..."
+        Start-Process "winget" -ArgumentList "install --id $WingetID --silent --accept-package-agreements --accept-source-agreements" -Wait -WindowStyle Hidden
+        $this.Text = "Instalando!"
+        $this.BackColor = [System.Drawing.Color]::Green
+    }.GetNewClosure())
+
+    # Descrição
+    $lblApp = New-Object System.Windows.Forms.Label
+    $lblApp.Text = "$AppName - $Description"
+    $lblApp.Font = New-Object System.Drawing.Font("Segoe UI", 10, [System.Drawing.FontStyle]::Bold)
+    $lblApp.Location = New-Object System.Drawing.Point(120, 15)
+    $lblApp.AutoSize = $true
+    $lblApp.ForeColor = [System.Drawing.Color]::Black
+
+    $AppRow.Controls.Add($btnInstall)
+    $AppRow.Controls.Add($lblApp)
+    $ParentPanel.Controls.Add($AppRow)
+}
+
 # NAVEGAÇÃO 
 function Stop-BackgroundTasks {
     # Mata o Timer antigo.
@@ -194,3 +234,4 @@ Add-MenuButton "Scripts" 195
 Render-Page -PageName "Sistema" # Pagina de Inicialização.
 
 [void]$Form.ShowDialog()
+
