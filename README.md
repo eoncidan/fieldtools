@@ -41,7 +41,7 @@ Acesso rápido (One-Click) às ferramentas administrativas nativas do Windows, i
 * Ideal para scripts de limpeza, correções de registro ou automações personalizadas.
 
 ### 4. 📦 Apps (`Apps.ps1`)
-*Módulo destinado à centralização de instaladores de aplicações essenciais (Em desenvolvimento).*
+* Módulo destinado à centralização de instaladores de aplicações essenciais.*
 
 ---
 
