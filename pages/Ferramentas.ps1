@@ -2,7 +2,6 @@
 
 # A aba Ferramentas centraliza os softwares nativos do Windows.
 
-# RENDERIZA A PAGINA
 function Render-Ferramentas {
     # Linha 1
     Add-Launcher -Text "Gerenciador`nde Tarefas" -Command "taskmgr" -X 20 -Y 70
@@ -24,4 +23,5 @@ function Render-Ferramentas {
     Add-Launcher -Text "Monitor de Recursos" -Command "resmon" -X 320 -Y 290
     Add-Launcher -Text "Monitor de Desempenho" -Command "perfmon" -X 470 -Y 290 
     Add-Launcher -Text "Diagnóstico de Memória" -Command "mdsched.exe" -X 620 -Y 290    
+
 }
