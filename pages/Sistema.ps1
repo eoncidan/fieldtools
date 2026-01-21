@@ -2,7 +2,6 @@
 
 # A aba Sistema mostra as informações de sistema.
 
-# RENDERIZA A PAGINA
 function Render-Sistema {
     # Cards primarios para informar o loading.
     Add-Card -Title "PROCESSADOR" -Value "Carregando..." -X 20 -Y 70
@@ -108,3 +107,4 @@ function Render-Sistema {
     $script:Timer.Start()
 
 }
+
