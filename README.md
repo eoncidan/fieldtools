@@ -3,7 +3,7 @@
 O **FieldTools** é uma central utilitária modular desenvolvida em **PowerShell** com interface gráfica (WinForms). O projeto consolida diagnósticos de hardware, atalhos administrativos e uma biblioteca de scripts dinâmicos em um único painel, eliminando a navegação manual repetitiva durante o suporte técnico.
 
 <p align="center">
-  <img width="977" height="595" alt="image" src="https://github.com/user-attachments/assets/dba120ca-6f1e-4f16-9cc7-bbf085a487b5" />
+  <img width="978" height="597" alt="image" src="https://github.com/user-attachments/assets/016ad209-c9cd-4c89-88d1-44f1c0c11581" />
   <img src="https://img.shields.io/badge/PowerShell-5.1+-blue.svg?style=for-the-badge&logo=powershell&logoColor=white" />
   <img src="https://img.shields.io/badge/license-MIT-green?style=for-the-badge" />
   <img src="https://img.shields.io/badge/Platform-Windows-0078D6?style=for-the-badge&logo=windows&logoColor=white" />
