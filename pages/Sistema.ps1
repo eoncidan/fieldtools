@@ -87,7 +87,7 @@ function Render-Sistema {
                     $lblPage = New-Object System.Windows.Forms.Label
                     $lblPage.Text = "SISTEMA"
                     $lblPage.Font = New-Object System.Drawing.Font("Segoe UI", 16, [System.Drawing.FontStyle]::Bold)
-                    $lblPage.ForeColor = [System.Drawing.ColorTranslator]::FromHtml("#0078D7")
+                    $lblPage.ForeColor = $ColorText
                     $lblPage.AutoSize = $true
                     $lblPage.Location = New-Object System.Drawing.Point(20, 20)
                     $script:ContentPanel.Controls.Add($lblPage)
@@ -107,4 +107,5 @@ function Render-Sistema {
     $script:Timer.Start()
 
 }
+
 
