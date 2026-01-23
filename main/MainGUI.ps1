@@ -85,7 +85,7 @@ function Add-Launcher {
 
     $btn = New-Object System.Windows.Forms.Button
     $btn.Text = $Text
-    $btn.Size = New-Object System.Drawing.Size(140, 100)
+    $btn.Size = New-Object System.Drawing.Size(140, 70)
     $btn.Location = New-Object System.Drawing.Point($X, $Y)
     $btn.BackColor = $ColorDark
     $btn.ForeColor = $ColorText
@@ -235,5 +235,6 @@ Add-MenuButton "Scripts" 195
 Render-Page -PageName "Sistema" # Pagina de Inicialização.
 
 [void]$Form.ShowDialog()
+
 
 
