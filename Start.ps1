@@ -2,6 +2,9 @@
 
 # Objetivo: Validar UAC (Admin) e iniciar a interface.
 
+# DESBLOQUEIA O PS1
+Unblock-File -Path "$PSScriptRoot\Start.ps1"
+
 # VALIDA O ADMIN USER 
 $Principal = [Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()
 if (-not $Principal.IsInRole([Security.Principal.WindowsBuiltInRole] "Administrator")) {
@@ -28,4 +31,5 @@ if (Test-Path $MainGUI) {
 } else {
     Write-Host "ERRO CRÍTICO: Arquivo principal não encontrado em:`n$MainGUI" -ForegroundColor Red
     Read-Host "Pressione Enter para sair..."
+
 }
