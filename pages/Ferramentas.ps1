@@ -20,9 +20,10 @@ function Render-Ferramentas {
     # Linha 3
     Add-Launcher -Text "Configuração do Sistema" -Command "msconfig" -X 20 -Y 230   
     Add-Launcher -Text "Gerenciador de Dispositivos" -Command "devmgmt.msc" -X 170 -Y 230
-    Add-Launcher -Text "Monitor de Recursos" -Command "resmon" -X 320 -Y 230
+    Add-Launcher -Text "Monitor de`nRecursos" -Command "resmon" -X 320 -Y 230
     Add-Launcher -Text "Monitor de Desempenho" -Command "perfmon" -X 470 -Y 230 
     Add-Launcher -Text "Diagnóstico de Memória" -Command "mdsched.exe" -X 620 -Y 230    
 
 }
+
 
