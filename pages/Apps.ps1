@@ -6,7 +6,7 @@ function Render-Apps {
     # Painel com Scroll para a lista de apps
     $ScrollPanel = New-Object System.Windows.Forms.FlowLayoutPanel
     $ScrollPanel.Location = New-Object System.Drawing.Point(20, 70)
-    $ScrollPanel.Size = New-Object System.Drawing.Size(740, 450)
+    $ScrollPanel.Size = New-Object System.Drawing.Size(800, 450)
     $ScrollPanel.AutoScroll = $true
     $ScrollPanel.FlowDirection = "TopDown"
     $ScrollPanel.WrapContents = $false
@@ -23,3 +23,4 @@ function Render-Apps {
     Add-WingetApp -AppName "WO Mic Client" -WingetID "WirelessOrange.WOMic" -Description "Usa o celular como microfone do PC" -ParentPanel $ScrollPanel
     Add-WingetApp -AppName "LibreOffice" -WingetID "TheDocumentFoundation.LibreOffice" -Description "Suíte de escritório gratuita e open source" -ParentPanel $ScrollPanel
 }
+
