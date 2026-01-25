@@ -45,12 +45,12 @@ $TopBar.Add_MouseMove({ if ($script:isDragging) { $p = [System.Windows.Forms.Cur
 $TopBar.Add_MouseUp({ $script:isDragging = $false })
 
 # SIDEBAR (BARRA LATERAL)
-$Sidebar = New-Object System.Windows.Forms.Panel; $Sidebar.Width = 200; $Sidebar.Dock = "Left"; $Sidebar.BackColor = $ColorDark; $Form.Controls.Add($Sidebar)
+$Sidebar = New-Object System.Windows.Forms.Panel; $Sidebar.Width = 150; $Sidebar.Dock = "Left"; $Sidebar.BackColor = $ColorDark; $Form.Controls.Add($Sidebar)
 $ContentPanel = New-Object System.Windows.Forms.Panel; $ContentPanel.Dock = "Fill"; $ContentPanel.BackColor = $ColorContent; $ContentPanel.Padding = New-Object System.Windows.Forms.Padding(20); $Form.Controls.Add($ContentPanel); $ContentPanel.BringToFront()
 
 # FUNÇÕES VISUAIS
 
-# Add-Card = Card para informações.
+# Add-Card = Card pequeno para informações.
 function Add-Card {
     param($Title, $Value, $X, $Y)
     
@@ -138,7 +138,7 @@ function Add-WingetApp {
         $this.Enabled = $false
         $this.Text = "..."
         Start-Process "winget" -ArgumentList "install --id $WingetID --silent --accept-package-agreements --accept-source-agreements" -Wait -WindowStyle Hidden
-        $this.Text = "Instalando!"
+        $this.Text = "Instalado!"
         $this.BackColor = [System.Drawing.Color]::Green
     }.GetNewClosure())
 
@@ -210,7 +210,7 @@ function Add-MenuButton {
     $btn.FlatAppearance.BorderSize = 0
     $btn.ForeColor = [System.Drawing.Color]::White
     $btn.Font = New-Object System.Drawing.Font("Segoe UI", 10, [System.Drawing.FontStyle]::Regular)
-    $btn.Size = New-Object System.Drawing.Size(200, 45)
+    $btn.Size = New-Object System.Drawing.Size(150, 45)
     $btn.Location = New-Object System.Drawing.Point(0, $Y)
     $btn.Cursor = [System.Windows.Forms.Cursors]::Hand
     $btn.Tag = $Text
@@ -235,6 +235,7 @@ Add-MenuButton "Scripts" 195
 Render-Page -PageName "Sistema" # Pagina de Inicialização.
 
 [void]$Form.ShowDialog()
+
 
 
 
