@@ -24,10 +24,6 @@ function Render-Sistema {
 		$BiosDat = ([DateTime](Get-CimInstance Win32_BIOS).ReleaseDate).ToString("dd/MM/yyyy")
 		$DeOs = get-ciminstance win32_operatingsystem | select-object -expandproperty caption
 		$DeVideo = Get-CimInstance win32_videoController | select-object -expandproperty description
-		$DeIPV4 = (Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration | Select-Object -ExpandProperty IPAddress)[0]
-		$DeIPV6 = (Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration | Select-Object -ExpandProperty IPAddress)[2]		
-		$DNS1 = (Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration | Select-Object -ExpandProperty DNSServerSearchOrder)[0]
-		$DNS2 = (Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration | Select-Object -ExpandProperty DNSServerSearchOrder)[1]
 
         # RAM e tipo de RAM
         $RAMObj = Get-CimInstance Win32_ComputerSystem
@@ -74,9 +70,6 @@ function Render-Sistema {
 			BIOS = $BiosVer
 			BIOSdat = $BiosDat
 			Sistema = $DeOs
-			IP = $DeIPV4
-			DNS1 = $DNS1
-			DNS2 = $DNS2
 			Video = $DeVideo -join "`n"
             RAM_Txt = "$TotalGB GB $RamType" + $(if($RamSpeed){" ($RamSpeed MHz)"})
             C_Free = $Free
@@ -121,7 +114,7 @@ function Render-Sistema {
                     Add-GCard -Title "DISCOS INSTALADOS" -Value $Result.Discos -X 420 -Y 160
 					Add-Card -Title "GRAFICOS" -Value $Result.Video -X 20 -Y 420	
 					Add-GCard -Title "DISPOSITIVO" -Value "Nome: $($Result.Nome)`nModelo: $($Result.Modelo)`nUsuario: $($Result.Usuario)`nBIOS: $($Result.BIOS), $($Result.BIOSdat)`nSO: $($Result.Sistema)" -X 20 -Y 70
-					Add-GCard -Title "CONFIGURAÇÕES DE REDE" -Value "IPV4: $($Result.IP)`nDNS: $($Result.DNS1) / $($Result.DNS2)" -X 420 -Y 330
+					Add-GCard -Title "CONFIGURAÇÕES DE REDE" -Value "Em breve..." -X 420 -Y 330
                 }
             } catch { Write-Host "Erro: $_" }
         }
@@ -129,5 +122,3 @@ function Render-Sistema {
     $script:Timer.Start()
 
 }
-
-

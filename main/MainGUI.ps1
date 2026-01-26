@@ -106,6 +106,17 @@ function Add-GCard {
     $script:ContentPanel.Controls.Add($GCard)
 }
 
+function Add-NetCard {
+    param($Title, $Value, $X, $Y)
+    
+    $NetCard = New-Object System.Windows.Forms.Panel
+    $NetCard.Size = New-Object System.Drawing.Size(390, 170)
+    $NetCard.Location = New-Object System.Drawing.Point($X, $Y)
+    $NetCard.BackColor = $ColorLContent
+
+    $script:ContentPanel.Controls.Add($NetCard)
+}
+
 # Add-Launcher = Botão com texto+input.
 function Add-Launcher {
     param($Text, $Command, $X, $Y)
