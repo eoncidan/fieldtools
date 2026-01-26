@@ -1,4 +1,4 @@
-﻿# Arquivo: /Main/MainGUI.ps1
+# Arquivo: /Main/MainGUI.ps1
 
 # Objetivo: Interface.
 
@@ -26,16 +26,14 @@ $FontTitle      = New-Object System.Drawing.Font("Segoe UI", 12, [System.Drawing
 # JANELA PRINCIPAL
 $Form = New-Object System.Windows.Forms.Form
 $Form.Text = "Field Tools"
-$Form.Size = New-Object System.Drawing.Size(980, 600)
+$Form.Size = New-Object System.Drawing.Size(980, 570)
 $Form.StartPosition = "CenterScreen"
 $Form.FormBorderStyle = "None"
 $Form.BackColor = $ColorContent
 
 # TOPBAR (BARRA SUPERIOR SUBSTITUTA DO WINDOWS)
 $TopBar = New-Object System.Windows.Forms.Panel; $TopBar.Height = 40; $TopBar.Dock = "Top"; $TopBar.BackColor = $ColorDark; $Form.Controls.Add($TopBar)
-
 $lblTitle = New-Object System.Windows.Forms.Label; $lblTitle.Text = "FIELD TOOLS"; $lblTitle.ForeColor = $ColorText; $lblTitle.Font = $FontTitle; $lblTitle.AutoSize = $true; $lblTitle.Location = New-Object System.Drawing.Point(10, 8); $TopBar.Controls.Add($lblTitle)
-
 $btnClose = New-Object System.Windows.Forms.Button; $btnClose.Text = "X"; $btnClose.Size = New-Object System.Drawing.Size(40, 40); $btnClose.Dock = "Right"; $btnClose.FlatStyle = "Flat"; $btnClose.FlatAppearance.BorderSize = 0; $btnClose.ForeColor = $ColorText; $btnClose.BackColor = $ColorDark
 $btnClose.Add_Click({ $Form.Close() }); $btnClose.Add_MouseEnter({ $btnClose.BackColor = [System.Drawing.Color]::Red }); $btnClose.Add_MouseLeave({ $btnClose.BackColor = $ColorDark }); $TopBar.Controls.Add($btnClose)
 
@@ -55,7 +53,7 @@ function Add-Card {
     param($Title, $Value, $X, $Y)
     
     $Card = New-Object System.Windows.Forms.Panel
-    $Card.Size = New-Object System.Drawing.Size(365, 150)
+    $Card.Size = New-Object System.Drawing.Size(390, 80)
     $Card.Location = New-Object System.Drawing.Point($X, $Y)
     $Card.BackColor = $ColorLContent
     
@@ -73,10 +71,39 @@ function Add-Card {
     $lblValue.Font = New-Object System.Drawing.Font("Segoe UI", 11, [System.Drawing.FontStyle]::Bold)
     $lblValue.Location = New-Object System.Drawing.Point(15, 45)
     $lblValue.AutoSize = $true
-    $lblValue.MaximumSize = New-Object System.Drawing.Size(280, 0)
+    $lblValue.MaximumSize = New-Object System.Drawing.Size(370, 0)
     $Card.Controls.Add($lblValue)
 
     $script:ContentPanel.Controls.Add($Card)
+}
+
+# Add-GCard = Card grande para informações.
+function Add-GCard {
+    param($Title, $Value, $X, $Y)
+    
+    $GCard = New-Object System.Windows.Forms.Panel
+    $GCard.Size = New-Object System.Drawing.Size(390, 160)
+    $GCard.Location = New-Object System.Drawing.Point($X, $Y)
+    $GCard.BackColor = $ColorLContent
+    
+    $lblTitle = New-Object System.Windows.Forms.Label
+    $lblTitle.Text = $Title
+    $lblTitle.ForeColor = $ColorText
+    $lblTitle.Font = New-Object System.Drawing.Font("Segoe UI", 9, [System.Drawing.FontStyle]::Bold)
+    $lblTitle.Location = New-Object System.Drawing.Point(15, 15)
+    $lblTitle.AutoSize = $true
+    $GCard.Controls.Add($lblTitle)
+
+    $lblValue = New-Object System.Windows.Forms.Label
+    $lblValue.Text = $Value
+    $lblValue.ForeColor = $ColorText
+    $lblValue.Font = New-Object System.Drawing.Font("Segoe UI", 11, [System.Drawing.FontStyle]::Bold)
+    $lblValue.Location = New-Object System.Drawing.Point(15, 45)
+    $lblValue.AutoSize = $true
+    $lblValue.MaximumSize = New-Object System.Drawing.Size(370, 0)
+    $GCard.Controls.Add($lblValue)
+
+    $script:ContentPanel.Controls.Add($GCard)
 }
 
 # Add-Launcher = Botão com texto+input.
@@ -119,7 +146,7 @@ function Add-WingetApp {
     param($AppName, $WingetID, $Description, $ParentPanel)
 
     $AppRow = New-Object System.Windows.Forms.Panel
-    $AppRow.Size = New-Object System.Drawing.Size(700, 50)
+    $AppRow.Size = New-Object System.Drawing.Size(760, 50)
     $AppRow.Margin = New-Object System.Windows.Forms.Padding(0, 0, 0, 10)
     $AppRow.BackColor = $ColorLContent
 
@@ -235,7 +262,6 @@ Add-MenuButton "Scripts" 195
 Render-Page -PageName "Sistema" # Pagina de Inicialização.
 
 [void]$Form.ShowDialog()
-
 
 
 
