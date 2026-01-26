@@ -1,27 +1,38 @@
-﻿# Arquivo: /Pages/Sistema.ps1
+# Arquivo: /Pages/Sistema.ps1
 
 # A aba Sistema mostra as informações de sistema.
 
 function Render-Sistema {
     # Cards primarios para informar o loading.
-    Add-Card -Title "PROCESSADOR" -Value "Carregando..." -X 20 -Y 70
-    Add-Card -Title "MEMÓRIA RAM" -Value "Carregando..." -X 395 -Y 70
-    Add-Card -Title "PARTIÇÃO DO SISTEMA (C:)" -Value "Carregando..." -X 20 -Y 230
-    Add-Card -Title "DISCOS INSTALADOS" -Value "Carregando..." -X 395 -Y 230
-    Add-Card -Title "N/A" -Value "Em breve" -X 395 -Y 390	
-    Add-Card -Title "N/A" -Value "Em breve" -X 20 -Y 390	
+    Add-Card -Title "PROCESSADOR" -Value "Carregando..." -X 20 -Y 240
+    Add-Card -Title "MEMÓRIA RAM" -Value "Carregando..." -X 20 -Y 330
+    Add-Card -Title "PARTIÇÃO DO SISTEMA (C:)" -Value "Carregando..." -X 420 -Y 70
+    Add-GCard -Title "DISCOS INSTALADOS" -Value "Carregando..." -X 420 -Y 160
+	Add-Card -Title "GRAFICOS" -Value "Carregando..." -X 20 -Y 420	
+	Add-GCard -Title "DISPOSITIVO" -Value "Carregando..." -X 20 -Y 70
+	Add-GCard -Title "CONFIGURAÇÕES DE REDE" -Value "Carregando..." -X 420 -Y 330
     $script:ContentPanel.Refresh()
 
     # Script coleta os dados.
     $ScriptBlock = {
-        # CPU
-        $CPU = Get-CimInstance Win32_Processor | Select-Object -ExpandProperty Name
-        
-        # RAM
+        # CPU, Nome, Modelo, ServiceTag(se tiver), BIOS(versao e data), Sistema(OS) e Placa de video.
+        $CPU = Get-CimInstance win32_processor | select-object -ExpandProperty Name
+		$DeNome = get-ciminstance win32_computersystem | select-object -expandproperty name
+		$DeModelo = get-ciminstance win32_Computersystem | select-object -expandproperty model
+		$DeUsuario = get-ciminstance win32_computersystem | select-object -expandproperty PrimaryOwnerName
+		$BiosVer = Get-CimInstance Win32_BIOS | Select-Object -expandproperty SoftwareElementID
+		$BiosDat = ([DateTime](Get-CimInstance Win32_BIOS).ReleaseDate).ToString("dd/MM/yyyy")
+		$DeOs = get-ciminstance win32_operatingsystem | select-object -expandproperty caption
+		$DeVideo = Get-CimInstance win32_videoController | select-object -expandproperty description
+		$DeIPV4 = (Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration | Select-Object -ExpandProperty IPAddress)[0]
+		$DeIPV6 = (Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration | Select-Object -ExpandProperty IPAddress)[2]		
+		$DNS1 = (Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration | Select-Object -ExpandProperty DNSServerSearchOrder)[0]
+		$DNS2 = (Get-CimInstance -ClassName Win32_NetworkAdapterConfiguration | Select-Object -ExpandProperty DNSServerSearchOrder)[1]
+
+        # RAM e tipo de RAM
         $RAMObj = Get-CimInstance Win32_ComputerSystem
         $TotalGB = [Math]::Ceiling($RAMObj.TotalPhysicalMemory / 1GB)
         
-        # Tipo de RAM 
         try {
             $Pente = Get-CimInstance Win32_PhysicalMemory -ErrorAction Stop | Select-Object -First 1
             $RamType = switch ($Pente.SMBIOSMemoryType) {
@@ -57,6 +68,16 @@ function Render-Sistema {
         # Retorno.
         @{ 
             CPU = $CPU
+			Nome = $DeNome
+			Modelo = $DeModelo
+			Usuario = $DeUsuario
+			BIOS = $BiosVer
+			BIOSdat = $BiosDat
+			Sistema = $DeOs
+			IP = $DeIPV4
+			DNS1 = $DNS1
+			DNS2 = $DNS2
+			Video = $DeVideo -join "`n"
             RAM_Txt = "$TotalGB GB $RamType" + $(if($RamSpeed){" ($RamSpeed MHz)"})
             C_Free = $Free
             C_Total = $TotalC
@@ -93,13 +114,14 @@ function Render-Sistema {
                     $script:ContentPanel.Controls.Add($lblPage)
 
                     # Informações carregadas.
-                    Add-Card -Title "PROCESSADOR" -Value $Result.CPU -X 20 -Y 70
-                    Add-Card -Title "MEMÓRIA RAM" -Value $Result.RAM_Txt -X 395 -Y 70
-                    $TextoC = "Livre: $($Result.C_Free) GB`nTotal: $($Result.C_Total) GB"
-                    Add-Card -Title "PARTIÇÃO DO SISTEMA (C:)" -Value $TextoC -X 20 -Y 230
-                    Add-Card -Title "DISCOS INSTALADOS" -Value $Result.Discos -X 395 -Y 230
-					Add-Card -Title "N/A" -Value "Em breve" -X 395 -Y 390	
-					Add-Card -Title "N/A" -Value "Em breve" -X 20 -Y 390	
+                    Add-Card -Title "PROCESSADOR" -Value $Result.CPU -X 20 -Y 240
+                    Add-Card -Title "MEMÓRIA RAM" -Value $Result.RAM_Txt -X 20 -Y 330
+                    $TextoC = "Livre: $($Result.C_Free) GB / Total: $($Result.C_Total) GB"
+                    Add-Card -Title "PARTIÇÃO DO SISTEMA (C:)" -Value $TextoC -X 420 -Y 70
+                    Add-GCard -Title "DISCOS INSTALADOS" -Value $Result.Discos -X 420 -Y 160
+					Add-Card -Title "GRAFICOS" -Value $Result.Video -X 20 -Y 420	
+					Add-GCard -Title "DISPOSITIVO" -Value "Nome: $($Result.Nome)`nModelo: $($Result.Modelo)`nUsuario: $($Result.Usuario)`nBIOS: $($Result.BIOS), $($Result.BIOSdat)`nSO: $($Result.Sistema)" -X 20 -Y 70
+					Add-GCard -Title "CONFIGURAÇÕES DE REDE" -Value "IPV4: $($Result.IP)`nDNS: $($Result.DNS1) / $($Result.DNS2)" -X 420 -Y 330
                 }
             } catch { Write-Host "Erro: $_" }
         }
