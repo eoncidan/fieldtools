@@ -1,4 +1,4 @@
-# Arquivo: /Main/MainGUI.ps1
+﻿# Arquivo: /Main/MainGUI.ps1
 
 # Objetivo: Interface.
 

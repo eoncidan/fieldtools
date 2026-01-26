@@ -1,4 +1,4 @@
-# Arquivo: /Pages/Sistema.ps1
+﻿# Arquivo: /Pages/Sistema.ps1
 
 # A aba Sistema mostra as informações de sistema.
 
