@@ -68,8 +68,8 @@ function Add-Card {
     $lblValue = New-Object System.Windows.Forms.Label
     $lblValue.Text = $Value
     $lblValue.ForeColor = $ColorText
-    $lblValue.Font = New-Object System.Drawing.Font("Segoe UI", 11, [System.Drawing.FontStyle]::Bold)
-    $lblValue.Location = New-Object System.Drawing.Point(15, 45)
+    $lblValue.Font = New-Object System.Drawing.Font("Segoe UI", 10, [System.Drawing.FontStyle]::Bold)
+    $lblValue.Location = New-Object System.Drawing.Point(15, 40)
     $lblValue.AutoSize = $true
     $lblValue.MaximumSize = New-Object System.Drawing.Size(370, 0)
     $Card.Controls.Add($lblValue)
@@ -97,24 +97,13 @@ function Add-GCard {
     $lblValue = New-Object System.Windows.Forms.Label
     $lblValue.Text = $Value
     $lblValue.ForeColor = $ColorText
-    $lblValue.Font = New-Object System.Drawing.Font("Segoe UI", 11, [System.Drawing.FontStyle]::Bold)
-    $lblValue.Location = New-Object System.Drawing.Point(15, 45)
+    $lblValue.Font = New-Object System.Drawing.Font("Segoe UI", 10, [System.Drawing.FontStyle]::Bold)
+    $lblValue.Location = New-Object System.Drawing.Point(15, 40)
     $lblValue.AutoSize = $true
     $lblValue.MaximumSize = New-Object System.Drawing.Size(370, 0)
     $GCard.Controls.Add($lblValue)
 
     $script:ContentPanel.Controls.Add($GCard)
-}
-
-function Add-NetCard {
-    param($Title, $Value, $X, $Y)
-    
-    $NetCard = New-Object System.Windows.Forms.Panel
-    $NetCard.Size = New-Object System.Drawing.Size(390, 170)
-    $NetCard.Location = New-Object System.Drawing.Point($X, $Y)
-    $NetCard.BackColor = $ColorLContent
-
-    $script:ContentPanel.Controls.Add($NetCard)
 }
 
 # Add-Launcher = Botão com texto+input.
@@ -150,6 +139,51 @@ function Add-Launcher {
     $btn.Add_MouseLeave({ $this.BackColor = $ColorDark })
 
     $script:ContentPanel.Controls.Add($btn)
+}
+
+# Add-NetCard = Card para Sistema>Configurações de rede.
+function Add-NetCard {
+    param($Title, $Text1, $Text2, $X, $Y)
+
+    $NetCard = New-Object System.Windows.Forms.Panel
+    $NetCard.Size = New-Object System.Drawing.Size(390, 170)
+    $NetCard.Location = New-Object System.Drawing.Point($X, $Y)
+    $NetCard.BackColor = $ColorLContent
+
+    $NetCardCheck = New-Object System.Windows.Forms.Panel
+    $NetCardCheck.Size = New-Object System.Drawing.Size(370, 70)
+    $NetCardCheck.Location = New-Object System.Drawing.Point(10, 90)
+    $NetCardCheck.BackColor = $ColorLDark
+
+    $NetCardA = New-Object System.Windows.Forms.Label
+    $NetCardA.Text = $Title
+    $NetCardA.Font = New-Object System.Drawing.Font("Segoe UI", 9, [System.Drawing.FontStyle]::Bold)
+    $NetCardA.AutoSize = $true
+    $NetCardA.Location = New-Object System.Drawing.Point(15, 15)
+    $NetCardA.ForeColor = $ColorText
+	
+    $NetCardB = New-Object System.Windows.Forms.Label
+    $NetCardB.Text = $Text1
+    $NetCardB.Font = New-Object System.Drawing.Font("Segoe UI", 10, [System.Drawing.FontStyle]::Bold)
+    $NetCardB.AutoSize = $true
+    $NetCardB.Location = New-Object System.Drawing.Point(15, 40)
+    $NetCardB.ForeColor = $ColorText
+	$NetCardB.BackColor = $ColorLContent
+
+    $NetCardCheckA = New-Object System.Windows.Forms.Label
+    $NetCardCheckA.Text = $Text2
+    $NetCardCheckA.Font = New-Object System.Drawing.Font("Segoe UI", 10, [System.Drawing.FontStyle]::Bold)
+    $NetCardCheckA.AutoSize = $true
+    $NetCardCheckA.Location = New-Object System.Drawing.Point(15, 100)
+    $NetCardCheckA.ForeColor = $ColorText
+    $NetCardCheckA.BackColor = $ColorLDark
+
+    $NetCard.Controls.Add($NetCardB)
+    $NetCard.Controls.Add($NetCardA)	
+    $NetCard.Controls.Add($NetCardCheckA)	
+    $NetCard.Controls.Add($NetCardCheck)
+    $NetCard.Controls.Add($NetCardT)
+    $script:ContentPanel.Controls.Add($NetCard)
 }
 
 # Add-WingetApp = Botao instalar e descricao.
@@ -273,6 +307,7 @@ Add-MenuButton "Scripts" 195
 Render-Page -PageName "Sistema" # Pagina de Inicialização.
 
 [void]$Form.ShowDialog()
+
 
 
 
