@@ -2,6 +2,8 @@
 
 # A aba Sistema mostra as informações de sistema.
 
+. "$ProjectRoot\Main\Netchecker.ps1"
+
 function Render-Sistema {
     # Cards primarios para informar o loading.
     Add-Card -Title "PROCESSADOR" -Value "Carregando..." -X 20 -Y 240
@@ -123,3 +125,4 @@ function Render-Sistema {
 
 
 }
+
