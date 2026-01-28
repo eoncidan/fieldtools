@@ -17,17 +17,23 @@ function Render-Sistema {
 
     # Script coleta os dados.
     $ScriptBlock = {
-        # CPU, Nome, Modelo, ServiceTag(se tiver), BIOS(versao e data), Sistema(OS) e Placa de video.
+        # Informações de processador.
         $CPU = Get-CimInstance win32_processor | select-object -ExpandProperty Name
-		$DeNome = get-ciminstance win32_computersystem | select-object -expandproperty name
-		$DeModelo = get-ciminstance win32_Computersystem | select-object -expandproperty model
-		$DeUsuario = get-ciminstance win32_computersystem | select-object -expandproperty PrimaryOwnerName
-		$BiosVer = Get-CimInstance Win32_BIOS | Select-Object -expandproperty SoftwareElementID
+
+		# Nome de dispositivo, modelo e usuário.
+		$InfoDisp = Get-CimInstance Win32_ComputerSystem; $DeNome, $DeModelo, $DeUsuario = $Info.Name, $Info.Model, $Info.PrimaryOwnerName
+
+		# Versão e data da BIOS.
+		$InfoBIOS = Get-CimInstance Win32_BIOS | Select-Object -expandproperty SoftwareElementID
 		$BiosDat = ([DateTime](Get-CimInstance Win32_BIOS).ReleaseDate).ToString("dd/MM/yyyy")
+
+		# Informações de sistema operacional.
 		$DeOs = get-ciminstance win32_operatingsystem | select-object -expandproperty caption
+
+		# Placa de video instalada. Equipamentos com mais de uma terá elas listadas, ex: Integrada Intel e Dedicada Nvidia.
 		$DeVideo = Get-CimInstance win32_videoController | select-object -expandproperty description
 
-        # RAM e tipo de RAM
+        # Informações de memória RAM, tipo, velocidade e quantidade.
         $RAMObj = Get-CimInstance Win32_ComputerSystem
         $TotalGB = [Math]::Ceiling($RAMObj.TotalPhysicalMemory / 1GB)
         
@@ -125,4 +131,5 @@ function Render-Sistema {
 
 
 }
+
 
