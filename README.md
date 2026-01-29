@@ -23,25 +23,30 @@ Como o intuito principal era praticar mais e entender melhor o PowerShell a estr
 ## ✨ Funcionalidades
 
 ### 1. 🖥️ Sistema (`Sistema.ps1`)
-Monitoramento assíncrono (sem travar a interface) dos principais componentes:
-* **Processador:** Modelo e nome.
-* **Memória RAM:** Quantidade total, tipo (DDR3/4/5) e velocidade.
-* **Armazenamento:** Espaço livre na partição do sistema (C:) e listagem física de discos (SSD/NVMe/HDD).
+Monitoramento dos principais componentes:
+* **Dispositivo:** Exibe Nome, Modelo, Usuário, Versão da BIOS e Sistema Operacional.
+* **Rede:** Verifica endereço IP e servidores DNS (Primário/Secundário) utilizando o módulo auxiliar `Netchecker`.
+* **Processador:** Nome, modelo e frêquencia.
+* **Memória RAM:** Quantidade total, velocidade e tipo.
+* **Armazenamento:** Espaço livre na partição do sistema (C:) e listagem de discos instalados.
+* **Gráficos:** Informações sobre a placa de vídeo.
 
 ### 2. 🔧 Ferramentas (`Ferramentas.ps1`)
 Acesso rápido (One-Click) às ferramentas administrativas nativas do Windows, incluindo:
-* Gerenciador de Tarefas, Regedit, CMD (Admin).
-* Painel de Controle, Serviços, Windows Update.
-* Diagnósticos: Memória, PSR (Gravador de Passos), Visualizador de Eventos.
+* **Admin:** Gerenciador de Tarefas, Regedit, CMD (Admin), Painel de Controle.
+* **Manutenção:** Limpeza de Disco, Serviços, Windows Update.
+* **Rede e Diagnóstico:** Conexões de Rede (`ncpa.cpl`), Visualizador de Eventos, Problem Steps Recorder (PSR).
 
 ### 3. 📜 Biblioteca de Scripts (`ScriptsLib.ps1`)
-**Nova Funcionalidade:** Um motor de execução dinâmica.
+**Motor de execução dinâmica:**
 * O sistema varre a pasta `/Lib` na raiz do projeto.
 * Qualquer arquivo `.ps1` colocado lá é transformado automaticamente em um botão na interface.
-* Ideal para scripts de limpeza, correções de registro ou automações personalizadas.
+* Os scripts são executados com política de `Bypass`, permitindo automações sem bloqueios.
 
 ### 4. 📦 Apps (`Apps.ps1`)
-* Módulo destinado à centralização de instaladores de aplicações essenciais.*
+Integração direta com o **Winget** para instalação silenciosa de utilitários essenciais.
+* **Lista atual:** Notepad++, WinToys, HWMonitor, GPU-Z, AutoHotkey, 7-Zip, Lightshot, WO Mic Client e LibreOffice.
+* Feedback visual de instalação e interface com rolagem automática.
 
 ---
 
@@ -74,11 +79,12 @@ Para adicionar suas próprias ferramentas à aba **Scripts**:
 FieldTools/
 ├── Lib/                 # [Pasta do Usuário] Coloque seus scripts .ps1 aqui
 ├── Main/
-│   └── MainGUI.ps1      # Motor gráfico principal e roteamento
+│   ├── MainGUI.ps1      # Motor gráfico principal e roteamento
+│   └── Netchecker.ps1   # Auxiliar para diagnóstico de rede
 ├── Pages/               # Módulos da interface
 │   ├── Sistema.ps1      # Coleta de dados de hardware (Async)
 │   ├── Ferramentas.ps1  # Launchers nativos do Windows
 │   ├── ScriptsLib.ps1   # Leitor dinâmico da pasta Lib
-│   └── Apps.ps1         # Gerenciador de aplicações
+│   └── Apps.ps1         # Instalador via Winget
 ├── Start.ps1            # Entry Point (Bootstrapper + Admin Check)
 └── README.md
