@@ -63,7 +63,6 @@ function Add-Card {
     $lblTitle.Font = New-Object System.Drawing.Font("Segoe UI", 9, [System.Drawing.FontStyle]::Bold)
     $lblTitle.Location = New-Object System.Drawing.Point(15, 15)
     $lblTitle.AutoSize = $true
-    $Card.Controls.Add($lblTitle)
 
     $lblValue = New-Object System.Windows.Forms.Label
     $lblValue.Text = $Value
@@ -72,9 +71,9 @@ function Add-Card {
     $lblValue.Location = New-Object System.Drawing.Point(15, 40)
     $lblValue.AutoSize = $true
     $lblValue.MaximumSize = New-Object System.Drawing.Size(370, 0)
-    $Card.Controls.Add($lblValue)
 
-    $script:ContentPanel.Controls.Add($Card)
+	$GCard.Controls.AddRange(@($lblValue, $lblTitle))
+    $script:ContentPanel.Controls.Add($GCard)
 }
 
 # Add-GCard = Card grande para informações.
@@ -92,7 +91,6 @@ function Add-GCard {
     $lblTitle.Font = New-Object System.Drawing.Font("Segoe UI", 9, [System.Drawing.FontStyle]::Bold)
     $lblTitle.Location = New-Object System.Drawing.Point(15, 15)
     $lblTitle.AutoSize = $true
-    $GCard.Controls.Add($lblTitle)
 
     $lblValue = New-Object System.Windows.Forms.Label
     $lblValue.Text = $Value
@@ -101,8 +99,8 @@ function Add-GCard {
     $lblValue.Location = New-Object System.Drawing.Point(15, 40)
     $lblValue.AutoSize = $true
     $lblValue.MaximumSize = New-Object System.Drawing.Size(370, 0)
-    $GCard.Controls.Add($lblValue)
 
+	$GCard.Controls.AddRange(@($lblValue, $lblTitle))
     $script:ContentPanel.Controls.Add($GCard)
 }
 
@@ -178,11 +176,7 @@ function Add-NetCard {
     $NetCardCheckA.ForeColor = $ColorText
     $NetCardCheckA.BackColor = $ColorLDark
 
-    $NetCard.Controls.Add($NetCardB)
-    $NetCard.Controls.Add($NetCardA)	
-    $NetCard.Controls.Add($NetCardCheckA)	
-    $NetCard.Controls.Add($NetCardCheck)
-    $NetCard.Controls.Add($NetCardT)
+	$NetCard.Controls.AddRange(@($NetCardB, $NetCardA, $NetCardCheckA, $NetCardCheck))  
     $script:ContentPanel.Controls.Add($NetCard)
 }
 
@@ -307,6 +301,7 @@ Add-MenuButton "Scripts" 195
 Render-Page -PageName "Sistema" # Pagina de Inicialização.
 
 [void]$Form.ShowDialog()
+
 
 
 
