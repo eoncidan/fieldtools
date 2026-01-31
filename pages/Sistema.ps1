@@ -12,7 +12,7 @@ function Render-Sistema {
     Add-GCard -Title "DISCOS INSTALADOS" -Value "Carregando..." -X 420 -Y 160
 	Add-Card -Title "GRAFICOS" -Value "Carregando..." -X 20 -Y 420	
 	Add-GCard -Title "DISPOSITIVO" -Value "Carregando..." -X 20 -Y 70
-	Add-NetCard -Title "CONFIGURAÇÕES DE REDE" -Text1 "Carregando..." -Text2 "Carregando..." -X 420 -Y 330
+	Add-LCard -Title "CONFIGURAÇÕES DE REDE" -Text1 "Carregando..." -Text2 "Carregando..." -X 420 -Y 330
     $script:ContentPanel.Refresh()
 
     # Script coleta os dados.
@@ -122,7 +122,7 @@ function Render-Sistema {
                     Add-GCard -Title "DISCOS INSTALADOS" -Value $Result.Discos -X 420 -Y 160
 					Add-Card -Title "GRAFICOS" -Value $Result.Video -X 20 -Y 420	
 					Add-GCard -Title "DISPOSITIVO" -Value "Nome: $($Result.Nome)`nModelo: $($Result.Modelo)`nUsuario: $($Result.Usuario)`nBIOS: $($Result.BIOS), $($Result.BIOSdat)`nSO: $($Result.Sistema)" -X 20 -Y 70
-					Add-NetCard -Title "CONFIGURAÇÕES DE REDE" -Text1 "IP: $($SysInfo.IP)`nDNS: $($SysInfo.DNS1) / $($SysInfo.DNS2)" -Text2 "WIFI: $($SysInfo.WiFi)`nBLUETOOTH: $($SysInfo.Bluetooth)`nETHERNET: $($SysInfo.Ethernet)" -X 420 -Y 330
+					Add-LCard -Title "CONFIGURAÇÕES DE REDE" -Text1 "IP: $($SysInfo.IP)`nDNS: $($SysInfo.DNS1) / $($SysInfo.DNS2)" -Text2 "WIFI: $($SysInfo.WiFi)`nBLUETOOTH: $($SysInfo.Bluetooth)`nETHERNET: $($SysInfo.Ethernet)" -X 420 -Y 330
                 }
             } catch { Write-Host "Erro: $_" }
         }
@@ -131,6 +131,7 @@ function Render-Sistema {
 
 
 }
+
 
 
 
