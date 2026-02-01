@@ -149,8 +149,8 @@ function Add-LCard {
     $LCardA.BackColor = $ColorLContent
 
     $LCardB = New-Object System.Windows.Forms.Panel
-    $LCardB.Size = New-Object System.Drawing.Size(370, 70)
-    $LCardB.Location = New-Object System.Drawing.Point(10, 90)
+    $LCardB.Size = New-Object System.Drawing.Size(190, 130)
+    $LCardB.Location = New-Object System.Drawing.Point(190, 30)
     $LCardB.BackColor = $ColorLDark
 
     $LCardTitle = New-Object System.Windows.Forms.Label
@@ -172,7 +172,7 @@ function Add-LCard {
     $LCardTextB.Text = $TextB
     $LCardTextB.Font = New-Object System.Drawing.Font("Segoe UI", 10, [System.Drawing.FontStyle]::Bold)
     $LCardTextB.AutoSize = $true
-    $LCardTextB.Location = New-Object System.Drawing.Point(15, 100)
+    $LCardTextB.Location = New-Object System.Drawing.Point(200, 40)
     $LCardTextB.ForeColor = $ColorText
     $LCardTextB.BackColor = $ColorLDark
 
@@ -301,7 +301,6 @@ Add-MenuButton "Scripts" 195
 Render-Page -PageName "Sistema" # Pagina de Inicialização.
 
 [void]$Form.ShowDialog()
-
 
 
 
