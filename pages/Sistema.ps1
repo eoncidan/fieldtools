@@ -2,7 +2,7 @@
 
 # A aba Sistema mostra as informações de sistema.
 
-. "$ProjectRoot\Main\Netchecker.ps1"
+. "$ProjectRoot\Main\Syschecker.ps1"
 
 function Render-Sistema {
     # Cards primarios para informar o loading.
@@ -12,30 +12,20 @@ function Render-Sistema {
     Add-GCard -Title "DISCOS INSTALADOS" -Value "Carregando..." -X 420 -Y 160
 	Add-Card -Title "GRAFICOS" -Value "Carregando..." -X 20 -Y 420	
 	Add-GCard -Title "DISPOSITIVO" -Value "Carregando..." -X 20 -Y 70
-	Add-LCard -Title "CONFIGURAÇÕES DE REDE" -Text1 "Carregando..." -Text2 "Carregando..." -X 420 -Y 330
+	Add-LCard -Title "CONFIGURAÇÕES DE REDE" -TextA "Carregando..." -TextB "Carregando..." -X 420 -Y 330
     $script:ContentPanel.Refresh()
 
     # Script coleta os dados.
     $ScriptBlock = {
-        # Informações de processador.
-        $CPU = Get-CimInstance win32_processor | select-object -ExpandProperty Name
 
-		# Nome de dispositivo, modelo e usuário.
-		$InfoDisp = Get-CimInstance Win32_ComputerSystem; $DeNome, $DeModelo, $DeUsuario = $Info.Name, $Info.Model, $Info.PrimaryOwnerName
-
-		# Versão e data da BIOS.
-		$InfoBIOS = Get-CimInstance Win32_BIOS | Select-Object -expandproperty SoftwareElementID
-		$BiosDat = ([DateTime](Get-CimInstance Win32_BIOS).ReleaseDate).ToString("dd/MM/yyyy")
-
-		# Informações de sistema operacional.
-		$DeOs = get-ciminstance win32_operatingsystem | select-object -expandproperty caption
-
-		# Placa de video instalada. Equipamentos com mais de uma terá elas listadas, ex: Integrada Intel e Dedicada Nvidia.
-		$DeVideo = Get-CimInstance win32_videoController | select-object -expandproperty description
-
-        # Informações de memória RAM, tipo, velocidade e quantidade.
-        $RAMObj = Get-CimInstance Win32_ComputerSystem
-        $TotalGB = [Math]::Ceiling($RAMObj.TotalPhysicalMemory / 1GB)
+        $CPU = Get-CimInstance win32_processor | select-object -ExpandProperty Name # Informações de processador.
+		$InfoDisp = Get-CimInstance Win32_ComputerSystem; $DeNome, $DeModelo, $DeUsuario = $InfoDisp.Name, $InfoDisp.Model, $InfoDisp.PrimaryOwnerName # Nome de dispositivo, modelo e usuário.
+		$BiosVer = Get-CimInstance Win32_BIOS | Select-Object -expandproperty SoftwareElementID # Versão da BIOS.
+		$BiosDat = ([DateTime](Get-CimInstance Win32_BIOS).ReleaseDate).ToString("dd/MM/yyyy") # Data da BIOS.
+		$DeOs = get-ciminstance win32_operatingsystem | select-object -expandproperty caption # Informações do sistema operacional.
+		$DeVideo = Get-CimInstance win32_videoController | select-object -expandproperty description # Placa de video instalada. 
+        $RAMObj = Get-CimInstance Win32_ComputerSystem # Informações de memória RAM, tipo e velocidade.
+        $TotalGB = [Math]::Ceiling($RAMObj.TotalPhysicalMemory / 1GB) # Quantidade de memoria RAM.
         
         try {
             $Pente = Get-CimInstance Win32_PhysicalMemory -ErrorAction Stop | Select-Object -First 1
@@ -71,18 +61,18 @@ function Render-Sistema {
 
         # Retorno.
         @{ 
-            CPU = $CPU
-			Nome = $DeNome
-			Modelo = $DeModelo
+            CPU 	= $CPU
+			Nome 	= $DeNome
+			Modelo  = $DeModelo
 			Usuario = $DeUsuario
-			BIOS = $BiosVer
+			BIOS 	= $BiosVer
 			BIOSdat = $BiosDat
 			Sistema = $DeOs
-			Video = $DeVideo -join "`n"
+			Video 	= $DeVideo -join "`n"
             RAM_Txt = "$TotalGB GB $RamType" + $(if($RamSpeed){" ($RamSpeed MHz)"})
-            C_Free = $Free
+            C_Free  = $Free
             C_Total = $TotalC
-            Discos = $ListaDiscos -join "`n" # O 'n quebra a linha.
+            Discos 	= $ListaDiscos -join "`n" # O 'n quebra a linha.
         }
     }
 
@@ -119,19 +109,14 @@ function Render-Sistema {
                     Add-Card -Title "MEMÓRIA RAM" -Value $Result.RAM_Txt -X 20 -Y 330
                     $TextoC = "Livre: $($Result.C_Free) GB / Total: $($Result.C_Total) GB"
                     Add-Card -Title "PARTIÇÃO DO SISTEMA (C:)" -Value $TextoC -X 420 -Y 70
-                    Add-GCard -Title "DISCOS INSTALADOS" -Value $Result.Discos -X 420 -Y 160
+                    Add-GCard -Title "DISCOS INSTALADOS" -Value "Saúde: $($SysInfo.DiskHealth)`n `n$($Result.Discos)" -X 420 -Y 160
 					Add-Card -Title "GRAFICOS" -Value $Result.Video -X 20 -Y 420	
-					Add-GCard -Title "DISPOSITIVO" -Value "Nome: $($Result.Nome)`nModelo: $($Result.Modelo)`nUsuario: $($Result.Usuario)`nBIOS: $($Result.BIOS), $($Result.BIOSdat)`nSO: $($Result.Sistema)" -X 20 -Y 70
-					Add-LCard -Title "CONFIGURAÇÕES DE REDE" -Text1 "IP: $($SysInfo.IP)`nDNS: $($SysInfo.DNS1) / $($SysInfo.DNS2)" -Text2 "WIFI: $($SysInfo.WiFi)`nBLUETOOTH: $($SysInfo.Bluetooth)`nETHERNET: $($SysInfo.Ethernet)" -X 420 -Y 330
+					Add-GCard -Title "DISPOSITIVO" -Value "Nome: $($Result.Nome)`nModelo: $($Result.Modelo)`nUsuario: $($Result.Usuario)`nBIOS: $($Result.BIOS), $($Result.BIOSdat)`nSO: $($Result.Sistema)`nBateria: $($SysInfo.Battery)" -X 20 -Y 70
+					Add-LCard -Title "CONFIGURAÇÕES DE REDE" -TextA "IP: $($SysInfo.IP)`nDNS: $($SysInfo.DNS1) / $($SysInfo.DNS2)" -TextB "WIFI: $($SysInfo.WiFi)`nBLUETOOTH: $($SysInfo.Bluetooth)`nETHERNET: $($SysInfo.Ethernet)`nUSB: $($SysInfo.USB)`nSaida de audio: $($SysInfo.AudioOutput)`nEntrada de audio: $($SysInfo.AudioInput)" -X 420 -Y 330
                 }
             } catch { Write-Host "Erro: $_" }
         }
     })
     $script:Timer.Start()
 
-
 }
-
-
-
-
