@@ -17,10 +17,7 @@ function Render-Apps {
     Add-WingetApp -AppName "WinToys" -WingetID "9P8LTPGCBZXD" -Description "Otimização e personalização do Windows" -ParentPanel $ScrollPanel
     Add-WingetApp -AppName "HWMonitor" -WingetID "CPUID.HWMonitor" -Description "Monitoramento de hardware e temperaturas" -ParentPanel $ScrollPanel
     Add-WingetApp -AppName "GPU-Z" -WingetID "TechPowerUp.GPU-Z" -Description "Informações detalhadas da placa de vídeo" -ParentPanel $ScrollPanel
-    Add-WingetApp -AppName "AutoHotkey" -WingetID "AutoHotkey.AutoHotkey" -Description "Automação e criação de scripts" -ParentPanel $ScrollPanel
     Add-WingetApp -AppName "7-Zip" -WingetID "7zip.7zip" -Description "Compactador e descompactador de arquivos" -ParentPanel $ScrollPanel
     Add-WingetApp -AppName "Lightshot" -WingetID "Skillbrains.Lightshot" -Description "Ferramenta de captura de tela rápida" -ParentPanel $ScrollPanel
-    Add-WingetApp -AppName "WO Mic Client" -WingetID "WirelessOrange.WOMic" -Description "Usa o celular como microfone do PC" -ParentPanel $ScrollPanel
     Add-WingetApp -AppName "LibreOffice" -WingetID "TheDocumentFoundation.LibreOffice" -Description "Suíte de escritório gratuita e open source" -ParentPanel $ScrollPanel
 }
-
