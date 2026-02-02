@@ -49,7 +49,7 @@ function Netchecker {
     try {
         # Verifica se há controladores USB com erro.
         $USBErrors = Get-PnpDevice -Class "USB" -Status "Error","Degraded" -ErrorAction SilentlyContinue
-        if ($USBErrors) { $USBStatus = "Alerta (Falha de Driver)" } else { $USBStatus = "Ok (USBs Ativos)" }
+        if ($USBErrors) { $USBStatus = "Alerta (Erro, Driver)" } else { $USBStatus = "Ok (USBs Ativos)" }
     } catch { $USBStatus = "Erro" }
 
     # Verificadao do disco.
@@ -81,6 +81,9 @@ function Netchecker {
 	IP 			= $SysInfo.IPAddress[0]
 	DNS1 		= $SysInfo.DNSServerSearchOrder[0]
 	DNS2 		= $SysInfo.DNSServerSearchOrder[1]
+	GWAY		= $SysInfo.DefaultIPGateway[0]
+	SUBN		= $SysInfo.IPSubnet[0]
+	MACA		= $SysInfo.MACAddress	
     WiFi        = $WiFiStatus
     Ethernet    = $EthStatus
     Bluetooth   = $BTStatus
@@ -94,3 +97,4 @@ function Netchecker {
 }
 
 $global:SysInfo = Netchecker
+
