@@ -11,8 +11,8 @@ function Render-Sistema {
     Add-Card -Title "PARTIÇÃO DO SISTEMA (C:)" -Value "Carregando..." -X 420 -Y 70
     Add-GCard -Title "DISCOS INSTALADOS" -Value "Carregando..." -X 420 -Y 160
 	Add-Card -Title "GRAFICOS" -Value "Carregando..." -X 20 -Y 420	
-	Add-GCard -Title "DISPOSITIVO" -Value "Carregando..." -X 20 -Y 70
-	Add-LCard -Title "CONFIGURAÇÕES DE REDE" -TextA "Carregando..." -TextB "Carregando..." -X 420 -Y 330
+	Add-GCard -Title "MEU COMPUTADOR" -Value "Carregando..." -X 20 -Y 70
+	Add-LCard -Title "REDE E DISPOSITIVOS" -TextA "Carregando..." -TextB "Carregando..." -X 420 -Y 330
     $script:ContentPanel.Refresh()
 
     # Script coleta os dados.
@@ -111,8 +111,8 @@ function Render-Sistema {
                     Add-Card -Title "PARTIÇÃO DO SISTEMA (C:)" -Value $TextoC -X 420 -Y 70
                     Add-GCard -Title "DISCOS INSTALADOS" -Value "Saúde: $($SysInfo.DiskHealth)`n `n$($Result.Discos)" -X 420 -Y 160
 					Add-Card -Title "GRAFICOS" -Value $Result.Video -X 20 -Y 420	
-					Add-GCard -Title "DISPOSITIVO" -Value "Nome: $($Result.Nome)`nModelo: $($Result.Modelo)`nUsuario: $($Result.Usuario)`nBIOS: $($Result.BIOS), $($Result.BIOSdat)`nSO: $($Result.Sistema)`nBateria: $($SysInfo.Battery)" -X 20 -Y 70
-					Add-LCard -Title "CONFIGURAÇÕES DE REDE" -TextA "IP: $($SysInfo.IP)`nDNS: $($SysInfo.DNS1) / $($SysInfo.DNS2)" -TextB "WIFI: $($SysInfo.WiFi)`nBLUETOOTH: $($SysInfo.Bluetooth)`nETHERNET: $($SysInfo.Ethernet)`nUSB: $($SysInfo.USB)`nSaida de audio: $($SysInfo.AudioOutput)`nEntrada de audio: $($SysInfo.AudioInput)" -X 420 -Y 330
+					Add-GCard -Title "MEU COMPUTADOR" -Value "Nome: $($Result.Nome)`nModelo: $($Result.Modelo)`nUsuario: $($Result.Usuario)`nBIOS: $($Result.BIOS), $($Result.BIOSdat)`nSO: $($Result.Sistema)`nBateria: $($SysInfo.Battery)" -X 20 -Y 70
+					Add-LCard -Title "REDE E DISPOSITIVOS" -TextA "IPV4: $($SysInfo.IP)`nMAC: $($SysInfo.MACA) `nDNS1: $($SysInfo.DNS1)`nDNS2: $($SysInfo.DNS2)`nGATE.: $($SysInfo.GWAY) `nSUB.: $($SysInfo.SUBN)" -TextB "WIFI: $($SysInfo.WiFi)`nBLUETOOTH: $($SysInfo.Bluetooth)`nETHERNET: $($SysInfo.Ethernet)`nUSB: $($SysInfo.USB)`nSaida de audio: $($SysInfo.AudioOutput)`nEntrada de audio: $($SysInfo.AudioInput)" -X 420 -Y 330
                 }
             } catch { Write-Host "Erro: $_" }
         }
@@ -120,3 +120,4 @@ function Render-Sistema {
     $script:Timer.Start()
 
 }
+
