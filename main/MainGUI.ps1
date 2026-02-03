@@ -292,8 +292,8 @@ function Add-MenuButton {
 
 # Botoes do menu.
 Add-MenuButton "Sistema" 60
-Add-MenuButton "Ferramentas" 105
-Add-MenuButton "Apps" 150
+Add-MenuButton "Apps" 105
+Add-MenuButton "Ferramentas" 150
 Add-MenuButton "Scripts" 195
 #Add-MenuButton "Desempenho" 240
 
@@ -301,6 +301,7 @@ Add-MenuButton "Scripts" 195
 Render-Page -PageName "Sistema" # Pagina de Inicialização.
 
 [void]$Form.ShowDialog()
+
 
 
 
