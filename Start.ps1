@@ -5,6 +5,7 @@
 # DESBLOQUEIA OS ARQUIVOS .PS1
 Unblock-File -Path "$PSScriptRoot\Start.ps1"
 Unblock-File -Path "$PSScriptRoot\Main\MainGUI.ps1"
+Unblock-File -Path "$PSScriptRoot\Main\Syschecker.ps1"
 
 # VALIDA O ADMIN USER 
 $Principal = [Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()
@@ -32,6 +33,4 @@ if (Test-Path $MainGUI) {
 } else {
     Write-Host "ERRO CRÍTICO: Arquivo principal não encontrado em:`n$MainGUI" -ForegroundColor Red
     Read-Host "Pressione Enter para sair..."
-
 }
-
