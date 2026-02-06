@@ -26,7 +26,7 @@ $FontTitle      = New-Object System.Drawing.Font("Segoe UI", 12, [System.Drawing
 # JANELA PRINCIPAL
 $Form = New-Object System.Windows.Forms.Form
 $Form.Text = "Field Tools"
-$Form.Size = New-Object System.Drawing.Size(980, 570)
+$Form.Size = New-Object System.Drawing.Size(980, 560)
 $Form.StartPosition = "CenterScreen"
 $Form.FormBorderStyle = "None"
 $Form.BackColor = $ColorContent
@@ -301,6 +301,7 @@ Add-MenuButton "Scripts" 195
 Render-Page -PageName "Sistema" # Pagina de Inicialização.
 
 [void]$Form.ShowDialog()
+
 
 
 
