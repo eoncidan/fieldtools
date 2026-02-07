@@ -1,6 +1,6 @@
-# 🛠️ FieldTools
+# 🛠️ Field Tools
 
-O **FieldTools** é uma central utilitária modular desenvolvida em **PowerShell** com interface gráfica (WinForms). O projeto consolida diagnósticos de hardware, atalhos administrativos e uma biblioteca de scripts dinâmicos em um único painel, eliminando a navegação manual repetitiva durante o suporte técnico.
+O **Field Tools** é uma central utilitária modular desenvolvida em **PowerShell** com interface gráfica (WinForms). O projeto consolida diagnósticos de hardware, atalhos administrativos e uma biblioteca de scripts dinâmicos em um único painel, eliminando a navegação manual repetitiva durante o suporte técnico.
 
 <p align="center">
   <img width="976" height="567" alt="image" src="https://github.com/user-attachments/assets/19fd7609-1073-470b-a1fa-46a6a7af7156" />
@@ -12,7 +12,7 @@ O **FieldTools** é uma central utilitária modular desenvolvida em **PowerShell
 ---
 
 ## 💡 Projeto
-O FieldTools foi uma ideia que surgiu depois de mais um dia no suporte com diversos gaps e troubleshootings e clica aqui e clica ali e zas, fiquei pensando em como reunir as resoluções de forma organizada e boom, FieldTools.
+O Field Tools foi uma ideia que surgiu depois de mais um dia no suporte com diversos gaps e troubleshootings e clica aqui e clica ali e zas, fiquei pensando em como reunir as resoluções de forma organizada e boom, FieldTools.
 
 A ferramenta teve como inspiração varias ferramentas semelhantes como o WinUtils do Chris Titus, Windows 10 Debloater do Sycnex, Sophia Script do Dmitry e outras. A ideia em resumo seria de centralizar as informações do sistema, atalhos para ferramenas nativas, scripts para tweaks ou resolução de problemas frequentes. 
 
@@ -88,3 +88,7 @@ FieldTools/
 │   └── Apps.ps1         # Instalador via Winget
 ├── Start.ps1            # Entry Point (Bootstrapper + Admin Check)
 └── README.md
+
+---
+
+v2.0
