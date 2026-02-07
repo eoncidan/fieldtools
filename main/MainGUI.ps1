@@ -262,7 +262,7 @@ function Render-Page {
         "Ferramentas"  { Render-Ferramentas }
         "Scripts"      { Render-ScriptsLib -RootPath $script:ProjectRoot }
         "Apps"         { Render-Apps }
-        #"Desempenho"   { }
+        #"Relatorios"   { }
     }
 }
 
@@ -295,12 +295,13 @@ Add-MenuButton "Sistema" 60
 Add-MenuButton "Apps" 105
 Add-MenuButton "Ferramentas" 150
 Add-MenuButton "Scripts" 195
-#Add-MenuButton "Desempenho" 240
+#Add-MenuButton "Relatorios" 240
 
 # Inicialização
 Render-Page -PageName "Sistema" # Pagina de Inicialização.
 
 [void]$Form.ShowDialog()
+
 
 
 
