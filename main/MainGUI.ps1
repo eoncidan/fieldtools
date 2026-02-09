@@ -39,8 +39,8 @@ $btnClose = New-Object System.Windows.Forms.Button; $btnClose.Text = "X"; $btnCl
 $btnClose.Add_Click({ $Form.Close() }); $btnClose.Add_MouseEnter({ $btnClose.BackColor = [System.Drawing.Color]::Red }); $btnClose.Add_MouseLeave({ $btnClose.BackColor = $ColorDark }); $TopBar.Controls.Add($btnClose)
 
 # LOGICA DE ARRASTO DE JANELA (DRAG)
-$TopBar.Add_MouseDown({ $script:isDragging = $true; $script:dragStartPoint = $_.Location })
-$TopBar.Add_MouseMove({ if ($script:isDragging) { $p = [System.Windows.Forms.Cursor]::Position; $Form.Location = New-Object System.Drawing.Point(($p.X - $script:dragStartPoint.X), ($p.Y - $script:dragStartPoint.Y)) } })
+$TopBar.Add_MouseDown({$script:isDragging = $true; $cursorPos = [System.Windows.Forms.Cursor]::Position; $script:dragOffset = New-Object System.Drawing.Point(($cursorPos.X - $Form.Location.X), ($cursorPos.Y - $Form.Location.Y))})
+$TopBar.Add_MouseMove({if ($script:isDragging) { $cursorPos = [System.Windows.Forms.Cursor]::Position; $Form.Location = New-Object System.Drawing.Point(($cursorPos.X - $script:dragOffset.X), ($cursorPos.Y - $script:dragOffset.Y))}})
 $TopBar.Add_MouseUp({ $script:isDragging = $false })
 
 # SIDEBAR (BARRA LATERAL)
@@ -302,4 +302,5 @@ Add-MenuButton "Relatórios" 240
 Render-Page -PageName "Sistema" # Pagina de Inicialização.
 
 [void]$Form.ShowDialog()
+
 
