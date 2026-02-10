@@ -3,7 +3,7 @@
 O **Field Tools** é uma central utilitária modular desenvolvida em **PowerShell** com interface gráfica (WinForms). O projeto consolida diagnósticos de hardware, atalhos administrativos e uma biblioteca de scripts dinâmicos em um único painel, eliminando a navegação manual repetitiva durante o suporte técnico.
 
 <p align="center">
-  <img width="976" height="567" alt="image" src="https://github.com/user-attachments/assets/19fd7609-1073-470b-a1fa-46a6a7af7156" />
+  <img width="977" height="558" alt="image" src="https://github.com/user-attachments/assets/6b7909a5-2cd2-4754-aec9-6f3da58e7233" />
   <img src="https://img.shields.io/badge/PowerShell-5.1+-blue.svg?style=for-the-badge&logo=powershell&logoColor=white" />
   <img src="https://img.shields.io/badge/license-MIT-green?style=for-the-badge" />
   <img src="https://img.shields.io/badge/Platform-Windows-0078D6?style=for-the-badge&logo=windows&logoColor=white" />
@@ -48,6 +48,11 @@ Integração direta com o **Winget** para instalação silenciosa de utilitário
 * **Lista atual:** Notepad++, WinToys, HWMonitor, GPU-Z, AutoHotkey, 7-Zip, Lightshot, WO Mic Client e LibreOffice.
 * Feedback visual de instalação e interface com rolagem automática.
 
+### 5. 📊 Relatórios (`Relatorios.ps1`)
+Extrator de dados e inventário:
+* Extrai as informações coletadas pelo módulo Sistema (Hardware, SO e Rede) em um arquivo consolidado.
+* Exportação: Gera arquivos de saída (ex: .html para visualização ou .csv/.txt para logs) salvos localmente.
+
 ---
 
 ## 🚀 Como Usar
@@ -84,6 +89,7 @@ FieldTools/
 ├── Pages/               # Módulos da interface
 │   ├── Sistema.ps1      # Coleta de dados de hardware (Async)
 │   ├── Ferramentas.ps1  # Launchers nativos do Windows
+│   ├── Relatorios.ps1   # Extrator de relatorios do sistema
 │   ├── ScriptsLib.ps1   # Leitor dinâmico da pasta Lib
 │   └── Apps.ps1         # Instalador via Winget
 ├── Start.ps1            # Entry Point (Bootstrapper + Admin Check)
