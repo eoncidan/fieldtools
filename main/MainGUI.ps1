@@ -14,7 +14,7 @@ $ProjectRoot = Split-Path $PSScriptRoot -Parent
 . "$ProjectRoot\Pages\Ferramentas.ps1"
 . "$ProjectRoot\Pages\Apps.ps1"
 . "$ProjectRoot\Pages\ScriptsLib.ps1"
-. "$ProjectRoot\Pages\Relatorios.ps1"
+#. "$ProjectRoot\Pages\Relatorios.ps1"
 
 # CONFIGURAÇÕES VISUAIS
 $ColorDark      = [System.Drawing.ColorTranslator]::FromHtml("#121212")
@@ -263,7 +263,7 @@ function Render-Page {
         "Ferramentas"  { Render-Ferramentas }
         "Scripts"      { Render-ScriptsLib -RootPath $script:ProjectRoot }
         "Apps"         { Render-Apps }
-        "Relatorios"   { Render-Relatorios }
+        #"Relatorios"   { Render-Relatorios }
     }
 }
 
@@ -295,7 +295,7 @@ function Add-MenuButton {
 Add-MenuButton "Sistema" 60
 Add-MenuButton "Apps" 105
 Add-MenuButton "Ferramentas" 150
-Add-MenuButton "Relatórios" 195
+#Add-MenuButton "Relatórios" 195
 Add-MenuButton "Scripts" 240
 
 # Inicialização
