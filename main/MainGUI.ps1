@@ -105,6 +105,44 @@ function Add-GCard {
     $script:ContentPanel.Controls.Add($GCard)
 }
 
+# Add-GerarRelatorio = Botao para extrair os relatorios.
+function Add-GerarRelatorio {
+    param($Relatorio, $Comando, $Desc, $ParentPanel)
+
+    $AppRow = New-Object System.Windows.Forms.Panel
+    $AppRow.Size = New-Object System.Drawing.Size(760, 50)
+    $AppRow.Margin = New-Object System.Windows.Forms.Padding(0, 0, 0, 10)
+    $AppRow.BackColor = $ColorLContent
+
+    # Botão Extrair Relatorio
+    $btnExtrair = New-Object System.Windows.Forms.Button
+    $btnExtrair.Text = "Extrair"
+    $btnExtrair.Size = New-Object System.Drawing.Size(100, 30)
+    $btnExtrair.Location = New-Object System.Drawing.Point(10, 10)
+    $btnExtrair.FlatStyle = "Flat"
+    $btnExtrair.BackColor = $ColorDark
+    $btnExtrair.ForeColor = $ColorText
+    $btnExtrair.FlatAppearance.BorderSize = 0	
+    $btnExtrair.Cursor = [System.Windows.Forms.Cursors]::Hand
+    $btnExtrair.Add_Click({ 
+    if ($script:Comando) { 
+        Start-Process $script:Comando -ErrorAction Stop 
+    } else {
+        [System.Windows.Forms.MessageBox]::Show("A variável Comando está vazia!")
+    }
+})
+
+    # Descrição
+    $descRelat = New-Object System.Windows.Forms.Label
+    $descRelat.Text = "$Relatorio - $Desc"
+    $descRelat.Font = New-Object System.Drawing.Font("Segoe UI", 10, [System.Drawing.FontStyle]::Bold)
+    $descRelat.Location = New-Object System.Drawing.Point(120, 15)
+    $descRelat.AutoSize = $true
+    $descRelat.ForeColor = $ColorText
+
+    $AppRow.Controls.AddRange(@($btnExtrair, $descRelat)); $ParentPanel.Controls.Add($AppRow)
+}
+
 # Add-Launcher = Botão com texto+input.
 function Add-Launcher {
     param($Text, $Command, $X, $Y)
@@ -302,6 +340,7 @@ Add-MenuButton "Scripts" 240
 Render-Page -PageName "Sistema" # Pagina de Inicialização.
 
 [void]$Form.ShowDialog()
+
 
 
 
