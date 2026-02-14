@@ -48,7 +48,7 @@ $Sidebar = New-Object System.Windows.Forms.Panel; $Sidebar.Width = 150; $Sidebar
 $ContentPanel = New-Object System.Windows.Forms.Panel; $ContentPanel.Dock = "Fill"; $ContentPanel.BackColor = $ColorContent; $ContentPanel.Padding = New-Object System.Windows.Forms.Padding(20); $Form.Controls.Add($ContentPanel); $ContentPanel.BringToFront()
 
 # TELA DE LOADING
-function Exec-JanelaLoad {
+function Global:Exec-JanelaLoad {
 # Gera a janela de loading.
 $script:JanelaExec = New-Object System.Windows.Forms.Form; $script:JanelaExec.Size = New-Object System.Drawing.Size(300, 60); $script:JanelaExec.StartPosition = "CenterScreen"; $script:JanelaExec.FormBorderStyle = "None"; $script:JanelaExec.BackColor = $ColorContent
 $script:JanelaStatus = New-Object System.Windows.Forms.Label; $script:JanelaStatus.Location = New-Object System.Drawing.Point(10, 10); $script:JanelaStatus.Size = New-Object System.Drawing.Size(280, 20); $script:JanelaStatus.Text = "Executando tarefa..."; $script:JanelaStatus.Font = New-Object System.Drawing.Font("Segoe UI", 11); $script:JanelaStatus.ForeColor = $ColorText; $script:JanelaStatus.TextAlign = "MiddleCenter"
@@ -56,13 +56,11 @@ $script:JanelaProgresso = New-Object System.Windows.Forms.ProgressBar; $script:J
 $script:JanelaExec.Controls.AddRange(@($script:JanelaProgresso, $script:JanelaStatus))
 # Exibir a Janela de loading.
 $script:JanelaExec.Show(); $script:JanelaExec.TopMost = $true
-[System.Windows.Forms.Application]::DoEvents()
 }
 
-function Exec-FecharJanelaLoad {
+function Global:Exec-FecharJanelaLoad {
 # Informa a finalizacao da tarefa.
 $script:JanelaStatus.Text = "Finalizado!"; $script:JanelaProgresso.ForeColor = "#009933"; $script:JanelaProgresso.Value = 100
-[System.Windows.Forms.Application]::DoEvents()
 Start-Sleep -Seconds 1
 # Fecha janela de loading.
 $script:JanelaExec.Close()
@@ -232,7 +230,7 @@ function Add-LCard {
 
 # Add-WingetApp = Botao instalar e descricao.
 function Add-WingetApp {
-    param($AppName, $WingetID, $Description, $ParentPanel)
+    param($ParentPanel, $AppName, $WingetID, $Description)
 
     $AppRow = New-Object System.Windows.Forms.Panel
     $AppRow.Size = New-Object System.Drawing.Size(760, 50)
@@ -253,8 +251,10 @@ function Add-WingetApp {
     $btnInstall.Add_Click({
         $this.Enabled = $false
         $this.Text = "..."
-        Start-Process "winget" -ArgumentList "install --id $WingetID --silent --accept-package-agreements --accept-source-agreements" -Wait -WindowStyle Hidden
-        $this.Text = [System.Windows.Forms.MessageBox]::Show("Finalizada a instalação do $WingetID!")
+        Exec-JanelaLoad
+		Start-Process "winget" -ArgumentList "install --id $WingetID --silent --accept-package-agreements --accept-source-agreements" -Wait -WindowStyle Hidden
+		Exec-FecharJanelaLoad
+        $this.Text = "Instalado"
         $this.BackColor = [System.Drawing.Color]::Green
     }.GetNewClosure())
 
@@ -351,6 +351,7 @@ Add-MenuButton "Scripts" 240
 Render-Page -PageName "Sistema" # Pagina de Inicialização.
 
 [void]$Form.ShowDialog()
+
 
 
 
