@@ -254,7 +254,7 @@ function Add-WingetApp {
         $this.Enabled = $false
         $this.Text = "..."
         Start-Process "winget" -ArgumentList "install --id $WingetID --silent --accept-package-agreements --accept-source-agreements" -Wait -WindowStyle Hidden
-        $this.Text = "Instalado!"
+        $this.Text = [System.Windows.Forms.MessageBox]::Show("Finalizada a instalação do $WingetID!")
         $this.BackColor = [System.Drawing.Color]::Green
     }.GetNewClosure())
 
@@ -266,7 +266,8 @@ function Add-WingetApp {
     $lblApp.AutoSize = $true
     $lblApp.ForeColor = $ColorText
 
-    $AppRow.Controls.AddRange(@($btnInstall, $lblApp))
+    $AppRow.Controls.Add($btnInstall)
+    $AppRow.Controls.Add($lblApp)
     $ParentPanel.Controls.Add($AppRow)
 }
 
@@ -311,7 +312,7 @@ function Render-Page {
         "Ferramentas"  { Render-Ferramentas }
         "Scripts"      { Render-ScriptsLib -RootPath $script:ProjectRoot }
         "Apps"         { Render-Apps }
-        "Relatorios"   { Render-Relatorios }
+        "Relatórios"   { Render-Relatorios }
     }
 }
 
@@ -330,7 +331,7 @@ function Add-MenuButton {
     $btn.Cursor = [System.Windows.Forms.Cursors]::Hand
     $btn.Tag = $Text
     $btn.Add_Click({ 
-    Render-Page -PageName $this.Tag 
+    	Render-Page -PageName $this.Tag 
     })
     
     $btn.Add_MouseEnter({ $this.BackColor = $ColorLDark })
@@ -350,5 +351,6 @@ Add-MenuButton "Scripts" 240
 Render-Page -PageName "Sistema" # Pagina de Inicialização.
 
 [void]$Form.ShowDialog()
+
 
 
