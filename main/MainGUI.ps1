@@ -14,7 +14,7 @@ $ProjectRoot = Split-Path $PSScriptRoot -Parent
 . "$ProjectRoot\Pages\Ferramentas.ps1"
 . "$ProjectRoot\Pages\Apps.ps1"
 . "$ProjectRoot\Pages\ScriptsLib.ps1"
-#. "$ProjectRoot\Pages\Relatorios.ps1"
+. "$ProjectRoot\Pages\Relatorios.ps1"
 
 # CONFIGURAÇÕES VISUAIS
 $ColorDark      = [System.Drawing.ColorTranslator]::FromHtml("#121212")
@@ -161,20 +161,16 @@ function Add-Launcher {
     $btn.Add_Click({ 
         try { 
             $CommandString = $this.Tag
-            
             if ($CommandString -match "^(\S+)\s+(.*)$") {
-                Start-Process -FilePath $matches[1] -ArgumentList $matches[2] -ErrorAction Stop
-            }
+                Start-Process -FilePath $matches[1] -ArgumentList $matches[2] -ErrorAction Stop}
             else {
-                Start-Process $CommandString -ErrorAction Stop
-            }
+                Start-Process $CommandString -ErrorAction Stop}
         } 
         catch { [System.Windows.Forms.MessageBox]::Show("Erro ao abrir: $_", "Erro") }
     })
 
     $btn.Add_MouseEnter({ $this.BackColor = $ColorLDark })
     $btn.Add_MouseLeave({ $this.BackColor = $ColorDark })
-
     $script:ContentPanel.Controls.Add($btn)
 }
 
@@ -255,8 +251,7 @@ function Add-WingetApp {
     $lblApp.AutoSize = $true
     $lblApp.ForeColor = $ColorText
 
-    $AppRow.Controls.Add($btnInstall)
-    $AppRow.Controls.Add($lblApp)
+    $AppRow.Controls.AddRange(@($btnInstall, $lblApp))
     $ParentPanel.Controls.Add($AppRow)
 }
 
@@ -301,7 +296,7 @@ function Render-Page {
         "Ferramentas"  { Render-Ferramentas }
         "Scripts"      { Render-ScriptsLib -RootPath $script:ProjectRoot }
         "Apps"         { Render-Apps }
-        #"Relatorios"   { Render-Relatorios }
+        "Relatorios"   { Render-Relatorios }
     }
 }
 
@@ -320,7 +315,7 @@ function Add-MenuButton {
     $btn.Cursor = [System.Windows.Forms.Cursors]::Hand
     $btn.Tag = $Text
     $btn.Add_Click({ 
-        Render-Page -PageName $this.Tag 
+    Render-Page -PageName $this.Tag 
     })
     
     $btn.Add_MouseEnter({ $this.BackColor = $ColorLDark })
@@ -333,13 +328,14 @@ function Add-MenuButton {
 Add-MenuButton "Sistema" 60
 Add-MenuButton "Apps" 105
 Add-MenuButton "Ferramentas" 150
-#Add-MenuButton "Relatórios" 195
+Add-MenuButton "Relatórios" 195
 Add-MenuButton "Scripts" 240
 
 # Inicialização
 Render-Page -PageName "Sistema" # Pagina de Inicialização.
 
 [void]$Form.ShowDialog()
+
 
 
 
