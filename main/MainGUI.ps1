@@ -17,10 +17,10 @@ $ProjectRoot = Split-Path $PSScriptRoot -Parent
 . "$ProjectRoot\Pages\Relatorios.ps1"
 
 # CONFIGURAÇÕES VISUAIS
-$ColorDark      = [System.Drawing.ColorTranslator]::FromHtml("#121212")
-$ColorLDark     = [System.Drawing.ColorTranslator]::FromHtml("#565656")
-$ColorContent   = [System.Drawing.ColorTranslator]::FromHtml("#191919")
-$ColorLContent  = [System.Drawing.ColorTranslator]::FromHtml("#323232")
+$ColorDark      = [System.Drawing.ColorTranslator]::FromHtml("#121212") # Cor da barra de navegacao.
+$ColorLDark     = [System.Drawing.ColorTranslator]::FromHtml("#565656") # Cor das labels secundarias de texto.
+$ColorContent   = [System.Drawing.ColorTranslator]::FromHtml("#191919") # Cor de fundo das paginas.
+$ColorLContent  = [System.Drawing.ColorTranslator]::FromHtml("#323232") # Cor das labels de texto.
 $ColorText      = [System.Drawing.Color]::White
 $FontTitle      = New-Object System.Drawing.Font("Segoe UI", 12, [System.Drawing.FontStyle]::Bold)
 
@@ -47,8 +47,29 @@ $TopBar.Add_MouseUp({ $script:isDragging = $false })
 $Sidebar = New-Object System.Windows.Forms.Panel; $Sidebar.Width = 150; $Sidebar.Dock = "Left"; $Sidebar.BackColor = $ColorDark; $Form.Controls.Add($Sidebar)
 $ContentPanel = New-Object System.Windows.Forms.Panel; $ContentPanel.Dock = "Fill"; $ContentPanel.BackColor = $ColorContent; $ContentPanel.Padding = New-Object System.Windows.Forms.Padding(20); $Form.Controls.Add($ContentPanel); $ContentPanel.BringToFront()
 
-# FUNÇÕES VISUAIS
+# TELA DE LOADING
+function Exec-JanelaLoad {
+# Gera a janela de loading.
+$script:JanelaExec = New-Object System.Windows.Forms.Form; $script:JanelaExec.Size = New-Object System.Drawing.Size(300, 60); $script:JanelaExec.StartPosition = "CenterScreen"; $script:JanelaExec.FormBorderStyle = "None"; $script:JanelaExec.BackColor = $ColorContent
+$script:JanelaStatus = New-Object System.Windows.Forms.Label; $script:JanelaStatus.Location = New-Object System.Drawing.Point(10, 10); $script:JanelaStatus.Size = New-Object System.Drawing.Size(280, 20); $script:JanelaStatus.Text = "Executando tarefa..."; $script:JanelaStatus.Font = New-Object System.Drawing.Font("Segoe UI", 11); $script:JanelaStatus.ForeColor = $ColorText; $script:JanelaStatus.TextAlign = "MiddleCenter"
+$script:JanelaProgresso = New-Object System.Windows.Forms.ProgressBar; $script:JanelaProgresso.Location = New-Object System.Drawing.Point(25, 30); $script:JanelaProgresso.Size = New-Object System.Drawing.Size(250, 20); $script:JanelaProgresso.Style = "Continuous" ; $script:JanelaProgresso.ForeColor = $ColorText; $script:JanelaProgresso.Maximum = 100; $script:JanelaProgresso.Value = 0
+$script:JanelaExec.Controls.AddRange(@($script:JanelaProgresso, $script:JanelaStatus))
+# Exibir a Janela de loading.
+$script:JanelaExec.Show(); $script:JanelaExec.TopMost = $true
+[System.Windows.Forms.Application]::DoEvents()
+}
 
+function Exec-FecharJanelaLoad {
+# Informa a finalizacao da tarefa.
+$script:JanelaStatus.Text = "Finalizado!"; $script:JanelaProgresso.ForeColor = "#009933"; $script:JanelaProgresso.Value = 100
+[System.Windows.Forms.Application]::DoEvents()
+Start-Sleep -Seconds 1
+# Fecha janela de loading.
+$script:JanelaExec.Close()
+$script:JanelaExec.Dispose()
+}
+
+# FUNÇÕES VISUAIS
 # Add-Card = Card pequeno para informações.
 function Add-Card {
     param($Title, $Value, $X, $Y)
@@ -107,7 +128,7 @@ function Add-GCard {
 
 # Add-GerarRelatorio = Botao para extrair os relatorios.
 function Add-GerarRelatorio {
-    param($Relatorio, $Comando, $Desc, $ParentPanel)
+    param($ParentPanel, $Relatorio, [ScriptBlock]$Func)
 
     $AppRow = New-Object System.Windows.Forms.Panel
     $AppRow.Size = New-Object System.Drawing.Size(760, 50)
@@ -124,17 +145,11 @@ function Add-GerarRelatorio {
     $btnExtrair.ForeColor = $ColorText
     $btnExtrair.FlatAppearance.BorderSize = 0	
     $btnExtrair.Cursor = [System.Windows.Forms.Cursors]::Hand
-    $btnExtrair.Add_Click({ 
-    if ($script:Comando) { 
-        Start-Process $script:Comando -ErrorAction Stop 
-    } else {
-        [System.Windows.Forms.MessageBox]::Show("A variável Comando está vazia!")
-    }
-})
+    $btnExtrair.Add_Click($Func)
 
     # Descrição
     $descRelat = New-Object System.Windows.Forms.Label
-    $descRelat.Text = "$Relatorio - $Desc"
+    $descRelat.Text = "$Relatorio"
     $descRelat.Font = New-Object System.Drawing.Font("Segoe UI", 10, [System.Drawing.FontStyle]::Bold)
     $descRelat.Location = New-Object System.Drawing.Point(120, 15)
     $descRelat.AutoSize = $true
@@ -335,8 +350,5 @@ Add-MenuButton "Scripts" 240
 Render-Page -PageName "Sistema" # Pagina de Inicialização.
 
 [void]$Form.ShowDialog()
-
-
-
 
 
