@@ -14,8 +14,8 @@ function Rel-Bateria {
 # Chama a janela de loading.
 Exec-JanelaLoad; $script:JanelaProgresso.Value = 30
 # Codigo da tarefa que a função executa.
-powercfg /batteryreport /output "$Relatorios\Saude_Bateria.html"; $script:JanelaProgresso.Value = 60
-powercfg /energy /output "$Relatorios\Eficiencia_Energia.html" /duration 5; $script:JanelaProgresso.Value = 80
+powercfg /batteryreport /output "$env:USERPROFILE\Desktop\Relatorios\Saude_Bateria.html"; $script:JanelaProgresso.Value = 60
+powercfg /energy /output "$env:USERPROFILE\Desktop\Relatorios\Eficiencia_Energia.html" /duration 5; $script:JanelaProgresso.Value = 80
 # Fecha a janela de loading.
 Exec-FecharJanelaLoad
 }
@@ -33,4 +33,5 @@ function Render-Relatorios {
     #Add-GerarRelatorio -ParentPanel $BS -Relatorio "Rede" -Func {Rel-Rede}
 
 }
+
 
