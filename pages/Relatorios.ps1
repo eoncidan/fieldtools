@@ -2,17 +2,20 @@
 
 # A aba Relatorios centraliza as funcoes de extracao de relatorios.
 
+# Cria pasta Relatorios no Desktop.
+function Fol-Relatorios {
+	# Variavel da pasta de relatorios, cria uma caso nao exista.
+	$Relatorios = "$env:USERPROFILE\Desktop\Relatorios"
+	if (!(Test-Path $Relatorios)) { New-Item -ItemType Directory -Path $Relatorios }
+}
+
 # Relatorio de status da bateria.
 function Rel-Bateria {
 # Chama a janela de loading.
-Exec-JanelaLoad
-$script:JanelaProgresso.Value = 30
+Exec-JanelaLoad; $script:JanelaProgresso.Value = 30
 # Codigo da tarefa que a função executa.
-$Relatorios = "$env:USERPROFILE\Desktop\Relatorios"; if (!(Test-Path $Relatorios)) { New-Item -ItemType Directory -Path $Relatorios }
-powercfg /batteryreport /output "$Relatorios\Saude_Bateria.html"
-$script:JanelaProgresso.Value = 60
-powercfg /energy /output "$Relatorios\Eficiencia_Energia.html" /duration 5
-
+powercfg /batteryreport /output "$Relatorios\Saude_Bateria.html"; $script:JanelaProgresso.Value = 60
+powercfg /energy /output "$Relatorios\Eficiencia_Energia.html" /duration 5; $script:JanelaProgresso.Value = 80
 # Fecha a janela de loading.
 Exec-FecharJanelaLoad
 }
@@ -30,3 +33,4 @@ function Render-Relatorios {
     #Add-GerarRelatorio -ParentPanel $BS -Relatorio "Rede" -Func {Rel-Rede}
 
 }
+
