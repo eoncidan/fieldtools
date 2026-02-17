@@ -9,6 +9,38 @@ function Fol-Relatorios {
 	if (!(Test-Path $Relatorios)) { New-Item -ItemType Directory -Path $Relatorios }
 }
 
+# Relatorio teste, informacões de rede.
+function Rel-Rede {
+	# Loading.
+    Exec-JanelaLoad
+	# Script de relatorio.
+    try {
+        $CaminhoPasta = Fol-Relatorios
+        $arquivo = Join-Path $CaminhoPasta "Relatorio_Rede.txt"
+
+        if (!(Test-Path $CaminhoPasta)) { New-Item -ItemType Directory -Path $CaminhoPasta -Force | Out-Null }
+
+        $relatorio = @()
+        $relatorio += "=== RELATÓRIO DE REDE - $(Get-Date) ==="
+        $relatorio += "`n--- ADAPTADORES (Resumo) ---"
+        $relatorio += Get-NetAdapter | Select-Object Name, InterfaceDescription, Status, MacAddress | Out-String   
+        $relatorio += "`n--- DETALHES IP (IPConfig) ---"
+        $relatorio += ipconfig /all | Out-String
+        $relatorio += "`n--- TESTE DE CONEXÃO (Google DNS) ---"
+        $relatorio += Test-Connection 8.8.8.8 -Count 4 -ErrorAction SilentlyContinue | Select-Object Address, ResponseTime, Status | Out-String
+        $relatorio | Set-Content -Path $arquivo -Encoding UTF8
+        
+        return $arquivo
+
+    } catch {
+		# Info erro.
+        Write-Error "Erro ao gerar relatório: $_"
+    } finally {
+		# Fecha Loading.
+        Exec-FecharJanelaLoad
+    }
+}
+
 # Relatorio de status da bateria.
 function Rel-Bateria {
 	# Chama a janela de loading.
@@ -33,9 +65,10 @@ function Render-Relatorios {
     Add-GCard -Title "RELATORIOS" -Value "Em desenvolvimento." -X 420 -Y 70
 
     Add-GerarRelatorio -ParentPanel $BS -Relatorio "Bateria" -Func {Rel-Bateria}
-    #Add-GerarRelatorio -ParentPanel $BS -Relatorio "Rede" -Func {Rel-Rede}
+    Add-GerarRelatorio -ParentPanel $BS -Relatorio "Rede" -Func {Rel-Rede}
 
 }
+
 
 
 
