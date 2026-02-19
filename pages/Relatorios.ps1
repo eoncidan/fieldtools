@@ -22,11 +22,11 @@ function Rel-Rede {
 
         $relatorio = @()
         $relatorio += "=== RELATÓRIO DE REDE - $(Get-Date) ==="
-        $relatorio += "`n--- ADAPTADORES (Resumo) ---"
+        $relatorio += "`n--- ADAPTADORES ---"
         $relatorio += Get-NetAdapter | Select-Object Name, InterfaceDescription, Status, MacAddress | Out-String   
-        $relatorio += "`n--- DETALHES IP (IPConfig) ---"
+        $relatorio += "`n--- DETALHES IP ---"
         $relatorio += ipconfig /all | Out-String
-        $relatorio += "`n--- TESTE DE CONEXÃO (Google DNS) ---"
+        $relatorio += "`n--- TESTE DE CONEXÃO ---"
         $relatorio += Test-Connection 8.8.8.8 -Count 4 -ErrorAction SilentlyContinue | Select-Object Address, ResponseTime, Status | Out-String
         $relatorio | Set-Content -Path $arquivo -Encoding UTF8
         
@@ -68,6 +68,7 @@ function Render-Relatorios {
     Add-GerarRelatorio -ParentPanel $BS -Relatorio "Rede" -Func {Rel-Rede}
 
 }
+
 
 
 
