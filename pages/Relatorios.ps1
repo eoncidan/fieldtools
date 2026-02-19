@@ -29,6 +29,9 @@ function Rel-Rede {
         $relatorio += "`n--- TESTE DE CONEXÃO ---"
         $relatorio += Test-Connection 8.8.8.8 -Count 4 -ErrorAction SilentlyContinue | Select-Object Address, ResponseTime, Status | Out-String
         $relatorio | Set-Content -Path $arquivo -Encoding UTF8
+
+		netsh wlan show wlanreport
+		Move-Item -Path "C:\ProgramData\Microsoft\Windows\WlanReport\wlan-report-latest.html" -Destination "$env:USERPROFILE\Desktop\Relatorios\Relatorio_WLAN.html" -Force		
         
         return $arquivo
 
@@ -68,6 +71,7 @@ function Render-Relatorios {
     Add-GerarRelatorio -ParentPanel $BS -Relatorio "Rede" -Func {Rel-Rede}
 
 }
+
 
 
 
