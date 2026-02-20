@@ -4,8 +4,8 @@
 
 # Cria pasta Relatorios no Desktop.
 function Fol-Relatorios {
-	$Relatorios = "$env:USERPROFILE\Desktop\Relatorios"
-	if (!(Test-Path $Relatorios)) { New-Item -ItemType Directory -Path $Relatorios }
+	$script:Relatorios = "$env:USERPROFILE\Desktop\Relatorios"
+	if (!(Test-Path $script:Relatorios)) { New-Item -ItemType Directory -Path $script:Relatorios }
 }
 
 # Relatorio de informacões da rede.
@@ -17,7 +17,7 @@ function Rel-Rede {
 	# Codigo do relatorio.
 	Fol-Relatorios
 	netsh wlan show wlanreport
-	Move-Item -Path "C:\ProgramData\Microsoft\Windows\WlanReport\wlan-report-latest.html" -Destination "$env:USERPROFILE\Desktop\Relatorios\Relatorio_WLAN.html" -Force
+	Move-Item -Path "C:\ProgramData\Microsoft\Windows\WlanReport\wlan-report-latest.html" -Destination "$script:Relatorios\Relatorio_WLAN.html" -Force
 	$script:JanelaProgresso.Value = 60
 @"
 === CONFIGURAÇÕES DE REDE - $(Get-Date) ===
@@ -27,7 +27,7 @@ $(Get-NetAdapter -ErrorAction SilentlyContinue | Select-Object Name, InterfaceDe
 
 --- DETALHES DE IP (IPCONFIG) ---
 $(ipconfig /all | Out-String)
-"@ | Set-Content -Path "$env:USERPROFILE\Desktop\Relatorios\Configuracoes_Rede.txt" -Encoding UTF8	
+"@ | Set-Content -Path "$script:Relatorios\Configuracoes_Rede.txt" -Encoding UTF8	
 
 	# Fecha a janela de loading.
 	Exec-FecharJanelaLoad
@@ -40,9 +40,9 @@ function Rel-Bateria {
 	$script:JanelaProgresso.Value = 30
 	# Codigo do relatorio.
 	Fol-Relatorios
-	powercfg /batteryreport /output "$env:USERPROFILE\Desktop\Relatorios\Saude_Bateria.html"
+	powercfg /batteryreport /output "$script:Relatorios\Saude_Bateria.html"
 	$script:JanelaProgresso.Value = 60
-	powercfg /energy /output "$env:USERPROFILE\Desktop\Relatorios\Eficiencia_Energia.html" /duration 5
+	powercfg /energy /output "$script:Relatorios\Eficiencia_Energia.html" /duration 5
 	# Fecha a janela de loading.
 	Exec-FecharJanelaLoad
 }
@@ -60,6 +60,7 @@ function Render-Relatorios {
     Add-GerarRelatorio -ParentPanel $BS -Relatorio "Rede" -Func {Rel-Rede}
 
 }
+
 
 
 
