@@ -4,44 +4,33 @@
 
 # Cria pasta Relatorios no Desktop.
 function Fol-Relatorios {
-	# Variavel da pasta de relatorios, cria uma caso nao exista.
 	$Relatorios = "$env:USERPROFILE\Desktop\Relatorios"
 	if (!(Test-Path $Relatorios)) { New-Item -ItemType Directory -Path $Relatorios }
 }
 
-# Relatorio teste, informacões de rede.
+# Relatorio de informacões da rede.
 function Rel-Rede {
-	# Loading.
+	# Chama a janela de loading.	
     Exec-JanelaLoad
-	# Script de relatorio.
-    try {
-        $CaminhoPasta = Fol-Relatorios
-        $arquivo = Join-Path $CaminhoPasta "Relatorio_Rede.txt"
+	$script:JanelaProgresso.Value = 30	
+	
+	# Codigo do relatorio.
+	Fol-Relatorios
+	netsh wlan show wlanreport
+	Move-Item -Path "C:\ProgramData\Microsoft\Windows\WlanReport\wlan-report-latest.html" -Destination "$env:USERPROFILE\Desktop\Relatorios\Relatorio_WLAN.html" -Force
+	$script:JanelaProgresso.Value = 60
+@"
+=== CONFIGURAÇÕES DE REDE - $(Get-Date) ===
 
-        if (!(Test-Path $CaminhoPasta)) { New-Item -ItemType Directory -Path $CaminhoPasta -Force | Out-Null }
+--- ADAPTADORES DE REDE ---
+$(Get-NetAdapter -ErrorAction SilentlyContinue | Select-Object Name, InterfaceDescription, Status, MacAddress | Out-String)
 
-        $relatorio = @()
-        $relatorio += "=== RELATÓRIO DE REDE - $(Get-Date) ==="
-        $relatorio += "`n--- ADAPTADORES ---"
-        $relatorio += Get-NetAdapter | Select-Object Name, InterfaceDescription, Status, MacAddress | Out-String   
-        $relatorio += "`n--- DETALHES IP ---"
-        $relatorio += ipconfig /all | Out-String
-        $relatorio += "`n--- TESTE DE CONEXÃO ---"
-        $relatorio += Test-Connection 8.8.8.8 -Count 4 -ErrorAction SilentlyContinue | Select-Object Address, ResponseTime, Status | Out-String
-        $relatorio | Set-Content -Path $arquivo -Encoding UTF8
+--- DETALHES DE IP (IPCONFIG) ---
+$(ipconfig /all | Out-String)
+"@ | Set-Content -Path "$env:USERPROFILE\Desktop\Relatorios\Configuracoes_Rede.txt" -Encoding UTF8	
 
-		netsh wlan show wlanreport
-		Move-Item -Path "C:\ProgramData\Microsoft\Windows\WlanReport\wlan-report-latest.html" -Destination "$env:USERPROFILE\Desktop\Relatorios\Relatorio_WLAN.html" -Force		
-        
-        return $arquivo
-
-    } catch {
-		# Info erro.
-        Write-Error "Erro ao gerar relatório: $_"
-    } finally {
-		# Fecha Loading.
-        Exec-FecharJanelaLoad
-    }
+	# Fecha a janela de loading.
+	Exec-FecharJanelaLoad
 }
 
 # Relatorio de status da bateria.
@@ -71,6 +60,7 @@ function Render-Relatorios {
     Add-GerarRelatorio -ParentPanel $BS -Relatorio "Rede" -Func {Rel-Rede}
 
 }
+
 
 
 
