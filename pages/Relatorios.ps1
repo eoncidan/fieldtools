@@ -13,22 +13,27 @@ function Fol-Relatorios {
 function Rel-Rede {
 	# Chama a janela de loading.	
     Exec-JanelaLoad
-	$script:JanelaProgresso.Value = 30	
+	$script:JanelaProgresso.Value = 20	
 	
 	# Codigo do relatorio.
 	Fol-Relatorios
 	netsh wlan show wlanreport
 	Move-Item -Path "C:\ProgramData\Microsoft\Windows\WlanReport\wlan-report-latest.html" -Destination "$script:Relatorios\Relatorio_WLAN.html" -Force
-	$script:JanelaProgresso.Value = 60
-@"
-=== CONFIGURAÇÕES DE REDE - $(Get-Date) ===
+	$script:JanelaProgresso.Value = 50
 
---- ADAPTADORES DE REDE ---
-$(Get-NetAdapter -ErrorAction SilentlyContinue | Select-Object Name, InterfaceDescription, Status, MacAddress | Out-String)
-
---- DETALHES DE IP (IPCONFIG) ---
-$(ipconfig /all | Out-String)
-"@ | Set-Content -Path "$script:Relatorios\Configuracoes_Rede.txt" -Encoding UTF8	
+    $Arquivo = "$script:Relatorios\Relatorio_Redes.txt" 
+	"================ RELATÓRIO DE REDE - $(Get-Date) ===" | Out-File $Arquivo
+	"================ ADAPTADORES DE REDE ================" | Out-File $Arquivo -Append
+	Get-NetAdapter -ErrorAction SilentlyContinue | Select-Object Name, InterfaceDescription, Status, MacAddress | Out-String | Out-File $Arquivo -Append
+	"================ DETALHES DE IP ================" | Out-File $Arquivo -Append
+	ipconfig /all | Out-String | Out-File $Arquivo -Append
+    "================ PING E LATÊNCIA  ================" | Out-File $Arquivo -Append
+    Test-NetConnection 8.8.8.8 -InformationLevel Detailed | Select-Object ComputerName, PingSucceeded, PingReplyDetails | Format-List | Out-File $Arquivo -Append
+    "================ RESOLUÇÃO DNS ================" | Out-File $Arquivo -Append
+    Resolve-DnsName google.com -Type A -ErrorAction SilentlyContinue | Select-Object Name, IPAddress | Format-Table -AutoSize | Out-File $Arquivo -Append
+    "================ TRACERT ================" | Out-File $Arquivo -Append
+    Test-NetConnection 8.8.8.8 -TraceRoute | Select-Object -ExpandProperty TraceRoute | Out-File $Arquivo -Append
+    $script:JanelaProgresso.Value = 70	
 
 	# Fecha a janela de loading.
 	Exec-FecharJanelaLoad
@@ -61,6 +66,7 @@ function Render-Relatorios {
     Add-GerarRelatorio -ParentPanel $BS -Relatorio "Rede" -Func {Rel-Rede}
 
 }
+
 
 
 
