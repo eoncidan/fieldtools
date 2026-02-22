@@ -8,6 +8,7 @@ function Fol-Relatorios {
 	if (!(Test-Path $script:Relatorios)) { New-Item -ItemType Directory -Path $script:Relatorios }
 }
 
+
 # Relatorio de informacões da rede.
 function Rel-Rede {
 	# Chama a janela de loading.	
@@ -60,6 +61,7 @@ function Render-Relatorios {
     Add-GerarRelatorio -ParentPanel $BS -Relatorio "Rede" -Func {Rel-Rede}
 
 }
+
 
 
 
