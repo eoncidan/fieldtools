@@ -8,7 +8,6 @@ function Fol-Relatorios {
 	if (!(Test-Path $script:Relatorios)) { New-Item -ItemType Directory -Path $script:Relatorios }
 }
 
-
 # Relatorio de informacões da rede.
 function Rel-Rede {
 	# Chama a janela de loading.	
@@ -28,12 +27,13 @@ function Rel-Rede {
 	"================ DETALHES DE IP ================" | Out-File $Arquivo -Append
 	ipconfig /all | Out-String | Out-File $Arquivo -Append
     "================ PING E LATÊNCIA  ================" | Out-File $Arquivo -Append
-    Test-NetConnection 8.8.8.8 -InformationLevel Detailed | Select-Object ComputerName, PingSucceeded, PingReplyDetails | Format-List | Out-File $Arquivo -Append
+	Test-Connection -ComputerName 8.8.8.8 -Count 4 -ErrorAction SilentlyContinue | Select-Object Address, ResponseTime | Format-List | Out-File $Arquivo -Append
+	$script:JanelaProgresso.Value = 70	
     "================ RESOLUÇÃO DNS ================" | Out-File $Arquivo -Append
     Resolve-DnsName google.com -Type A -ErrorAction SilentlyContinue | Select-Object Name, IPAddress | Format-Table -AutoSize | Out-File $Arquivo -Append
     "================ TRACERT ================" | Out-File $Arquivo -Append
-    Test-NetConnection 8.8.8.8 -TraceRoute | Select-Object -ExpandProperty TraceRoute | Out-File $Arquivo -Append
-    $script:JanelaProgresso.Value = 70	
+	tracert.exe -d -h 15 8.8.8.8 | Out-File $Arquivo -Append    
+	$script:JanelaProgresso.Value = 0	
 
 	# Fecha a janela de loading.
 	Exec-FecharJanelaLoad
@@ -66,6 +66,7 @@ function Render-Relatorios {
     Add-GerarRelatorio -ParentPanel $BS -Relatorio "Rede" -Func {Rel-Rede}
 
 }
+
 
 
 
