@@ -135,8 +135,12 @@ function Render-Relatorios {
 
     Add-GerarRelatorio -ParentPanel $BS -Relatorio "Bateria" -Func {Rel-Bateria}
     Add-GerarRelatorio -ParentPanel $BS -Relatorio "Rede" -Func {Rel-Rede}
+    Add-GerarRelatorio -ParentPanel $BS -Relatorio "Desempenho" -Func {Rel-Desempenho}
+    Add-GerarRelatorio -ParentPanel $BS -Relatorio "Disco" -Func {Rel-Disco}
+    Add-GerarRelatorio -ParentPanel $BS -Relatorio "Sistema" -Func {Rel-Sistema}
 
 }
+
 
 
 
