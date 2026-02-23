@@ -130,8 +130,8 @@ function Render-Relatorios {
 	$BS = New-Object System.Windows.Forms.FlowLayoutPanel; $BS.Location = New-Object System.Drawing.Point(20, 240); $BS.Size = New-Object System.Drawing.Size(790, 260); $BS.AutoScroll = $true; $BS.FlowDirection = "TopDown"; $BS.WrapContents = $false
     $script:ContentPanel.Controls.Add($BS)
 	
-    Add-GCard -Title "RELATORIOS" -Value "Em desenvolvimento." -X 20 -Y 70	
-    Add-GCard -Title "RELATORIOS" -Value "Em desenvolvimento." -X 420 -Y 70
+    Add-GCard -Title "RELATORIOS" -Value "Todos os relatórios que forem extraidos irá ser armazenado na sua área de trabalho dentro da pasta **Relatorios** que é gerada assim que extraido qualquer tipo de relatório disponivel na listagem abaixo." -X 20 -Y 70	
+    Add-GCard -Title "RELATORIOS" -Value "Bateria - Informe da SAUDE e EFICIENCIA da bateria.`nRede - IP, PING, LATENCIA e RESOLUCAO de DNS.`nDesempenho - Uso geral de CPU, RAM e PROCESSOS.`nDisco - SMART, ESPAÇO em disco e ERROS LOGICOS.`nSistema - WINDOWS UPDATE, INTEGRIDADE e EVENT VIEWER." -X 420 -Y 70
 
     Add-GerarRelatorio -ParentPanel $BS -Relatorio "Bateria" -Func {Rel-Bateria}
     Add-GerarRelatorio -ParentPanel $BS -Relatorio "Rede" -Func {Rel-Rede}
@@ -140,6 +140,7 @@ function Render-Relatorios {
     Add-GerarRelatorio -ParentPanel $BS -Relatorio "Sistema" -Func {Rel-Sistema}
 
 }
+
 
 
 
