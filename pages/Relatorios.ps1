@@ -8,6 +8,77 @@ function Fol-Relatorios {
 	if (!(Test-Path $script:Relatorios)) { New-Item -ItemType Directory -Path $script:Relatorios }
 }
 
+# Relatorio de desempenho do sistema.
+function Rel-Desempenho {
+	# Chama a janela de loading.	
+    Exec-JanelaLoad
+    $script:JanelaProgresso.Value = 20
+    
+	# Codigo do relatorio.
+    Fol-Relatorios	
+    $Arquivo = "$script:Relatorios\Relatorio_Desempenho.txt"	
+    "================ USO GERAL (CPU E RAM) ================" | Out-File $Arquivo
+    Get-CimInstance Win32_Processor | Select-Object @{Name="Uso de CPU (%)";Expression={$_.LoadPercentage}} | Format-List | Out-File $Arquivo -Append
+    Get-CimInstance Win32_OperatingSystem | Select-Object @{Name="RAM Total(GB)";Expression={[math]::Round($_.TotalVisibleMemorySize/1MB,2)}}, @{Name="RAM Livre(GB)";Expression={[math]::Round($_.FreePhysicalMemory/1MB,2)}} | Format-Table -AutoSize | Out-File $Arquivo -Append
+    $script:JanelaProgresso.Value = 50
+    "================ PROCESSOS (10) ================" | Out-File $Arquivo -Append
+    Get-Process | Sort-Object CPU -Descending | Select-Object -First 10 Name, CPU, @{Name="RAM(MB)";Expression={[math]::Round($_.WorkingSet/1MB,2)}}, Id | Format-Table -AutoSize | Out-File $Arquivo -Append
+    $script:JanelaProgresso.Value = 90
+	
+	# Fecha a janela de loading.	
+    Exec-FecharJanelaLoad
+}
+
+# Relatorio de integridade de disco.
+function Rel-Disco {
+	# Chama a janela de loading.	
+    Exec-JanelaLoad
+    $script:JanelaProgresso.Value = 10
+    
+	# Codigo do relatorio.
+    Fol-Relatorios	
+    $Arquivo = "$script:Relatorios\Relatorio_Disco.txt"	
+    "================ ESPAÇO EM DISCO ================" | Out-File $Arquivo
+    Get-CimInstance Win32_LogicalDisk -Filter "DriveType=3" | Select-Object DeviceID, @{Name="Total(GB)";Expression={[math]::Round($_.Size/1GB,2)}}, @{Name="Livre(GB)";Expression={[math]::Round($_.FreeSpace/1GB,2)}}, @{Name="% Livre";Expression={[math]::Round(($_.FreeSpace/$_.Size)*100,2)}} | Format-Table -AutoSize | Out-File $Arquivo -Append
+    "================ STATUS S.M.A.R.T. ================" | Out-File $Arquivo -Append
+    wmic diskdrive get model,status | Out-File $Arquivo -Append
+    $script:JanelaProgresso.Value = 40
+    "================ ERROS LÓGICOS DE DISCO (SCAN) ================" | Out-File $Arquivo -Append
+    Get-Volume -DriveLetter C | Repair-Volume -Scan | Out-File $Arquivo -Append
+    $script:JanelaProgresso.Value = 70
+    
+	# Fecha a janela de loading.
+    Exec-FecharJanelaLoad
+}
+
+# Relatorio de status do sistema.
+function Rel-Sistema {
+	# Chama a janela de loading.
+    Exec-JanelaLoad
+    $script:JanelaProgresso.Value = 20
+    
+	# Codigo do relatorio.
+    Fol-Relatorios	
+	$Arquivo = "$script:Relatorios\Relatorio_Sistema.txt"
+    "================ STATUS DE SEGURANÇA (ANTIVÍRUS/EDR) ================" | Out-File $Arquivo
+    Get-MpComputerStatus -ErrorAction SilentlyContinue | Select-Object AMServiceEnabled, AntivirusEnabled, IsTamperProtected, IoavProtectionEnabled, OnAccessProtectionEnabled, RealTimeProtectionEnabled, BehaviorMonitorEnabled, AntispywareEnabled | Format-List | Out-File $Arquivo -Append
+    $script:JanelaProgresso.Value = 40
+    "================ WINDOWS UPDATE (ÚLTIMOS PATCHES) ================" | Out-File $Arquivo -Append
+    Get-HotFix | Sort-Object InstalledOn -Descending | Select-Object -First 5 HotFixID, Description, InstalledOn | Format-Table -AutoSize | Out-File $Arquivo -Append
+    "================ EVENT VIEWER: ERROS CRÍTICOS (ÚLTIMOS 7 DIAS) ================" | Out-File $Arquivo -Append
+    Get-WinEvent -FilterHashtable @{LogName='System','Application'; Level=1,2; StartTime=(Get-Date).AddDays(-7)} -ErrorAction SilentlyContinue | Select-Object TimeCreated, Id, ProviderName, Message -First 30 | Format-Table -AutoSize | Out-File $Arquivo -Append -Width 200
+    $script:JanelaProgresso.Value = 60
+    "================ INTEGRIDADE DO SO (DISM / SFC) ================" | Out-File $Arquivo -Append
+    "Status DISM (CheckHealth):" | Out-File $Arquivo -Append
+    DISM /Online /Cleanup-Image /CheckHealth | Out-File $Arquivo -Append
+    $script:JanelaProgresso.Value = 80
+    "Status SFC (Apenas Verificacao):" | Out-File $Arquivo -Append
+    sfc /verifyonly | Out-File $Arquivo -Append
+
+	# Fecha a janela de loading.
+    Exec-FecharJanelaLoad
+}
+
 # Relatorio de informacões da rede.
 function Rel-Rede {
 	# Chama a janela de loading.	
@@ -66,6 +137,7 @@ function Render-Relatorios {
     Add-GerarRelatorio -ParentPanel $BS -Relatorio "Rede" -Func {Rel-Rede}
 
 }
+
 
 
 
