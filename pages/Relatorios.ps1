@@ -133,11 +133,11 @@ function Render-Relatorios {
     Add-GCard -Title "RELATORIOS" -Value "Todos os relatórios que forem extraidos irá ser armazenado na sua área de trabalho dentro da pasta **Relatorios** que é gerada assim que extraido qualquer tipo de relatório disponivel na listagem abaixo." -X 20 -Y 70	
     Add-GCard -Title "RELATORIOS" -Value "Bateria - Informe da SAUDE e EFICIENCIA da bateria.`nRede - IP, PING, LATENCIA e RESOLUCAO de DNS.`nDesempenho - Uso geral de CPU, RAM e PROCESSOS.`nDisco - SMART, ESPAÇO em disco e ERROS LOGICOS.`nSistema - WINDOWS UPDATE, INTEGRIDADE e EVENT VIEWER." -X 420 -Y 70
 
-    Add-GerarRelatorio -ParentPanel $BS -Relatorio "Bateria" -Func {Rel-Bateria}
-    Add-GerarRelatorio -ParentPanel $BS -Relatorio "Rede" -Func {Rel-Rede}
-    Add-GerarRelatorio -ParentPanel $BS -Relatorio "Desempenho" -Func {Rel-Desempenho}
-    Add-GerarRelatorio -ParentPanel $BS -Relatorio "Disco" -Func {Rel-Disco}
-    Add-GerarRelatorio -ParentPanel $BS -Relatorio "Sistema" -Func {Rel-Sistema}
+    Add-GerarRelatorio -ParentPanel $BS -Relatorio "Bateria" -Func {Rel-Bateria} # Relatorio de status da bateria.
+    Add-GerarRelatorio -ParentPanel $BS -Relatorio "Rede" -Func {Rel-Rede} # Relatorio de informações de rede.
+    Add-GerarRelatorio -ParentPanel $BS -Relatorio "Desempenho" -Func {Rel-Desempenho} # Relatorio de desempenho do sistema.
+    Add-GerarRelatorio -ParentPanel $BS -Relatorio "Disco" -Func {Rel-Disco} # Relatorio de integridade de disco.
+    Add-GerarRelatorio -ParentPanel $BS -Relatorio "Sistema" -Func {Rel-Sistema} # Relatorio de status do sistema.
 
 }
 
