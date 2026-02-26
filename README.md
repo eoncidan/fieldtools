@@ -51,7 +51,7 @@ Integração direta com o **Winget** para instalação silenciosa de utilitário
 ### 5. 📊 Relatórios (`Relatorios.ps1`)
 Extrator de dados e inventário:
 * Extrai as informações coletadas pelo módulo Sistema (Hardware, SO e Rede) em um arquivo consolidado.
-* Exportação: Gera arquivos de saída (ex: .html para visualização ou .csv/.txt para logs) salvos localmente.
+* Exportação: Gera arquivos de saída .txt para logs salvos localmente.
 
 ---
 
@@ -97,4 +97,4 @@ FieldTools/
 
 ---
 
-v2.0
+v2.1
