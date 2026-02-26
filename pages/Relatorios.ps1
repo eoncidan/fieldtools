@@ -138,20 +138,4 @@ function Render-Relatorios {
     Add-GerarRelatorio -ParentPanel $BS -Relatorio "Desempenho" -Func {Rel-Desempenho} # Relatorio de desempenho do sistema.
     Add-GerarRelatorio -ParentPanel $BS -Relatorio "Disco" -Func {Rel-Disco} # Relatorio de integridade de disco.
     Add-GerarRelatorio -ParentPanel $BS -Relatorio "Sistema" -Func {Rel-Sistema} # Relatorio de status do sistema.
-
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
