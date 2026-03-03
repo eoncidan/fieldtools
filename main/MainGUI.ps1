@@ -1,5 +1,4 @@
 ﻿# Arquivo: /Main/MainGUI.ps1
-
 # Objetivo: Interface.
 
 Add-Type -AssemblyName System.Windows.Forms
@@ -172,3 +171,4 @@ Add-MenuButton "Scripts" 240
 Render-Page -PageName "Sistema" # Pagina de Inicialização.
 
 [void]$Form.ShowDialog()
+
