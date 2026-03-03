@@ -72,87 +72,29 @@ $script:JanelaExec.Dispose()
 function Add-Card {
     param($Title, $Value, $X, $Y)
     
-    $Card = New-Object System.Windows.Forms.Panel
-    $Card.Size = New-Object System.Drawing.Size(390, 80)
-    $Card.Location = New-Object System.Drawing.Point($X, $Y)
-    $Card.BackColor = $ColorLContent
-    
-    $lblTitle = New-Object System.Windows.Forms.Label
-    $lblTitle.Text = $Title
-    $lblTitle.ForeColor = $ColorText
-    $lblTitle.Font = New-Object System.Drawing.Font("Segoe UI", 9, [System.Drawing.FontStyle]::Bold)
-    $lblTitle.Location = New-Object System.Drawing.Point(15, 15)
-    $lblTitle.AutoSize = $true
-
-    $lblValue = New-Object System.Windows.Forms.Label
-    $lblValue.Text = $Value
-    $lblValue.ForeColor = $ColorText
-    $lblValue.Font = New-Object System.Drawing.Font("Segoe UI", 10, [System.Drawing.FontStyle]::Bold)
-    $lblValue.Location = New-Object System.Drawing.Point(15, 40)
-    $lblValue.AutoSize = $true
-    $lblValue.MaximumSize = New-Object System.Drawing.Size(370, 0)
-
-	$Card.Controls.AddRange(@($lblValue, $lblTitle))
-    $script:ContentPanel.Controls.Add($Card)
+    $Card = New-Object System.Windows.Forms.Panel; $Card.Size = New-Object System.Drawing.Size(390, 80); $Card.Location = New-Object System.Drawing.Point($X, $Y); $Card.BackColor = $ColorLContent
+    $lblTitle = New-Object System.Windows.Forms.Label; $lblTitle.Text = $Title; $lblTitle.ForeColor = $ColorText; $lblTitle.Font = New-Object System.Drawing.Font("Segoe UI", 9, [System.Drawing.FontStyle]::Bold); $lblTitle.Location = New-Object System.Drawing.Point(15, 15); $lblTitle.AutoSize = $true
+    $lblValue = New-Object System.Windows.Forms.Label; $lblValue.Text = $Value; $lblValue.ForeColor = $ColorText; $lblValue.Font = New-Object System.Drawing.Font("Segoe UI", 10, [System.Drawing.FontStyle]::Bold); $lblValue.Location = New-Object System.Drawing.Point(15, 40); $lblValue.AutoSize = $true; $lblValue.MaximumSize = New-Object System.Drawing.Size(370, 0)
+    $Card.Controls.AddRange(@($lblValue, $lblTitle)); $script:ContentPanel.Controls.Add($Card)
 }
 
 # Add-GCard = Card grande para informações.
 function Add-GCard {
     param($Title, $Value, $X, $Y)
     
-    $GCard = New-Object System.Windows.Forms.Panel
-    $GCard.Size = New-Object System.Drawing.Size(390, 160)
-    $GCard.Location = New-Object System.Drawing.Point($X, $Y)
-    $GCard.BackColor = $ColorLContent
-    
-    $lblTitle = New-Object System.Windows.Forms.Label
-    $lblTitle.Text = $Title
-    $lblTitle.ForeColor = $ColorText
-    $lblTitle.Font = New-Object System.Drawing.Font("Segoe UI", 9, [System.Drawing.FontStyle]::Bold)
-    $lblTitle.Location = New-Object System.Drawing.Point(15, 15)
-    $lblTitle.AutoSize = $true
-
-    $lblValue = New-Object System.Windows.Forms.Label
-    $lblValue.Text = $Value
-    $lblValue.ForeColor = $ColorText
-    $lblValue.Font = New-Object System.Drawing.Font("Segoe UI", 10, [System.Drawing.FontStyle]::Bold)
-    $lblValue.Location = New-Object System.Drawing.Point(15, 40)
-    $lblValue.AutoSize = $true
-    $lblValue.MaximumSize = New-Object System.Drawing.Size(370, 0)
-
-	$GCard.Controls.AddRange(@($lblValue, $lblTitle))
-    $script:ContentPanel.Controls.Add($GCard)
+    $GCard = New-Object System.Windows.Forms.Panel; $GCard.Size = New-Object System.Drawing.Size(390, 160); $GCard.Location = New-Object System.Drawing.Point($X, $Y); $GCard.BackColor = $ColorLContent
+    $lblTitle = New-Object System.Windows.Forms.Label; $lblTitle.Text = $Title; $lblTitle.ForeColor = $ColorText; $lblTitle.Font = New-Object System.Drawing.Font("Segoe UI", 9, [System.Drawing.FontStyle]::Bold); $lblTitle.Location = New-Object System.Drawing.Point(15, 15); $lblTitle.AutoSize = $true
+    $lblValue = New-Object System.Windows.Forms.Label; $lblValue.Text = $Value; $lblValue.ForeColor = $ColorText; $lblValue.Font = New-Object System.Drawing.Font("Segoe UI", 10, [System.Drawing.FontStyle]::Bold); $lblValue.Location = New-Object System.Drawing.Point(15, 40); $lblValue.AutoSize = $true; $lblValue.MaximumSize = New-Object System.Drawing.Size(370, 0)
+    $GCard.Controls.AddRange(@($lblValue, $lblTitle)); $script:ContentPanel.Controls.Add($GCard)
 }
 
 # Add-GerarRelatorio = Botao para extrair os relatorios.
 function Add-GerarRelatorio {
     param($ParentPanel, $Relatorio, [ScriptBlock]$Func)
 
-    $AppRow = New-Object System.Windows.Forms.Panel
-    $AppRow.Size = New-Object System.Drawing.Size(760, 50)
-    $AppRow.Margin = New-Object System.Windows.Forms.Padding(0, 0, 0, 10)
-    $AppRow.BackColor = $ColorLContent
-
-    # Botão Extrair Relatorio
-    $btnExtrair = New-Object System.Windows.Forms.Button
-    $btnExtrair.Text = "Extrair"
-    $btnExtrair.Size = New-Object System.Drawing.Size(100, 30)
-    $btnExtrair.Location = New-Object System.Drawing.Point(10, 10)
-    $btnExtrair.FlatStyle = "Flat"
-    $btnExtrair.BackColor = $ColorDark
-    $btnExtrair.ForeColor = $ColorText
-    $btnExtrair.FlatAppearance.BorderSize = 0	
-    $btnExtrair.Cursor = [System.Windows.Forms.Cursors]::Hand
-    $btnExtrair.Add_Click($Func)
-
-    # Descrição
-    $descRelat = New-Object System.Windows.Forms.Label
-    $descRelat.Text = "$Relatorio"
-    $descRelat.Font = New-Object System.Drawing.Font("Segoe UI", 10, [System.Drawing.FontStyle]::Bold)
-    $descRelat.Location = New-Object System.Drawing.Point(120, 15)
-    $descRelat.AutoSize = $true
-    $descRelat.ForeColor = $ColorText
-
+    $AppRow = New-Object System.Windows.Forms.Panel; $AppRow.Size = New-Object System.Drawing.Size(760, 50); $AppRow.Margin = New-Object System.Windows.Forms.Padding(0, 0, 0, 10); $AppRow.BackColor = $ColorLContent
+    $btnExtrair = New-Object System.Windows.Forms.Button; $btnExtrair.Text = "Extrair"; $btnExtrair.Size = New-Object System.Drawing.Size(100, 30); $btnExtrair.Location = New-Object System.Drawing.Point(10, 10); $btnExtrair.FlatStyle = "Flat"; $btnExtrair.BackColor = $ColorDark; $btnExtrair.ForeColor = $ColorText; $btnExtrair.FlatAppearance.BorderSize = 0; $btnExtrair.Cursor = [System.Windows.Forms.Cursors]::Hand; $btnExtrair.Add_Click($Func)
+    $descRelat = New-Object System.Windows.Forms.Label; $descRelat.Text = "$Relatorio"; $descRelat.Font = New-Object System.Drawing.Font("Segoe UI", 10, [System.Drawing.FontStyle]::Bold); $descRelat.Location = New-Object System.Drawing.Point(120, 15); $descRelat.AutoSize = $true; $descRelat.ForeColor = $ColorText
     $AppRow.Controls.AddRange(@($btnExtrair, $descRelat)); $ParentPanel.Controls.Add($AppRow)
 }
 
@@ -160,153 +102,47 @@ function Add-GerarRelatorio {
 function Add-Launcher {
     param($Text, $Command, $X, $Y)
 
-    $btn = New-Object System.Windows.Forms.Button
-    $btn.Text = $Text
-    $btn.Size = New-Object System.Drawing.Size(140, 70)
-    $btn.Location = New-Object System.Drawing.Point($X, $Y)
-    $btn.BackColor = $ColorDark
-    $btn.ForeColor = $ColorText
-    $btn.FlatStyle = "Flat"
-    $btn.FlatAppearance.BorderSize = 0
-    $btn.Font = New-Object System.Drawing.Font("Segoe UI", 10, [System.Drawing.FontStyle]::Regular)
-    $btn.Cursor = [System.Windows.Forms.Cursors]::Hand
-    $btn.Tag = $Command
-    $btn.Add_Click({ 
-        try { 
-            $CommandString = $this.Tag
-            if ($CommandString -match "^(\S+)\s+(.*)$") {
-                Start-Process -FilePath $matches[1] -ArgumentList $matches[2] -ErrorAction Stop}
-            else {
-                Start-Process $CommandString -ErrorAction Stop}
-        } 
-        catch { [System.Windows.Forms.MessageBox]::Show("Erro ao abrir: $_", "Erro") }
-    })
-
-    $btn.Add_MouseEnter({ $this.BackColor = $ColorLDark })
-    $btn.Add_MouseLeave({ $this.BackColor = $ColorDark })
-    $script:ContentPanel.Controls.Add($btn)
+    $btn = New-Object System.Windows.Forms.Button; $btn.Text = $Text; $btn.Size = New-Object System.Drawing.Size(140, 70); $btn.Location = New-Object System.Drawing.Point($X, $Y); $btn.BackColor = $ColorDark; $btn.ForeColor = $ColorText; $btn.FlatStyle = "Flat"; $btn.FlatAppearance.BorderSize = 0; $btn.Font = New-Object System.Drawing.Font("Segoe UI", 10, [System.Drawing.FontStyle]::Regular); $btn.Cursor = [System.Windows.Forms.Cursors]::Hand; $btn.Tag = $Command
+    $btn.Add_Click({ try { $CommandString = $this.Tag; if ($CommandString -match "^(\S+)\s+(.*)$") { Start-Process -FilePath $matches[1] -ArgumentList $matches[2] -ErrorAction Stop } else { Start-Process $CommandString -ErrorAction Stop } } catch { [System.Windows.Forms.MessageBox]::Show("Erro ao abrir: $_", "Erro") } })
+    $btn.Add_MouseEnter({ $this.BackColor = $ColorLDark }); $btn.Add_MouseLeave({ $this.BackColor = $ColorDark }); $script:ContentPanel.Controls.Add($btn)
 }
 
 # Add-LCard = Card longo para informações.
 function Add-LCard {
     param($Title, $TextA, $TextB, $X, $Y)
 
-    $LCardA = New-Object System.Windows.Forms.Panel
-    $LCardA.Size = New-Object System.Drawing.Size(390, 170)
-    $LCardA.Location = New-Object System.Drawing.Point($X, $Y)
-    $LCardA.BackColor = $ColorLContent
-
-    $LCardB = New-Object System.Windows.Forms.Panel
-    $LCardB.Size = New-Object System.Drawing.Size(190, 130)
-    $LCardB.Location = New-Object System.Drawing.Point(190, 30)
-    $LCardB.BackColor = $ColorLDark
-
-    $LCardTitle = New-Object System.Windows.Forms.Label
-    $LCardTitle.Text = $Title
-    $LCardTitle.Font = New-Object System.Drawing.Font("Segoe UI", 9, [System.Drawing.FontStyle]::Bold)
-    $LCardTitle.AutoSize = $true
-    $LCardTitle.Location = New-Object System.Drawing.Point(15, 15)
-    $LCardTitle.ForeColor = $ColorText
-	
-    $LCardTextA = New-Object System.Windows.Forms.Label
-    $LCardTextA.Text = $TextA
-    $LCardTextA.Font = New-Object System.Drawing.Font("Segoe UI", 10, [System.Drawing.FontStyle]::Bold)
-    $LCardTextA.AutoSize = $true
-    $LCardTextA.Location = New-Object System.Drawing.Point(15, 40)
-    $LCardTextA.ForeColor = $ColorText
-	$LCardTextA.BackColor = $ColorLContent
-
-    $LCardTextB = New-Object System.Windows.Forms.Label
-    $LCardTextB.Text = $TextB
-    $LCardTextB.Font = New-Object System.Drawing.Font("Segoe UI", 10, [System.Drawing.FontStyle]::Bold)
-    $LCardTextB.AutoSize = $true
-    $LCardTextB.Location = New-Object System.Drawing.Point(200, 40)
-    $LCardTextB.ForeColor = $ColorText
-    $LCardTextB.BackColor = $ColorLDark
-
-	$LCardA.Controls.AddRange(@($LCardTextA, $LCardTitle, $LCardTextB, $LCardB))  
-    $script:ContentPanel.Controls.Add($LCardA)
+    $LCardA = New-Object System.Windows.Forms.Panel; $LCardA.Size = New-Object System.Drawing.Size(390, 170); $LCardA.Location = New-Object System.Drawing.Point($X, $Y); $LCardA.BackColor = $ColorLContent
+    $LCardB = New-Object System.Windows.Forms.Panel; $LCardB.Size = New-Object System.Drawing.Size(190, 130); $LCardB.Location = New-Object System.Drawing.Point(190, 30); $LCardB.BackColor = $ColorLDark
+    $LCardTitle = New-Object System.Windows.Forms.Label; $LCardTitle.Text = $Title; $LCardTitle.Font = New-Object System.Drawing.Font("Segoe UI", 9, [System.Drawing.FontStyle]::Bold); $LCardTitle.AutoSize = $true; $LCardTitle.Location = New-Object System.Drawing.Point(15, 15); $LCardTitle.ForeColor = $ColorText
+    $LCardTextA = New-Object System.Windows.Forms.Label; $LCardTextA.Text = $TextA; $LCardTextA.Font = New-Object System.Drawing.Font("Segoe UI", 10, [System.Drawing.FontStyle]::Bold); $LCardTextA.AutoSize = $true; $LCardTextA.Location = New-Object System.Drawing.Point(15, 40); $LCardTextA.ForeColor = $ColorText; $LCardTextA.BackColor = $ColorLContent
+    $LCardTextB = New-Object System.Windows.Forms.Label; $LCardTextB.Text = $TextB; $LCardTextB.Font = New-Object System.Drawing.Font("Segoe UI", 10, [System.Drawing.FontStyle]::Bold); $LCardTextB.AutoSize = $true; $LCardTextB.Location = New-Object System.Drawing.Point(200, 40); $LCardTextB.ForeColor = $ColorText; $LCardTextB.BackColor = $ColorLDark
+    $LCardA.Controls.AddRange(@($LCardTextA, $LCardTitle, $LCardTextB, $LCardB)); $script:ContentPanel.Controls.Add($LCardA)
 }
 
 # Add-WingetApp = Botao instalar e descricao.
 function Add-WingetApp {
     param($ParentPanel, $AppName, $WingetID, $Description)
 
-    $AppRow = New-Object System.Windows.Forms.Panel
-    $AppRow.Size = New-Object System.Drawing.Size(760, 50)
-    $AppRow.Margin = New-Object System.Windows.Forms.Padding(0, 0, 0, 10)
-    $AppRow.BackColor = $ColorLContent
-
-    # Botão Instalar
-    $btnInstall = New-Object System.Windows.Forms.Button
-    $btnInstall.Text = "Instalar"
-    $btnInstall.Size = New-Object System.Drawing.Size(100, 30)
-    $btnInstall.Location = New-Object System.Drawing.Point(10, 10)
-    $btnInstall.FlatStyle = "Flat"
-    $btnInstall.BackColor = $ColorDark
-    $btnInstall.ForeColor = $ColorText
-    $btnInstall.FlatAppearance.BorderSize = 0	
-    $btnInstall.Cursor = [System.Windows.Forms.Cursors]::Hand
-    
-    $btnInstall.Add_Click({
-        $this.Enabled = $false
-        $this.Text = "..."
-        Exec-JanelaLoad
-		Start-Process "winget" -ArgumentList "install --id $WingetID --silent --accept-package-agreements --accept-source-agreements" -Wait -WindowStyle Hidden
-		Exec-FecharJanelaLoad
-        $this.Text = "Instalado"
-        $this.BackColor = [System.Drawing.Color]::Green
-    }.GetNewClosure())
-
-    # Descrição
-    $lblApp = New-Object System.Windows.Forms.Label
-    $lblApp.Text = "$AppName - $Description"
-    $lblApp.Font = New-Object System.Drawing.Font("Segoe UI", 10, [System.Drawing.FontStyle]::Bold)
-    $lblApp.Location = New-Object System.Drawing.Point(120, 15)
-    $lblApp.AutoSize = $true
-    $lblApp.ForeColor = $ColorText
-
-    $AppRow.Controls.Add($btnInstall)
-    $AppRow.Controls.Add($lblApp)
-    $ParentPanel.Controls.Add($AppRow)
+    $AppRow = New-Object System.Windows.Forms.Panel; $AppRow.Size = New-Object System.Drawing.Size(760, 50); $AppRow.Margin = New-Object System.Windows.Forms.Padding(0, 0, 0, 10); $AppRow.BackColor = $ColorLContent
+    $btnInstall = New-Object System.Windows.Forms.Button; $btnInstall.Text = "Instalar"; $btnInstall.Size = New-Object System.Drawing.Size(100, 30); $btnInstall.Location = New-Object System.Drawing.Point(10, 10); $btnInstall.FlatStyle = "Flat"; $btnInstall.BackColor = $ColorDark; $btnInstall.ForeColor = $ColorText; $btnInstall.FlatAppearance.BorderSize = 0; $btnInstall.Cursor = [System.Windows.Forms.Cursors]::Hand
+    $btnInstall.Add_Click({ $this.Enabled = $false; $this.Text = "..."; Exec-JanelaLoad; Start-Process "winget" -ArgumentList "install --id $WingetID --silent --accept-package-agreements --accept-source-agreements" -Wait -WindowStyle Hidden; Exec-FecharJanelaLoad; $this.Text = "Instalado"; $this.BackColor = [System.Drawing.Color]::Green }.GetNewClosure())
+    $lblApp = New-Object System.Windows.Forms.Label; $lblApp.Text = "$AppName - $Description"; $lblApp.Font = New-Object System.Drawing.Font("Segoe UI", 10, [System.Drawing.FontStyle]::Bold); $lblApp.Location = New-Object System.Drawing.Point(120, 15); $lblApp.AutoSize = $true; $lblApp.ForeColor = $ColorText
+    $AppRow.Controls.Add($btnInstall); $AppRow.Controls.Add($lblApp); $ParentPanel.Controls.Add($AppRow)
 }
 
 # NAVEGAÇÃO 
 function Stop-BackgroundTasks {
-    # Mata o Timer antigo.
-    if ($script:Timer) { 
-        $script:Timer.Stop()
-        $script:Timer.Dispose()
-        $script:Timer = $null
-    }
-    # Limpa Job antigo.
-    if ($script:Job) {
-        Remove-Job -Job $script:Job -Force -ErrorAction SilentlyContinue
-        $script:Job = $null
-    }
+    if ($script:Timer) { $script:Timer.Stop(); $script:Timer.Dispose(); $script:Timer = $null }
+    if ($script:Job) { Remove-Job -Job $script:Job -Force -ErrorAction SilentlyContinue; $script:Job = $null }
 }
 
 function Render-Page {
     param([string]$PageName)
 
-    # Para tudo antes de trocar de pagina.
     Stop-BackgroundTasks
+    $script:CurrentPage = $PageName; $script:ContentPanel.Controls.Clear(); $script:ContentPanel.Refresh()
+    $lblPage = New-Object System.Windows.Forms.Label; $lblPage.Text = $PageName.ToUpper(); $lblPage.Font = New-Object System.Drawing.Font("Segoe UI", 16, [System.Drawing.FontStyle]::Bold); $lblPage.ForeColor = $script:ColorText; $lblPage.AutoSize = $true; $lblPage.Location = New-Object System.Drawing.Point(20, 20); $script:ContentPanel.Controls.Add($lblPage)
 
-    # Define e limpa a pagina.
-    $script:CurrentPage = $PageName
-    $script:ContentPanel.Controls.Clear()
-    $script:ContentPanel.Refresh()
-    
-    # Título da Página.
-    $lblPage = New-Object System.Windows.Forms.Label
-    $lblPage.Text = $PageName.ToUpper()
-    $lblPage.Font = New-Object System.Drawing.Font("Segoe UI", 16, [System.Drawing.FontStyle]::Bold)
-    $lblPage.ForeColor = $script:ColorText
-    $lblPage.AutoSize = $true
-    $lblPage.Location = New-Object System.Drawing.Point(20, 20)
-    $script:ContentPanel.Controls.Add($lblPage)
-
-    # Roteador (Switch).
     switch ($PageName) {
         "Sistema"      { Render-Sistema } 
         "Ferramentas"  { Render-Ferramentas }
@@ -319,25 +155,10 @@ function Render-Page {
 # MENU LATERAL
 function Add-MenuButton {
     param([string]$Text, [int]$Y)
-    $btn = New-Object System.Windows.Forms.Button
-    $btn.Text = "  $Text"
-    $btn.TextAlign = "MiddleLeft"
-    $btn.FlatStyle = "Flat"
-    $btn.FlatAppearance.BorderSize = 0
-    $btn.ForeColor = [System.Drawing.Color]::White
-    $btn.Font = New-Object System.Drawing.Font("Segoe UI", 10, [System.Drawing.FontStyle]::Regular)
-    $btn.Size = New-Object System.Drawing.Size(150, 45)
-    $btn.Location = New-Object System.Drawing.Point(0, $Y)
-    $btn.Cursor = [System.Windows.Forms.Cursors]::Hand
-    $btn.Tag = $Text
-    $btn.Add_Click({ 
-    	Render-Page -PageName $this.Tag 
-    })
     
-    $btn.Add_MouseEnter({ $this.BackColor = $ColorLDark })
-    $btn.Add_MouseLeave({ $this.BackColor = $ColorDark })
-    
-    $script:Sidebar.Controls.Add($btn)
+    $btn = New-Object System.Windows.Forms.Button; $btn.Text = "  $Text"; $btn.TextAlign = "MiddleLeft"; $btn.FlatStyle = "Flat"; $btn.FlatAppearance.BorderSize = 0; $btn.ForeColor = [System.Drawing.Color]::White; $btn.Font = New-Object System.Drawing.Font("Segoe UI", 10, [System.Drawing.FontStyle]::Regular); $btn.Size = New-Object System.Drawing.Size(150, 45); $btn.Location = New-Object System.Drawing.Point(0, $Y); $btn.Cursor = [System.Windows.Forms.Cursors]::Hand; $btn.Tag = $Text
+    $btn.Add_Click({ Render-Page -PageName $this.Tag })
+    $btn.Add_MouseEnter({ $this.BackColor = $ColorLDark }); $btn.Add_MouseLeave({ $this.BackColor = $ColorDark }); $script:Sidebar.Controls.Add($btn)
 }
 
 # Botoes do menu.
@@ -351,6 +172,7 @@ Add-MenuButton "Scripts" 240
 Render-Page -PageName "Sistema" # Pagina de Inicialização.
 
 [void]$Form.ShowDialog()
+
 
 
 
