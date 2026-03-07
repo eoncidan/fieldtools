@@ -23,19 +23,19 @@ $ColorLContent  = [System.Drawing.ColorTranslator]::FromHtml("#323232") # Cor da
 $ColorText      = [System.Drawing.Color]::White
 $FontTitle      = New-Object System.Drawing.Font("Segoe UI", 12, [System.Drawing.FontStyle]::Bold)
 
+# ÍCONE
+$AppIdCodigo = '[DllImport("shell32.dll")] public static extern int SetCurrentProcessExplicitAppUserModelID(string AppID);'
+Add-Type -MemberDefinition $AppIdCodigo -Name AppIdHelper -Namespace Win32
+[Win32.AppIdHelper]::SetCurrentProcessExplicitAppUserModelID("ReportGiver.App.1")
+
 # JANELA PRINCIPAL
-$Form = New-Object System.Windows.Forms.Form
-$Form.Text = "Field Tools"
-$Form.Size = New-Object System.Drawing.Size(980, 560)
-$Form.StartPosition = "CenterScreen"
-$Form.FormBorderStyle = "None"
-$Form.BackColor = $ColorContent
+$Form = New-Object System.Windows.Forms.Form; $Form.Text = "Field Tools"; $Form.Size = New-Object System.Drawing.Size(980, 560); $Form.StartPosition = "CenterScreen"; $Form.Icon = [System.Drawing.Icon]::ExtractAssociatedIcon("$env:windir\ImmersiveControlPanel\SystemSettings.exe"); $Form.FormBorderStyle = "None"; $Form.BackColor = $ColorContent
 
 # TOPBAR (BARRA SUPERIOR SUBSTITUTA DO WINDOWS)
-$TopBar = New-Object System.Windows.Forms.Panel; $TopBar.Height = 40; $TopBar.Dock = "Top"; $TopBar.BackColor = $ColorDark; $Form.Controls.Add($TopBar)
-$lblTitle = New-Object System.Windows.Forms.Label; $lblTitle.Text = "FIELD TOOLS"; $lblTitle.ForeColor = $ColorText; $lblTitle.Font = $FontTitle; $lblTitle.AutoSize = $true; $lblTitle.Location = New-Object System.Drawing.Point(10, 8); $TopBar.Controls.Add($lblTitle)
-$btnClose = New-Object System.Windows.Forms.Button; $btnClose.Text = "X"; $btnClose.Size = New-Object System.Drawing.Size(40, 40); $btnClose.Dock = "Right"; $btnClose.FlatStyle = "Flat"; $btnClose.FlatAppearance.BorderSize = 0; $btnClose.ForeColor = $ColorText; $btnClose.BackColor = $ColorDark
-$btnClose.Add_Click({ $Form.Close() }); $btnClose.Add_MouseEnter({ $btnClose.BackColor = [System.Drawing.Color]::Red }); $btnClose.Add_MouseLeave({ $btnClose.BackColor = $ColorDark }); $TopBar.Controls.Add($btnClose)
+$TopBar = New-Object System.Windows.Forms.Panel; $TopBar.Height = 30; $TopBar.Dock = "Top"; $TopBar.BackColor = $ColorDark; $Form.Controls.Add($TopBar)
+$lblTitle = New-Object System.Windows.Forms.Label; $lblTitle.Text = "FIELD TOOLS"; $lblTitle.Dock = "TopCenter"; $lblTitle.ForeColor = $ColorText; $lblTitle.Font = $FontTitle; $lblTitle.AutoSize = $true; $lblTitle.Location = New-Object System.Drawing.Point(10, 5); $TopBar.Controls.Add($lblTitle)
+$btnMinim = New-Object System.Windows.Forms.Button; $btnMinim.Text = "-"; $btnMinim.Size = New-Object System.Drawing.Size(30, 30); $btnMinim.Dock = "Right"; $btnMinim.FlatStyle = "Flat"; $btnMinim.FlatAppearance.BorderSize = 0; $btnMinim.ForeColor = $ColorText; $btnMinim.BackColor = $ColorDark; $btnMinim.Add_Click({ $Form.WindowState = [System.Windows.Forms.FormWindowState]::Minimized }); $btnMinim.Add_MouseEnter({ $btnMinim.BackColor = $ColorLDark }); $btnMinim.Add_MouseLeave({ $btnMinim.BackColor = $ColorDark }); $TopBar.Controls.Add($btnMinim)
+$btnClose = New-Object System.Windows.Forms.Button; $btnClose.Text = "x"; $btnClose.Size = New-Object System.Drawing.Size(30, 30); $btnClose.Dock = "Right"; $btnClose.FlatStyle = "Flat"; $btnClose.FlatAppearance.BorderSize = 0; $btnClose.ForeColor = $ColorText; $btnClose.BackColor = $ColorDark; $btnClose.Add_Click({ $Form.Close() }); $btnClose.Add_MouseEnter({ $btnClose.BackColor = [System.Drawing.Color]::Red }); $btnClose.Add_MouseLeave({ $btnClose.BackColor = $ColorDark }); $TopBar.Controls.Add($btnClose)
 
 # LOGICA DE ARRASTO DE JANELA (DRAG)
 $TopBar.Add_MouseDown({$script:isDragging = $true; $cursorPos = [System.Windows.Forms.Cursor]::Position; $script:dragOffset = New-Object System.Drawing.Point(($cursorPos.X - $Form.Location.X), ($cursorPos.Y - $Form.Location.Y))})
@@ -171,4 +171,5 @@ Add-MenuButton "Scripts" 240
 Render-Page -PageName "Sistema" # Pagina de Inicialização.
 
 [void]$Form.ShowDialog()
+
 
