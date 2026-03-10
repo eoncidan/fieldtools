@@ -16,7 +16,8 @@ function Rel-Desempenho {
     
 	# Codigo do relatorio.
     Fol-Relatorios	
-    $Arquivo = "$script:Relatorios\Relatorio_Desempenho.txt"	
+    $Arquivo = "$script:Relatorios\Relatorio_Desempenho.txt"
+	"================ RELATÓRIO DE DESEMPENHO - $(Get-Date) ===" | Out-File $Arquivo	
     "================ USO GERAL (CPU E RAM) ================" | Out-File $Arquivo
     Get-CimInstance Win32_Processor | Select-Object @{Name="Uso de CPU (%)";Expression={$_.LoadPercentage}} | Format-List | Out-File $Arquivo -Append
     Get-CimInstance Win32_OperatingSystem | Select-Object @{Name="RAM Total(GB)";Expression={[math]::Round($_.TotalVisibleMemorySize/1MB,2)}}, @{Name="RAM Livre(GB)";Expression={[math]::Round($_.FreePhysicalMemory/1MB,2)}} | Format-Table -AutoSize | Out-File $Arquivo -Append
@@ -38,6 +39,7 @@ function Rel-Disco {
 	# Codigo do relatorio.
     Fol-Relatorios	
     $Arquivo = "$script:Relatorios\Relatorio_Disco.txt"	
+	"================ RELATÓRIO DE DISCO - $(Get-Date) ===" | Out-File $Arquivo	
     "================ ESPAÇO EM DISCO ================" | Out-File $Arquivo
     Get-CimInstance Win32_LogicalDisk -Filter "DriveType=3" | Select-Object DeviceID, @{Name="Total(GB)";Expression={[math]::Round($_.Size/1GB,2)}}, @{Name="Livre(GB)";Expression={[math]::Round($_.FreeSpace/1GB,2)}}, @{Name="% Livre";Expression={[math]::Round(($_.FreeSpace/$_.Size)*100,2)}} | Format-Table -AutoSize | Out-File $Arquivo -Append
     "================ STATUS S.M.A.R.T. ================" | Out-File $Arquivo -Append
@@ -60,6 +62,7 @@ function Rel-Sistema {
 	# Codigo do relatorio.
     Fol-Relatorios	
 	$Arquivo = "$script:Relatorios\Relatorio_Sistema.txt"
+	"================ RELATÓRIO DE SISTEMA - $(Get-Date) ===" | Out-File $Arquivo	
     "================ STATUS DE SEGURANÇA (ANTIVÍRUS/EDR) ================" | Out-File $Arquivo
     Get-MpComputerStatus -ErrorAction SilentlyContinue | Select-Object AMServiceEnabled, AntivirusEnabled, IsTamperProtected, IoavProtectionEnabled, OnAccessProtectionEnabled, RealTimeProtectionEnabled, BehaviorMonitorEnabled, AntispywareEnabled | Format-List | Out-File $Arquivo -Append
     $script:JanelaProgresso.Value = 40
@@ -125,7 +128,6 @@ function Rel-Bateria {
 }
 
 function Render-Relatorios {
-	
 	# BS = Barra lateral de rolagem.
 	$BS = New-Object System.Windows.Forms.FlowLayoutPanel; $BS.Location = New-Object System.Drawing.Point(20, 240); $BS.Size = New-Object System.Drawing.Size(790, 260); $BS.AutoScroll = $true; $BS.FlowDirection = "TopDown"; $BS.WrapContents = $false
     $script:ContentPanel.Controls.Add($BS)
@@ -139,3 +141,4 @@ function Render-Relatorios {
     Add-GerarRelatorio -ParentPanel $BS -Relatorio "Disco" -Func {Rel-Disco} # Relatorio de integridade de disco.
     Add-GerarRelatorio -ParentPanel $BS -Relatorio "Sistema" -Func {Rel-Sistema} # Relatorio de status do sistema.
 }
+
