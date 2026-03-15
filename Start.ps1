@@ -1,13 +1,13 @@
 ﻿# Arquivo: /Start.ps1
 
-# Objetivo: Validar UAC (Admin) e iniciar a interface.
+# Objetivo: Elevar o UAC (Admin) e iniciar a interface.
 
 # DESBLOQUEIA OS ARQUIVOS .PS1
 Unblock-File -Path "$PSScriptRoot\Start.ps1"
 Unblock-File -Path "$PSScriptRoot\Main\MainGUI.ps1"
 Unblock-File -Path "$PSScriptRoot\Main\Syschecker.ps1"
 
-# VALIDA O ADMIN USER 
+# ELEVAÇÃO DO UAC
 $Principal = [Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()
 if (-not $Principal.IsInRole([Security.Principal.WindowsBuiltInRole] "Administrator")) {
     # Se não for Admin, reinicia o script pedindo elevação (Tela Sim/Não do Windows).
