@@ -70,6 +70,10 @@ O `Start.ps1` irá:
 2.  Ocultar a janela preta do terminal (Modo Stealth).
 3.  Carregar a interface gráfica (`MainGUI.ps1`).
 
+Caso o arquivo não rode, verifique se ele está desbloqueado:
+1.  Clique com o botão direito no arquivo, selecione Propriedades e fique na aba Geral.
+2.  No rodapé da janela, marque a caixa Desbloquear (ou "Unlock") e clique em OK.
+
 ### Adicionando Scripts Personalizados
 Para adicionar suas próprias ferramentas à aba **Scripts**:
 1.  Crie ou copie seus scripts `.ps1` para a pasta `Lib` (crie a pasta na raiz do projeto se ela não existir).
