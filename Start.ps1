@@ -4,8 +4,8 @@
 
 # DESBLOQUEIA OS ARQUIVOS .PS1
 Unblock-File -Path "$PSScriptRoot\Start.ps1"
-Unblock-File -Path "$PSScriptRoot\Main\MainGUI.ps1"
-Unblock-File -Path "$PSScriptRoot\Main\Syschecker.ps1"
+Get-ChildItem -Path "$PSScriptRoot\main" -Recurse | Unblock-File
+Get-ChildItem -Path "$PSScriptRoot\pages" -Recurse | Unblock-File
 
 # ELEVAÇÃO DO UAC
 $Principal = [Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()
